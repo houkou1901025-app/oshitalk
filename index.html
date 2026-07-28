@@ -110,14 +110,11 @@
             transition: all 0.25s ease;
         }
 
-        .tab-avatar-box {
+        .tab-avatar {
             width: 52px;
             height: 52px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
+            object-fit: cover;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid transparent;
         }
@@ -125,15 +122,15 @@
         .tab-name { font-size: 14px; font-weight: 700; }
 
         .tab-btn[data-char="leo"].active { border-color: var(--accent-leo); background: rgba(245, 158, 11, 0.15); }
-        .tab-btn[data-char="leo"].active .tab-avatar-box { border-color: var(--accent-leo); }
+        .tab-btn[data-char="leo"].active .tab-avatar { border-color: var(--accent-leo); }
         .tab-btn[data-char="leo"] .tab-name { color: var(--accent-leo); }
 
         .tab-btn[data-char="noah"].active { border-color: var(--accent-noah); background: rgba(59, 130, 246, 0.15); }
-        .tab-btn[data-char="noah"].active .tab-avatar-box { border-color: var(--accent-noah); }
+        .tab-btn[data-char="noah"].active .tab-avatar { border-color: var(--accent-noah); }
         .tab-btn[data-char="noah"] .tab-name { color: var(--accent-noah); }
 
         .tab-btn[data-char="liam"].active { border-color: var(--accent-liam); background: rgba(16, 185, 129, 0.15); }
-        .tab-btn[data-char="liam"].active .tab-avatar-box { border-color: var(--accent-liam); }
+        .tab-btn[data-char="liam"].active .tab-avatar { border-color: var(--accent-liam); }
         .tab-btn[data-char="liam"] .tab-name { color: var(--accent-liam); }
 
         /* プロフィール ＆ 親密度 */
@@ -152,14 +149,11 @@
             margin-bottom: 10px;
         }
 
-        .profile-avatar-box {
+        .profile-avatar {
             width: 56px;
             height: 56px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
+            object-fit: cover;
             border: 2px solid #fff;
             flex-shrink: 0;
         }
@@ -228,14 +222,11 @@
         .msg-row { display: flex; gap: 10px; align-items: flex-start; }
         .msg-row.user { flex-direction: row-reverse; }
 
-        .msg-avatar-box {
+        .msg-avatar {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            object-fit: cover;
             flex-shrink: 0;
         }
 
@@ -292,7 +283,7 @@
         }
         .quick-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: #60a5fa; }
 
-        /* 入力フォーム & 日英切り替えボタン */
+        /* 入力フォーム ＆ 音声認識 */
         .input-form { display: flex; gap: 6px; align-items: center; }
         .input-field {
             flex: 1; background: rgba(0, 0, 0, 0.3);
@@ -370,15 +361,15 @@
     <!-- キャラ切り替えタブ -->
     <div class="char-tabs">
         <button class="tab-btn" data-char="leo" onclick="switchChar('leo')">
-            <div class="tab-avatar-box" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🧑‍🎨</div>
+            <img class="tab-avatar" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <div class="tab-avatar-box" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">📐</div>
+            <img class="tab-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
         <button class="tab-btn active" data-char="liam" onclick="switchChar('liam')">
-            <div class="tab-avatar-box" style="background: linear-gradient(135deg, #10b981, #059669);">🧑‍💻</div>
+            <img class="tab-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -386,7 +377,7 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <div id="profileAvatarBox" class="profile-avatar-box" style="background: linear-gradient(135deg, #10b981, #059669);">🧑‍💻</div>
+            <img id="profileAvatar" class="profile-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80" alt="Liam">
             <div class="profile-info">
                 <h2 id="profileName">Liam <span>28歳・IT Specialist</span></h2>
                 <p id="profileDesc">君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。</p>
@@ -462,8 +453,7 @@
             age: 26,
             job: "Designer",
             desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            emoji: "🧑‍🎨",
-            bg: "linear-gradient(135deg, #f59e0b, #d97706)",
+            avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Hey {NICKNAME}! Great to see you. How are you doing today?",
@@ -474,8 +464,7 @@
             age: 24,
             job: "Architect",
             desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
-            emoji: "📐",
-            bg: "linear-gradient(135deg, #3b82f6, #2563eb)",
+            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Hello {NICKNAME}. Take your time and talk to me slowly.",
@@ -486,8 +475,7 @@
             age: 28,
             job: "IT Specialist",
             desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
-            emoji: "🧑‍💻",
-            bg: "linear-gradient(135deg, #10b981, #059669)",
+            avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Welcome back, {NICKNAME}! I'm always here to listen to you.",
@@ -500,6 +488,18 @@
     let recognition = null;
     let isRecording = false;
     let silenceTimer = null;
+    let availableVoices = [];
+
+    // イケボ（男性英語ボイス）の読み込み
+    function loadVoices() {
+        if ('speechSynthesis' in window) {
+            availableVoices = window.speechSynthesis.getVoices();
+        }
+    }
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+    }
 
     const FALLBACK_RESPONSES = {
         "tired": {
@@ -559,13 +559,29 @@
         document.getElementById('loveLevelText').innerText = `Lv.${char.loveLevel} (${currentExpProgress}%)`;
     }
 
+    /* 男性ボイス（イケボ）を優先選択して再生 */
     function speakText(text, isUser = false) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-US';
-            utterance.pitch = isUser ? 1.0 : 0.8;
-            utterance.rate = 0.95;
+
+            if (!isUser) {
+                // 男性のイケボ音声を探索
+                if (availableVoices.length === 0) availableVoices = window.speechSynthesis.getVoices();
+                const maleVoice = availableVoices.find(v => 
+                    v.lang.startsWith('en') && 
+                    (v.name.includes('Male') || v.name.includes('Guy') || v.name.includes('David') || v.name.includes('George') || v.name.includes('Alex'))
+                );
+                if (maleVoice) utterance.voice = maleVoice;
+
+                utterance.pitch = 0.85; // やや低音の落ち着いたボイス
+                utterance.rate = 0.95;  // 聴き取りやすいスピード
+            } else {
+                utterance.pitch = 1.0;
+                utterance.rate = 1.0;
+            }
+
             window.speechSynthesis.speak(utterance);
         }
     }
@@ -583,10 +599,9 @@
         }
     }
 
-    /* 2.2秒の無音待機を含む自動送信音声入力 */
+    /* 途中で切れず、じっくり考えて話せる音声認識ロジック */
     function toggleSpeechRecognition() {
         const micBtn = document.getElementById('micBtn');
-        const inputField = document.getElementById('userInput');
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         
         if (!SpeechRecognition) { 
@@ -595,55 +610,72 @@
         }
 
         if (isRecording) {
+            // ユーザーが手動でマイクボタンを押した場合は停止＆送信
             stopSpeechRecognition();
+            const inputField = document.getElementById('userInput');
+            if (inputField.value.trim() !== '') {
+                document.getElementById('chatForm').requestSubmit();
+            }
             return;
         }
 
+        isRecording = true;
+        micBtn.classList.add('recording');
+        micBtn.innerText = '🔴';
+
+        startRecognitionLoop();
+    }
+
+    function startRecognitionLoop() {
+        if (!isRecording) return;
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
         recognition.lang = inputLang;
         recognition.continuous = true;
         recognition.interimResults = true;
-
-        recognition.onstart = () => { 
-            isRecording = true; 
-            micBtn.classList.add('recording'); 
-            micBtn.innerText = '🔴'; 
-        };
 
         recognition.onresult = (event) => { 
             let transcript = '';
             for (let i = 0; i < event.results.length; ++i) {
                 transcript += event.results[i][0].transcript;
             }
-            inputField.value = transcript;
+            document.getElementById('userInput').value = transcript;
 
-            // 話している間はタイマーをリセット
+            // 発言を検知したらタイマーリセット
             clearTimeout(silenceTimer);
 
-            // 2.2秒間しっかり沈黙が続いた場合のみ自動で送信する
+            // 完全に話し終わって【3秒間】沈黙した場合のみ自動送信
             silenceTimer = setTimeout(() => {
-                if (inputField.value.trim() !== '') {
+                if (isRecording && document.getElementById('userInput').value.trim() !== '') {
                     stopSpeechRecognition();
                     document.getElementById('chatForm').requestSubmit();
                 }
-            }, 2200);
+            }, 3000);
         };
 
-        recognition.onerror = () => { stopRecordingUI(); };
-        recognition.onend = () => { stopRecordingUI(); };
-        recognition.start();
+        recognition.onerror = (e) => { 
+            console.log('Speech recognition error:', e.error); 
+        };
+
+        recognition.onend = () => {
+            // 勝手に切れても録音モードがONなら自動で再開（途中切れを防御）
+            if (isRecording) {
+                try { recognition.start(); } catch(err) {}
+            }
+        };
+
+        try {
+            recognition.start();
+        } catch(e) {}
     }
 
     function stopSpeechRecognition() {
+        isRecording = false;
         clearTimeout(silenceTimer);
         if (recognition) {
             try { recognition.stop(); } catch(e) {}
         }
-        stopRecordingUI();
-    }
-
-    function stopRecordingUI() {
-        isRecording = false;
         const micBtn = document.getElementById('micBtn');
         if (micBtn) { 
             micBtn.classList.remove('recording'); 
@@ -671,9 +703,8 @@
             btn.classList.toggle('active', btn.getAttribute('data-char') === key);
         });
         
-        const avatarBox = document.getElementById('profileAvatarBox');
-        avatarBox.style.background = char.bg;
-        avatarBox.innerText = char.emoji;
+        const avatarImg = document.getElementById('profileAvatar');
+        avatarImg.src = char.avatar;
 
         document.getElementById('profileName').innerHTML = `${char.name} <span>${char.age}歳・${char.job}</span>`;
         document.getElementById('profileDesc').innerText = char.desc;
@@ -709,7 +740,7 @@
                 let jpHtml = msg.jp ? `<div class="jp-trans">🇯🇵 ${escapeHtml(msg.jp)}</div>` : '';
                 
                 row.innerHTML = `
-                    <div class="msg-avatar-box" style="background: ${char.bg};">${char.emoji}</div>
+                    <img class="msg-avatar" src="${char.avatar}" alt="${char.name}">
                     <div class="msg-content">
                         <div class="bubble">
                             ${escapeHtml(msg.text)}
