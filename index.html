@@ -356,15 +356,15 @@
     <!-- キャラ切り替えタブ -->
     <div class="char-tabs">
         <button class="tab-btn" data-char="leo" onclick="switchChar('leo')">
-            <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=Leo&hair=short01&eyebrows=down" class="tab-avatar" alt="Leo">
+            <img src="https://ui-avatars.com/api/?name=Leo&background=f59e0b&color=fff&bold=true" class="tab-avatar" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=Noah&hair=short02&eyebrows=happy" class="tab-avatar" alt="Noah">
+            <img src="https://ui-avatars.com/api/?name=Noah&background=3b82f6&color=fff&bold=true" class="tab-avatar" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
         <button class="tab-btn active" data-char="liam" onclick="switchChar('liam')">
-            <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=Liam&hair=short03&eyebrows=default" class="tab-avatar" alt="Liam">
+            <img src="https://ui-avatars.com/api/?name=Liam&background=10b981&color=fff&bold=true" class="tab-avatar" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -372,7 +372,7 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" src="https://api.dicebear.com/7.x/lorelei/svg?seed=Liam&hair=short03&eyebrows=default" class="profile-avatar" alt="Avatar">
+            <img id="profileAvatar" src="https://ui-avatars.com/api/?name=Liam&background=10b981&color=fff&bold=true" class="profile-avatar" alt="Avatar">
             <div class="profile-info">
                 <h2 id="profileName">Liam <span>28歳・IT Specialist</span></h2>
                 <p id="profileDesc">君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。</p>
@@ -448,7 +448,7 @@
             age: 26,
             job: "Designer",
             desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "https://api.dicebear.com/7.x/lorelei/svg?seed=Leo&hair=short01&eyebrows=down",
+            avatar: "https://ui-avatars.com/api/?name=Leo&background=f59e0b&color=fff&bold=true",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Hey {NICKNAME}! Great to see you. How are you doing today?",
@@ -459,7 +459,7 @@
             age: 24,
             job: "Architect",
             desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
-            avatar: "https://api.dicebear.com/7.x/lorelei/svg?seed=Noah&hair=short02&eyebrows=happy",
+            avatar: "https://ui-avatars.com/api/?name=Noah&background=3b82f6&color=fff&bold=true",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Hello {NICKNAME}. Take your time and talk to me slowly.",
@@ -470,7 +470,7 @@
             age: 28,
             job: "IT Specialist",
             desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
-            avatar: "https://api.dicebear.com/7.x/lorelei/svg?seed=Liam&hair=short03&eyebrows=default",
+            avatar: "https://ui-avatars.com/api/?name=Liam&background=10b981&color=fff&bold=true",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Welcome back, {NICKNAME}! I'm always here to listen to you.",
@@ -483,7 +483,7 @@
     let recognition = null;
     let isRecording = false;
 
-    // 定型応答用フォールバックデータベース（API非接続時も自然な会話を提供）
+    // 定型応答用フォールバックデータベース
     const FALLBACK_RESPONSES = {
         "tired": {
             en: "You worked so hard today! Please make sure to get some rest, {NICKNAME}.",
@@ -566,19 +566,37 @@
         }
     }
 
+    /* 修正：話している途中で自動送信・中断されないように改修 */
     function toggleSpeechRecognition() {
         const micBtn = document.getElementById('micBtn');
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) { alert('お使いのブラウザは音声入力に対応していません。'); return; }
 
-        if (isRecording) { recognition.stop(); return; }
+        if (isRecording) {
+            recognition.stop();
+            return;
+        }
 
         recognition = new SpeechRecognition();
         recognition.lang = inputLang;
-        recognition.interimResults = false;
+        recognition.continuous = true;       // 途中の一言で勝手に終了しないように設定
+        recognition.interimResults = true;    // 話している最中の文字も随時入力欄へ反映
 
-        recognition.onstart = () => { isRecording = true; micBtn.classList.add('recording'); micBtn.innerText = '🔴'; };
-        recognition.onresult = (event) => { document.getElementById('userInput').value = event.results[0][0].transcript; };
+        recognition.onstart = () => { 
+            isRecording = true; 
+            micBtn.classList.add('recording'); 
+            micBtn.innerText = '🔴'; 
+        };
+
+        recognition.onresult = (event) => { 
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+                transcript += event.results[i][0].transcript;
+            }
+            // 自動で送信せず、入力欄に入れるだけにする
+            document.getElementById('userInput').value = transcript;
+        };
+
         recognition.onerror = () => { stopRecordingUI(); };
         recognition.onend = () => { stopRecordingUI(); };
         recognition.start();
@@ -587,7 +605,10 @@
     function stopRecordingUI() {
         isRecording = false;
         const micBtn = document.getElementById('micBtn');
-        if (micBtn) { micBtn.classList.remove('recording'); micBtn.innerText = '🎙️'; }
+        if (micBtn) { 
+            micBtn.classList.remove('recording'); 
+            micBtn.innerText = '🎙️'; 
+        }
     }
 
     window.onload = function() {
@@ -692,7 +713,6 @@
             replyEn = data.reply;
             replyJp = data.jp || "";
         } catch (error) {
-            // API未接続・エラー時のスマート返答フォールバック
             const lowerText = userText.toLowerCase();
             let matched = FALLBACK_RESPONSES["default"];
 
@@ -716,6 +736,11 @@
 
     function handleSend(e) {
         e.preventDefault();
+        // マイク録音中なら止める
+        if (isRecording && recognition) {
+            recognition.stop();
+        }
+
         const input = document.getElementById('userInput');
         const text = input.value.trim();
         if (!text) return;
