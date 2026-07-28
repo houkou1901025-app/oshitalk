@@ -400,15 +400,15 @@
     <!-- キャラ切り替えタブ -->
     <div class="char-tabs">
         <button class="tab-btn" data-char="leo" onclick="switchChar('leo')">
-            <img src="leo.png.jpg" class="tab-avatar" alt="Leo">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Leo" class="tab-avatar" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <img src="noah.png.jpg" class="tab-avatar" alt="Noah">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Noah" class="tab-avatar" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
         <button class="tab-btn active" data-char="liam" onclick="switchChar('liam')">
-            <img src="ethan.png.jpg" class="tab-avatar" alt="Liam">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="tab-avatar" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -416,10 +416,10 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" src="ethan.png.jpg" class="profile-avatar" alt="Avatar">
+            <img id="profileAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="profile-avatar" alt="Avatar">
             <div class="profile-info">
-                <h2 id="profileName">Liam <span>28歳・IT企業社員</span></h2>
-                <p id="profileDesc">英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ</p>
+                <h2 id="profileName">Liam <span>28歳・IT Specialist</span></h2>
+                <p id="profileDesc">君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。</p>
             </div>
         </div>
         <div class="love-section">
@@ -459,7 +459,7 @@
 
     <!-- 返答時カットイン表示エリア -->
     <div class="char-cutin-overlay" id="cutinOverlay">
-        <img id="cutinImg" src="ethan.png.jpg" class="cutin-img" alt="Focus">
+        <img id="cutinImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="cutin-img" alt="Focus">
         <div id="cutinName" class="cutin-name">Liam</div>
         <div id="cutinText" class="cutin-text">"I'm listening..."</div>
         <div id="cutinJp" class="cutin-jp">「聞いてるよ...」</div>
@@ -493,34 +493,43 @@
     }
 
     let userConfig = { name: "You", nickname: "my princess" };
-    let inputLang = 'en-US'; // デフォルトは英語
+    let inputLang = 'en-US';
 
     const CHARS = {
-    leo: {
-        name: "Leo",
-        age: 26,
-        job: "Designer",
-        desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-        avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Leo",
-        bg: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)"
-    },
-    noah: {
-        name: "Noah",
-        age: 24,
-        job: "Architect",
-        desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
-        avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Noah",
-        bg: "linear-gradient(135deg, #0d324d 0%, #7f5a83 100%)"
-    },
-    liam: {
-        name: "Liam",
-        age: 28,
-        job: "IT Specialist",
-        desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
-        avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Liam",
-        bg: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"
-    }
-};
+        leo: {
+            name: "Leo",
+            age: 26,
+            job: "Designer",
+            desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
+            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Leo",
+            loveExp: 0,
+            loveLevel: 1,
+            greeting: "Hey {NICKNAME}! Great to see you. How are you doing today?",
+            greetingJp: "やあ、今日もお疲れ様！調子はどう？"
+        },
+        noah: {
+            name: "Noah",
+            age: 24,
+            job: "Architect",
+            desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
+            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Noah",
+            loveExp: 0,
+            loveLevel: 1,
+            greeting: "Hello {NICKNAME}. Take your time and talk to me slowly.",
+            greetingJp: "こんにちは。焦らずゆっくり話そうね。"
+        },
+        liam: {
+            name: "Liam",
+            age: 28,
+            job: "IT Specialist",
+            desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
+            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Liam",
+            loveExp: 0,
+            loveLevel: 1,
+            greeting: "Welcome back, {NICKNAME}! I'm always here to listen to you.",
+            greetingJp: "おかえり！いつでも話を聞く準備はできてるよ。"
+        }
+    };
 
     let currentCharKey = 'liam';
     let chatHistories = { leo: [], noah: [], liam: [] };
@@ -565,7 +574,7 @@
         document.getElementById('loveLevelText').innerText = `Lv.${char.loveLevel} (${currentExpProgress}%)`;
     }
 
-    // 音声読み上げ（終了コールバック対応）
+    // 音声読み上げ
     function getVoiceForChar(charKey) {
         if (!('speechSynthesis' in window)) return null;
         const voices = window.speechSynthesis.getVoices();
@@ -595,7 +604,7 @@
 
             if (onEndCallback) {
                 utterance.onend = onEndCallback;
-                utterance.onerror = onEndCallback; // エラー時もコールバックを実行して進行不能を防ぐ
+                utterance.onerror = onEndCallback;
             }
 
             window.speechSynthesis.speak(utterance);
@@ -661,12 +670,12 @@
     window.onload = function() {
         Object.keys(CHARS).forEach(key => {
             const char = CHARS[key];
-            const text = char.responses.default.en.replace(/{NICKNAME}/g, userConfig.nickname);
+            const text = char.greeting.replace(/{NICKNAME}/g, userConfig.nickname);
             chatHistories[key].push({
                 sender: 'char',
                 text: text,
-                jp: char.responses.default.jp,
-                tip: { phrase: char.responses.default.phrase, desc: char.responses.default.tip }
+                jp: char.greetingJp,
+                tip: null
             });
         });
         renderChat();
@@ -679,7 +688,7 @@
             btn.classList.toggle('active', btn.getAttribute('data-char') === key);
         });
         document.getElementById('profileAvatar').src = char.avatar;
-        document.getElementById('profileName').innerHTML = `${char.name} <span>${char.info}</span>`;
+        document.getElementById('profileName').innerHTML = `${char.name} <span>${char.age}歳・${char.job}</span>`;
         document.getElementById('profileDesc').innerText = char.desc;
         updateLoveUI();
         renderChat();
@@ -713,8 +722,8 @@
                 let tipHtml = msg.tip ? `
                     <div class="tip-card">
                         <div class="tip-header">💡 ${char.name}'s English Tip</div>
-                        <div class="tip-phrase">"${msg.tip.phrase}"</div>
-                        <div class="tip-desc">${msg.tip.desc}</div>
+                        <div class="tip-phrase">"${escapeHtml(msg.tip.phrase)}"</div>
+                        <div class="tip-desc">${escapeHtml(msg.tip.desc)}</div>
                     </div>
                 ` : '';
 
@@ -748,14 +757,11 @@
             processCharResponse(text);
         };
 
-        // ユーザーの発言を読み上げ、終了したら推しの返答へ進む
         speakText(text, true, () => {
-            setTimeout(triggerReply, 400); // 読み上げ終了後、少し余韻を空けてから返答
+            setTimeout(triggerReply, 400);
         });
 
-        // 万が一音声読み上げイベントが発生しない場合のフォールバックタイマー
         setTimeout(triggerReply, 3500);
-
         handleUserSendUI(text);
     }
 
@@ -766,7 +772,7 @@
         addLoveExp(8);
     }
 
- async function processCharResponse(userText) {
+    async function processCharResponse(userText) {
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -778,12 +784,11 @@
             const data = await response.json();
             const processedText = data.reply;
 
-            // チャット履歴に追加して画面更新・音声出力
             chatHistories[currentCharKey].push({
                 sender: 'char',
                 text: processedText,
                 jp: '（AIからの返信）',
-                tip: { phrase: '', desc: '' }
+                tip: null
             });
             renderChat();
             showCutin(processedText, '（AIからの返信）');
@@ -796,7 +801,7 @@
                 sender: 'char',
                 text: errorMsg,
                 jp: 'ごめんなさい、うまく聞き取れませんでした。もう一度言ってもらえますか？',
-                tip: { phrase: '', desc: '' }
+                tip: null
             });
             renderChat();
         }
@@ -809,10 +814,7 @@
         if (!text) return;
 
         handleUserSendUI(text);
-
-        
-            processCharResponse(text);
-        
+        processCharResponse(text);
     }
 </script>
 
