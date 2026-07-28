@@ -496,58 +496,31 @@
     let inputLang = 'en-US'; // デフォルトは英語
 
     const CHARS = {
-        leo: {
-            name: "Leo", info: "24歳・人気俳優",
-            desc: "君と話せるこの時間が、僕の1日で一番大切な時間だよ。",
-            avatar: "leo.png.jpg", pitch: 0.7, rate: 0.95,
-            loveExp: 0, loveLevel: 1,
-            responses: {
-                default: { en: "I'm always here for you, {NICKNAME}. Tell me more about your day!", jp: "僕はいつも君のそばにいるよ。今日の出来事をもっと教えて！", phrase: "always here for you", tip: "「いつも君のそばにいるよ」という親密な表現です。" },
-                morning: { en: "Good morning, {NICKNAME}! Did you sleep well?", jp: "おはよう！よく眠れた？", phrase: "Did you sleep well?", tip: "「よく眠れた？」と気遣う朝のフレーズです。" },
-                plan: { en: "I'm filming today, but I'll be thinking of you, {NICKNAME}.", jp: "今日は撮影があるんだ。でも、君のことを想っているよ。", phrase: "thinking of you", tip: "「あなたのことを想っている」という愛着表現です。" },
-                food: { en: "I love sweet desserts! Let's go to a cafe together next time.", jp: "甘いスイーツが大好きなんだ！今度一緒にカフェに行こうね。", phrase: "Let's go together", tip: "「一緒に行こう」と誘うフレーズです。" },
-                tired: { en: "Take it easy today, {NICKNAME}. You worked so hard.", jp: "今日は無理しないでね。すごく頑張ったんだから。", phrase: "Take it easy", tip: "「気楽にいこう／無理しないで」と労う表現です。" },
-                compliment: { en: "Thank you! Hearing that from you makes my day.", jp: "ありがとう！君にそう言ってもらえると一日最高だよ。", phrase: "makes my day", tip: "「最高の一日になる／とても嬉しい」という意味の定番フレーズです。" },
-                question: { en: "Sure, ask me anything! I'm all ears, {NICKNAME}.", jp: "もちろん、何でも聞いて！ちゃんと聞いているよ。", phrase: "I'm all ears", tip: "「しっかり聞いています／話を聞く準備OK」という意味です。" },
-                thanks: { en: "I should be thanking you. You always bring a smile to my face.", jp: "お礼を言うのは僕の方だよ。いつも笑顔にしてくれてありがとう。", phrase: "bring a smile to my face", tip: "「私を笑顔にしてくれる」という感謝の表現です。" },
-                night: { en: "Good night, {NICKNAME}. See you in my dreams!", jp: "おやすみ。夢の中で会おうね！", phrase: "See you in my dreams", tip: "「夢で会おうね」というロマンチックな挨拶です。" }
-            }
-        },
-        noah: {
-            name: "Noah", info: "21歳・アイドル",
-            desc: "べ、別に君からのメッセージを待ってたわけじゃないし…。",
-            avatar: "noah.png.jpg", pitch: 0.75, rate: 1.0,
-            loveExp: 0, loveLevel: 1,
-            responses: {
-                default: { en: "Don't push yourself too hard, {NICKNAME}. You're doing fine.", jp: "あまり無理しすぎるなよ。ちゃんとやれてるから。", phrase: "Don't push yourself", tip: "「無理しないでね」と気遣う表現です。" },
-                morning: { en: "Morning, {NICKNAME}. You're up early today, huh?", jp: "おはよう。今日は早起きなんだな？", phrase: "You're up early", tip: "「早起きだね」という意味のフレーズです。" },
-                plan: { en: "Dance practice all day. Wish me luck... not that I need it!", jp: "一日中ダンスレッスンだよ。応援してよね…まあ必要ないけど！", phrase: "Wish me luck", tip: "「応援してね」という表現です。" },
-                food: { en: "Ramen, definitely. I know a cool place if you wanna know.", jp: "絶対ラーメン。知りたかったら美味い店教えてやるけど？", phrase: "definitely", tip: "「絶対に」と好みを強調する表現です。" },
-                tired: { en: "Tired? Then stop working and rest. I'm right here.", jp: "疲れた？じゃあ作業やめて休めよ。俺がここにいるんだからさ。", phrase: "stop working and rest", tip: "「手を止めて休んで」という直接的な気遣いです。" },
-                compliment: { en: "Wh-what? Don't say that suddenly! But... thanks.", jp: "な、なんだよ急に！……でも、サンキュ。", phrase: "don't say that suddenly", tip: "「急にそんなこと言わないでよ」と照れる時の表現です。" },
-                question: { en: "What is it? If it's something weird, I'm not answering!", jp: "何だよ？変な質問だったら答えないからな！", phrase: "What is it?", tip: "「なにかあるの？」とフランクに尋ねる表現です。" },
-                thanks: { en: "Stop being so formal! You're welcome, alright?", jp: "そんな畏まるなよ！どういたしまして、な？", phrase: "You're welcome", tip: "「どういたしまして」の定番フレーズです。" },
-                night: { en: "Night. Don't stay up too late, okay?", jp: "おやすみ。あんまり夜更かしすんなよ？", phrase: "don't stay up too late", tip: "「夜更かししないでね」という意味です。" }
-            }
-        },
-        liam: {
-            name: "Liam", info: "28歳・IT企業社員",
-            desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "ethan.png.jpg", pitch: 0.6, rate: 0.95,
-            loveExp: 0, loveLevel: 1,
-            responses: {
-                default: { en: "Makes sense, {NICKNAME}. Your English is coming along very well!", jp: "なるほどね。君の英語、すごく上達してきているよ！", phrase: "coming along", tip: "「順調に上達している」という意味です。" },
-                morning: { en: "Good morning, {NICKNAME}! Ready for a great day ahead?", jp: "おはよう！今日も素晴らしい一日にする準備はできた？", phrase: "Ready for...?", tip: "「準備はできてる？」と元気づける表現です。" },
-                plan: { en: "Just checking code today. Take breaks, okay, {NICKNAME}?", jp: "今日はコードの確認作業だよ。ちゃんと休憩も取ってね？", phrase: "Take breaks", tip: "「休憩を取る」という意味の表現です。" },
-                food: { en: "A warm cup of coffee and a sandwich. How about you, {NICKNAME}?", jp: "温かいコーヒーとサンドイッチかな。君はどう？", phrase: "How about you?", tip: "「あなたはどう？」と聞き返す表現です。" },
-                tired: { en: "You worked hard today, {NICKNAME}. Let's take a good rest tonight.", jp: "今日は本当にお疲れ様。今夜はゆっくり休もうね。", phrase: "You worked hard", tip: "「頑張ったね／お疲れ様」と労うフレーズです。" },
-                compliment: { en: "Thank you, {NICKNAME}. You always make my day brighter.", jp: "ありがとう。君はいつも俺の毎日を明るくしてくれるよ。", phrase: "make my day brighter", tip: "「一日を明るく照らしてくれる」という感謝表現です。" },
-                question: { en: "Of course. What's on your mind, {NICKNAME}?", jp: "もちろん。何か気になっていることでもある？", phrase: "What's on your mind?", tip: "「何を考えているの？／どうしたの？」と優しく聞く表現です。" },
-                thanks: { en: "Anytime. I'm always glad to help you.", jp: "いつでも言ってね。君の力になれて嬉しいよ。", phrase: "Anytime", tip: "「いつでもどうぞ／どういたしまして」の砕けた表現です。" },
-                night: { en: "Good night, {NICKNAME}. Get a good rest, okay?", jp: "おやすみ。ゆっくり休んでね？", phrase: "Get a good rest", tip: "「ゆっくり休んでね」という意味のフレーズです。" }
-            }
-        }
-    };
+    leo: {
+        name: "Leo",
+        age: 26,
+        job: "Designer",
+        desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
+        avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Leo",
+        bg: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)"
+    },
+    noah: {
+        name: "Noah",
+        age: 24,
+        job: "Architect",
+        desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
+        avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Noah",
+        bg: "linear-gradient(135deg, #0d324d 0%, #7f5a83 100%)"
+    },
+    liam: {
+        name: "Liam",
+        age: 28,
+        job: "IT Specialist",
+        desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
+        avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Liam",
+        bg: "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"
+    }
+};
 
     let currentCharKey = 'liam';
     let chatHistories = { leo: [], noah: [], liam: [] };
