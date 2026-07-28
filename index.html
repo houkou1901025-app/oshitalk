@@ -361,18 +361,18 @@
         <button class="settings-btn" onclick="openModal()">⚙️ 設定</button>
     </div>
 
-    <!-- キャラ切り替えタブ（アニメイラスト） -->
+    <!-- キャラ切り替えタブ（送付画像） -->
     <div class="char-tabs">
-        <button class="tab-btn" data-char="leo" onclick="switchChar('leo')">
-            <img class="tab-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Leo&hair=short01&hairColor=f59e0b" alt="Leo">
+        <button class="tab-btn active" data-char="leo" onclick="switchChar('leo')">
+            <img class="tab-avatar" id="tabAvatarLeo" src="edited-image.png" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <img class="tab-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Noah&hair=short05&hairColor=2563eb" alt="Noah">
+            <img class="tab-avatar" id="tabAvatarNoah" src="edited-image_2.png" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
-        <button class="tab-btn active" data-char="liam" onclick="switchChar('liam')">
-            <img class="tab-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Liam&hair=short08&hairColor=059669" alt="Liam">
+        <button class="tab-btn" data-char="liam" onclick="switchChar('liam')">
+            <img class="tab-avatar" id="tabAvatarLiam" src="1784970898250.png" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -380,10 +380,10 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" class="profile-avatar" src="https://api.dicebear.com/7.x/adventurer/svg?seed=Liam&hair=short08&hairColor=059669" alt="Liam">
+            <img id="profileAvatar" class="profile-avatar" src="edited-image.png" alt="Leo">
             <div class="profile-info">
-                <h2 id="profileName">Liam <span>28歳・IT Specialist</span></h2>
-                <p id="profileDesc">君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。</p>
+                <h2 id="profileName">Leo <span>24歳・若手俳優</span></h2>
+                <p id="profileDesc">君の英語、僕が一番近くで聞いていたい。</p>
             </div>
         </div>
         <div class="love-section">
@@ -431,7 +431,7 @@
             </div>
             <div class="form-group">
                 <label>推しからの呼ばれ方 (呼称)</label>
-                <input type="text" id="userNicknameInput" placeholder="例: princess, sweetie, my friend">
+                <input type="text" id="userNicknameInput" placeholder="例: sweetheart, princess, my friend">
             </div>
             <div class="modal-btns">
                 <button class="modal-btn btn-cancel" onclick="closeModal()">キャンセル</button>
@@ -447,52 +447,53 @@
         return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    let userConfig = { name: "You", nickname: "my princess" };
+    let userConfig = { name: "You", nickname: "sweetheart" };
     let inputLang = 'en-US';
 
+    /* PDF設定を反映した3キャラクターの基本定義 */
     const CHARS = {
         leo: {
             name: "Leo",
-            age: 26,
-            job: "Designer",
-            desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Leo&hair=short01&hairColor=f59e0b",
+            age: 24,
+            job: "若手俳優",
+            desc: "君の英語、僕が一番近くで聞いていたい。",
+            avatar: "edited-image.png",
             pitch: 1.1,
             rate: 1.0,
             loveExp: 0,
             loveLevel: 1,
-            greeting: "Hey {NICKNAME}! Great to see you. How are you doing today?",
-            greetingJp: "やあ！今日もお疲れ様。調子はどう？"
+            greeting: "Good morning, {NICKNAME}. Did you sleep well? I was hoping you'd come talk to me today.",
+            greetingJp: "おはよう！よく眠れた？今日も君が話しに来てくれるのを待ってたんだ。"
         },
         noah: {
             name: "Noah",
-            age: 24,
-            job: "Architect",
-            desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
-            avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Noah&hair=short05&hairColor=2563eb",
+            age: 21,
+            job: "アイドル",
+            desc: "別に、お前と話したいわけじゃない。……でも、来ないとつまらない。",
+            avatar: "edited-image_2.png",
             pitch: 0.75,
             rate: 0.88,
             loveExp: 0,
             loveLevel: 1,
-            greeting: "Hello {NICKNAME}. Take your time and talk to me slowly.",
-            greetingJp: "こんにちは。焦らずゆっくり話そうね。"
+            greeting: "You're late. ...Oh, you're here. So, what are we talking about today?",
+            greetingJp: "遅い。…あ、来た。で、今日は何話すの？"
         },
         liam: {
             name: "Liam",
             age: 28,
             job: "IT Specialist",
-            desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
-            avatar: "https://api.dicebear.com/7.x/adventurer/svg?seed=Liam&hair=short08&hairColor=059669",
+            desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
+            avatar: "1784970898250.png",
             pitch: 0.9,
             rate: 0.95,
             loveExp: 0,
             loveLevel: 1,
-            greeting: "Welcome back, {NICKNAME}! I'm always here to listen to you.",
-            greetingJp: "おかえり！いつでも話を聞く準備はできてるよ。"
+            greeting: "Hey, good morning {NICKNAME}. Take your time and talk to me slowly.",
+            greetingJp: "やあ、おはよう！焦らずゆっくり話そうね。"
         }
     };
 
-    let currentCharKey = 'liam';
+    let currentCharKey = 'leo';
     let chatHistories = { leo: [], noah: [], liam: [] };
     let recognition = null;
     let isRecording = false;
@@ -510,25 +511,20 @@
     }
 
     const FALLBACK_RESPONSES = {
-        "tired": {
-            en: "You worked so hard today! Please make sure to get some rest, {NICKNAME}.",
-            jp: "今日は本当に頑張ったね！しっかり体を休めてね。"
+        leo: {
+            tired: { en: "Don't worry about being perfect. Just stay here with me, {NICKNAME}.", jp: "無理しなくていいんだよ。僕のそばでゆっくり過ごしてね。" },
+            morning: { en: "Good morning! You look wonderful today, {NICKNAME}.", jp: "おはよう！今日の君もすごく素敵だよ。" },
+            default: { en: "Your English is getting better every time we talk, {NICKNAME}!", jp: "話すたびに英語がどんどん上手になってるよ！" }
         },
-        "morning": {
-            en: "Good morning, {NICKNAME}! I hope you have a wonderful day today.",
-            jp: "おはよう！今日も素敵な一日になりますように。"
+        noah: {
+            tired: { en: "You messed up? So what? Try again when you're ready.", jp: "失敗した？だから何？準備ができたらまた挑戦しなよ。" },
+            morning: { en: "Morning. You took long enough to say hi...", jp: "おはよう。挨拶してくるの遅いんだけど…" },
+            default: { en: "Huh. That was actually pretty good. You're getting better.", jp: "へえ、今の結構良かったじゃん。上達してきてるね。" }
         },
-        "cool": {
-            en: "Thank you! Hearing that from you makes me so happy, {NICKNAME}.",
-            jp: "ありがとう！君にそう言ってもらえるとすごく嬉しいよ。"
-        },
-        "night": {
-            en: "Good night, {NICKNAME}. Sweet dreams!",
-            jp: "おやすみ。良い夢を見てね！"
-        },
-        "default": {
-            en: "Thank you for talking with me, {NICKNAME}! Your English is getting better every day.",
-            jp: "話しかけてくれてありがとう！英語、どんどん上手になってるよ。"
+        liam: {
+            tired: { en: "Sounds like you had a long day. How about we keep it easy tonight, {NICKNAME}?", jp: "大変な一日だったみたいだね。今夜は無理せず気楽に話そう。" },
+            morning: { en: "Good morning! I'm always here to listen to you.", jp: "おはよう！いつでも話を聞く準備はできてるよ。" },
+            default: { en: "I could understand exactly what you meant. That's what matters most.", jp: "君の言いたいこと、ちゃんと伝わってるよ。それが一番大切なことだからね。" }
         }
     };
 
@@ -607,7 +603,7 @@
         }
     }
 
-    /* 自動送信対応の音声認識（無音判定：3.0秒に設定） */
+    /* 無音判定：3.0秒設定 */
     function toggleSpeechRecognition() {
         const micBtn = document.getElementById('micBtn');
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -638,12 +634,11 @@
             }
             document.getElementById('userInput').value = transcript;
 
-            // 声が検出されたらタイマーをリセットし、しっかり3.0秒間の無音を待つ
             clearTimeout(autoSendTimer);
             autoSendTimer = setTimeout(() => {
                 stopSpeechRecognition();
                 triggerAutoSend();
-            }, 3000); // ★ 3.0秒（3000ミリ秒）に設定 ★
+            }, 3000); // 3.0秒待機
         };
 
         recognition.onerror = (e) => { 
@@ -779,7 +774,7 @@
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userText }),
+                body: JSON.stringify({ message: userText, character: currentCharKey }),
             });
 
             if (!response.ok) throw new Error("API error");
@@ -788,12 +783,11 @@
             replyJp = data.jp || "";
         } catch (error) {
             const lowerText = userText.toLowerCase();
-            let matched = FALLBACK_RESPONSES["default"];
+            const charFallbacks = FALLBACK_RESPONSES[currentCharKey] || FALLBACK_RESPONSES.leo;
+            let matched = charFallbacks.default;
 
-            if (lowerText.includes("tired")) matched = FALLBACK_RESPONSES["tired"];
-            else if (lowerText.includes("morning")) matched = FALLBACK_RESPONSES["morning"];
-            else if (lowerText.includes("cool")) matched = FALLBACK_RESPONSES["cool"];
-            else if (lowerText.includes("night")) matched = FALLBACK_RESPONSES["night"];
+            if (lowerText.includes("tired")) matched = charFallbacks.tired;
+            else if (lowerText.includes("morning")) matched = charFallbacks.morning;
 
             replyEn = matched.en.replace(/{NICKNAME}/g, userConfig.nickname);
             replyJp = matched.jp;
