@@ -111,12 +111,13 @@
         }
 
         .tab-avatar {
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid transparent;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: #1e293b;
         }
 
         .tab-name { font-size: 14px; font-weight: 700; }
@@ -150,12 +151,13 @@
         }
 
         .profile-avatar {
-            width: 52px;
-            height: 52px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #fff;
             flex-shrink: 0;
+            background: #1e293b;
         }
 
         .profile-info h2 { font-size: 15px; font-weight: 700; }
@@ -222,7 +224,7 @@
         .msg-row { display: flex; gap: 10px; align-items: flex-start; }
         .msg-row.user { flex-direction: row-reverse; }
 
-        .msg-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .msg-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #1e293b; }
         .msg-user-icon {
             width: 36px; height: 36px; border-radius: 50%;
             background: #4f46e5; color: #fff;
@@ -262,18 +264,6 @@
         }
         .speak-btn:hover { color: #60a5fa; }
 
-        .tip-card {
-            margin-top: 8px;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 10px 12px;
-            font-size: 12px;
-        }
-        .tip-header { color: #fbbf24; font-weight: bold; margin-bottom: 4px; }
-        .tip-phrase { font-family: 'Outfit', sans-serif; font-weight: 700; color: #60a5fa; }
-        .tip-desc { color: #d1d5db; margin-top: 2px; line-height: 1.4; }
-
         /* クイックボタン */
         .quick-section { margin-bottom: 12px; }
         .quick-label { font-size: 11px; color: var(--text-sub); margin-bottom: 6px; }
@@ -305,7 +295,6 @@
             padding: 10px 8px; border-radius: 12px; cursor: pointer;
             white-space: nowrap; transition: all 0.2s;
         }
-        .lang-switch-btn:hover { background: rgba(56, 189, 248, 0.15); }
 
         .mic-btn {
             background: rgba(255, 255, 255, 0.1);
@@ -351,39 +340,6 @@
         }
         .btn-save { background: #3b82f6; color: #fff; }
         .btn-cancel { background: rgba(255,255,255,0.1); color: #ccc; }
-
-        /* カットイン表示 */
-        .char-cutin-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 17, 26, 0.88); backdrop-filter: blur(10px);
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; z-index: 90; opacity: 0; pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-        .char-cutin-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .cutin-img {
-            width: 210px; height: 210px; border-radius: 50%;
-            object-fit: cover; border: 4px solid #fff;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
-            transform: scale(0.8); transition: transform 0.4s ease;
-        }
-        .char-cutin-overlay.active .cutin-img { transform: scale(1); }
-
-        .cutin-name { font-size: 20px; font-weight: bold; margin-top: 14px; color: #fff; }
-        .cutin-text {
-            font-size: 14px; color: #60a5fa; margin-top: 8px; padding: 0 20px;
-            text-align: center; font-weight: 600; line-height: 1.4;
-        }
-        .cutin-jp {
-            font-size: 12px; color: #d1d5db; margin-top: 6px; padding: 0 20px;
-            text-align: center;
-        }
-        .cutin-close-btn {
-            margin-top: 18px; background: rgba(255, 255, 255, 0.15);
-            border: 1px solid var(--card-border); color: #fff;
-            padding: 8px 20px; border-radius: 20px; font-size: 12px; cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -400,15 +356,15 @@
     <!-- キャラ切り替えタブ -->
     <div class="char-tabs">
         <button class="tab-btn" data-char="leo" onclick="switchChar('leo')">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Leo" class="tab-avatar" alt="Leo">
+            <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=Leo&hair=short01&eyebrows=down" class="tab-avatar" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Noah" class="tab-avatar" alt="Noah">
+            <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=Noah&hair=short02&eyebrows=happy" class="tab-avatar" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
         <button class="tab-btn active" data-char="liam" onclick="switchChar('liam')">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="tab-avatar" alt="Liam">
+            <img src="https://api.dicebear.com/7.x/lorelei/svg?seed=Liam&hair=short03&eyebrows=default" class="tab-avatar" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -416,7 +372,7 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="profile-avatar" alt="Avatar">
+            <img id="profileAvatar" src="https://api.dicebear.com/7.x/lorelei/svg?seed=Liam&hair=short03&eyebrows=default" class="profile-avatar" alt="Avatar">
             <div class="profile-info">
                 <h2 id="profileName">Liam <span>28歳・IT Specialist</span></h2>
                 <p id="profileDesc">君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。</p>
@@ -457,15 +413,6 @@
         <button type="submit" class="send-btn">送信</button>
     </form>
 
-    <!-- 返答時カットイン表示エリア -->
-    <div class="char-cutin-overlay" id="cutinOverlay">
-        <img id="cutinImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="cutin-img" alt="Focus">
-        <div id="cutinName" class="cutin-name">Liam</div>
-        <div id="cutinText" class="cutin-text">"I'm listening..."</div>
-        <div id="cutinJp" class="cutin-jp">「聞いてるよ...」</div>
-        <button class="cutin-close-btn" onclick="closeCutin()">チャットに戻る 💬</button>
-    </div>
-
     <!-- 設定モーダル -->
     <div class="modal-overlay" id="customModal">
         <div class="modal-content">
@@ -501,18 +448,18 @@
             age: 26,
             job: "Designer",
             desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Leo",
+            avatar: "https://api.dicebear.com/7.x/lorelei/svg?seed=Leo&hair=short01&eyebrows=down",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Hey {NICKNAME}! Great to see you. How are you doing today?",
-            greetingJp: "やあ、今日もお疲れ様！調子はどう？"
+            greetingJp: "やあ！今日もお疲れ様。調子はどう？"
         },
         noah: {
             name: "Noah",
             age: 24,
             job: "Architect",
             desc: "焦らなくていいよ。君のペースでゆっくり話してね。",
-            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Noah",
+            avatar: "https://api.dicebear.com/7.x/lorelei/svg?seed=Noah&hair=short02&eyebrows=happy",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Hello {NICKNAME}. Take your time and talk to me slowly.",
@@ -523,7 +470,7 @@
             age: 28,
             job: "IT Specialist",
             desc: "君が頑張って英語で伝えようとしてくれる姿、すごく素敵だよ。",
-            avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Liam",
+            avatar: "https://api.dicebear.com/7.x/lorelei/svg?seed=Liam&hair=short03&eyebrows=default",
             loveExp: 0,
             loveLevel: 1,
             greeting: "Welcome back, {NICKNAME}! I'm always here to listen to you.",
@@ -536,7 +483,30 @@
     let recognition = null;
     let isRecording = false;
 
-    // モーダル操作
+    // 定型応答用フォールバックデータベース（API非接続時も自然な会話を提供）
+    const FALLBACK_RESPONSES = {
+        "tired": {
+            en: "You worked so hard today! Please make sure to get some rest, {NICKNAME}.",
+            jp: "今日は本当に頑張ったね！しっかり体を休めてね。"
+        },
+        "morning": {
+            en: "Good morning, {NICKNAME}! I hope you have a wonderful day today.",
+            jp: "おはよう！今日も素敵な一日になりますように。"
+        },
+        "cool": {
+            en: "Thank you! Hearing that from you makes me so happy, {NICKNAME}.",
+            jp: "ありがとう！君にそう言ってもらえるとすごく嬉しいよ。"
+        },
+        "night": {
+            en: "Good night, {NICKNAME}. Sweet dreams!",
+            jp: "おやすみ。良い夢を見てね！"
+        },
+        "default": {
+            en: "Thank you for talking with me, {NICKNAME}! Your English is getting better every day.",
+            jp: "話しかけてくれてありがとう！英語、どんどん上手になってるよ。"
+        }
+    };
+
     function openModal() {
         document.getElementById('userNameInput').value = userConfig.name;
         document.getElementById('userNicknameInput').value = userConfig.nickname;
@@ -554,11 +524,9 @@
         renderChat();
     }
 
-    // 親密度
     function addLoveExp(amount) {
         const char = CHARS[currentCharKey];
         char.loveExp += amount;
-        
         const newLevel = Math.floor(char.loveExp / 100) + 1;
         if (newLevel > char.loveLevel) {
             char.loveLevel = newLevel;
@@ -574,60 +542,17 @@
         document.getElementById('loveLevelText').innerText = `Lv.${char.loveLevel} (${currentExpProgress}%)`;
     }
 
-    // 音声読み上げ
-    function getVoiceForChar(charKey) {
-        if (!('speechSynthesis' in window)) return null;
-        const voices = window.speechSynthesis.getVoices();
-        const englishVoices = voices.filter(v => v.lang.startsWith('en'));
-        if (englishVoices.length === 0) return null;
-        
-        const maleVoices = englishVoices.filter(v => /male|david|george|mark|guy|james|alex|daniel/i.test(v.name));
-        return maleVoices.length > 0 ? maleVoices[0] : englishVoices[0];
-    }
-
-    function speakText(text, isUser = false, onEndCallback = null) {
+    function speakText(text, isUser = false) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-US';
-            
-            if (isUser) {
-                utterance.pitch = 1.0;
-                utterance.rate = 1.0;
-            } else {
-                const char = CHARS[currentCharKey];
-                utterance.pitch = char.pitch || 0.6;
-                utterance.rate = char.rate || 1.0;
-                const selectedVoice = getVoiceForChar(currentCharKey);
-                if (selectedVoice) utterance.voice = selectedVoice;
-            }
-
-            if (onEndCallback) {
-                utterance.onend = onEndCallback;
-                utterance.onerror = onEndCallback;
-            }
-
+            utterance.pitch = isUser ? 1.0 : 0.8;
+            utterance.rate = 0.95;
             window.speechSynthesis.speak(utterance);
-        } else {
-            if (onEndCallback) onEndCallback();
         }
     }
 
-    // カットイン表示
-    function showCutin(text, jpText) {
-        const char = CHARS[currentCharKey];
-        document.getElementById('cutinImg').src = char.avatar;
-        document.getElementById('cutinName').innerText = char.name;
-        document.getElementById('cutinText').innerText = `"${text}"`;
-        document.getElementById('cutinJp').innerText = jpText || "";
-        document.getElementById('cutinOverlay').classList.add('active');
-    }
-
-    function closeCutin() {
-        document.getElementById('cutinOverlay').classList.remove('active');
-    }
-
-    // 日英言語切り替え機能
     function toggleInputLang() {
         const btn = document.getElementById('langSwitchBtn');
         if (inputLang === 'en-US') {
@@ -641,7 +566,6 @@
         }
     }
 
-    // 音声認識
     function toggleSpeechRecognition() {
         const micBtn = document.getElementById('micBtn');
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -666,7 +590,6 @@
         if (micBtn) { micBtn.classList.remove('recording'); micBtn.innerText = '🎙️'; }
     }
 
-    // 初期化
     window.onload = function() {
         Object.keys(CHARS).forEach(key => {
             const char = CHARS[key];
@@ -674,8 +597,7 @@
             chatHistories[key].push({
                 sender: 'char',
                 text: text,
-                jp: char.greetingJp,
-                tip: null
+                jp: char.greetingJp
             });
         });
         renderChat();
@@ -719,14 +641,6 @@
                 `;
             } else {
                 const char = CHARS[currentCharKey];
-                let tipHtml = msg.tip ? `
-                    <div class="tip-card">
-                        <div class="tip-header">💡 ${char.name}'s English Tip</div>
-                        <div class="tip-phrase">"${escapeHtml(msg.tip.phrase)}"</div>
-                        <div class="tip-desc">${escapeHtml(msg.tip.desc)}</div>
-                    </div>
-                ` : '';
-
                 let jpHtml = msg.jp ? `<div class="jp-trans">🇯🇵 ${escapeHtml(msg.jp)}</div>` : '';
                 
                 row.innerHTML = `
@@ -737,7 +651,6 @@
                             ${jpHtml}
                         </div>
                         <button class="speak-btn" onclick="handleSpeakClick(${idx})">🔊 もう一度聴く</button>
-                        ${tipHtml}
                     </div>
                 `;
             }
@@ -749,20 +662,11 @@
 
     function sendQuick(text) {
         document.getElementById('userInput').value = text;
-        
-        let hasReplied = false;
-        const triggerReply = () => {
-            if (hasReplied) return;
-            hasReplied = true;
-            processCharResponse(text);
-        };
-
-        speakText(text, true, () => {
-            setTimeout(triggerReply, 400);
-        });
-
-        setTimeout(triggerReply, 3500);
         handleUserSendUI(text);
+        speakText(text, true);
+        setTimeout(() => {
+            processCharResponse(text);
+        }, 600);
     }
 
     function handleUserSendUI(text) {
@@ -773,6 +677,9 @@
     }
 
     async function processCharResponse(userText) {
+        let replyEn = "";
+        let replyJp = "";
+
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -780,31 +687,31 @@
                 body: JSON.stringify({ message: userText }),
             });
 
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) throw new Error("API error");
             const data = await response.json();
-            const processedText = data.reply;
-
-            chatHistories[currentCharKey].push({
-                sender: 'char',
-                text: processedText,
-                jp: '（AIからの返信）',
-                tip: null
-            });
-            renderChat();
-            showCutin(processedText, '（AIからの返信）');
-            speakText(processedText);
-
+            replyEn = data.reply;
+            replyJp = data.jp || "";
         } catch (error) {
-            console.error('通信エラー:', error);
-            const errorMsg = "Sorry, I couldn't hear you well. Could you say that again?";
-            chatHistories[currentCharKey].push({
-                sender: 'char',
-                text: errorMsg,
-                jp: 'ごめんなさい、うまく聞き取れませんでした。もう一度言ってもらえますか？',
-                tip: null
-            });
-            renderChat();
+            // API未接続・エラー時のスマート返答フォールバック
+            const lowerText = userText.toLowerCase();
+            let matched = FALLBACK_RESPONSES["default"];
+
+            if (lowerText.includes("tired")) matched = FALLBACK_RESPONSES["tired"];
+            else if (lowerText.includes("morning")) matched = FALLBACK_RESPONSES["morning"];
+            else if (lowerText.includes("cool")) matched = FALLBACK_RESPONSES["cool"];
+            else if (lowerText.includes("night")) matched = FALLBACK_RESPONSES["night"];
+
+            replyEn = matched.en.replace(/{NICKNAME}/g, userConfig.nickname);
+            replyJp = matched.jp;
         }
+
+        chatHistories[currentCharKey].push({
+            sender: 'char',
+            text: replyEn,
+            jp: replyJp
+        });
+        renderChat();
+        speakText(replyEn);
     }
 
     function handleSend(e) {
