@@ -367,15 +367,15 @@
     <!-- キャラ切り替えタブ -->
     <div class="char-tabs">
         <button class="tab-btn active" data-char="leo" onclick="switchChar('leo')">
-            <img class="tab-avatar" id="tabAvatarLeo" src="leo.jpg" onerror="tryNextExt(this, 'leo')" alt="Leo">
+            <img class="tab-avatar" id="tabAvatarLeo" src="./leo.jpg" onerror="tryNextExt(this, 'leo')" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <img class="tab-avatar" id="tabAvatarNoah" src="noah.jpg" onerror="tryNextExt(this, 'noah')" alt="Noah">
+            <img class="tab-avatar" id="tabAvatarNoah" src="./noah.jpg" onerror="tryNextExt(this, 'noah')" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
         <button class="tab-btn" data-char="liam" onclick="switchChar('liam')">
-            <img class="tab-avatar" id="tabAvatarLiam" src="liam.jpg" onerror="tryNextExt(this, 'liam')" alt="Liam">
+            <img class="tab-avatar" id="tabAvatarLiam" src="./liam.jpg" onerror="tryNextExt(this, 'liam')" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -383,7 +383,7 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" class="profile-avatar" src="leo.jpg" onerror="tryNextExt(this, 'leo')" alt="Leo">
+            <img id="profileAvatar" class="profile-avatar" src="./leo.jpg" onerror="tryNextExt(this, 'leo')" alt="Leo">
             <div class="profile-info">
                 <h2 id="profileName">Leo <span>24歳・若手俳優</span></h2>
                 <p id="profileDesc">君の英語、僕が一番近くで聞いていたい。</p>
@@ -416,11 +416,11 @@
     </div>
 
     <!-- 入力フォーム ＆ 音声認識 -->
-    <form class="input-form" id="chatForm" onsubmit="handleSend(event)">
+    <form class="input-form" id="chatForm">
         <input type="text" id="userInput" class="input-field" placeholder="メッセージを入力またはマイクをON..." autocomplete="off">
         <button type="button" class="lang-switch-btn" id="langSwitchBtn" onclick="toggleInputLang()">🎤 EN</button>
         <button type="button" class="mic-btn" id="micBtn" onclick="toggleSpeechRecognition()" title="音声入力">🎙️</button>
-        <button type="submit" class="send-btn">送信</button>
+        <button type="submit" class="send-btn" id="sendBtn">送信</button>
     </form>
 
     <!-- 設定モーダル -->
@@ -444,17 +444,19 @@
 </div>
 
 <script>
-    /* 画像読み込みエラー時に別拡張子（png/jpeg）を自動試行するフォールバック処理 */
+    /* 画像読み込みエラー時に拡張子やパスを自動切替 */
     function tryNextExt(img, name) {
         if (!img.dataset.tried) {
             img.dataset.tried = "png";
-            img.src = name + ".png";
+            img.src = "./" + name + ".png";
         } else if (img.dataset.tried === "png") {
-            img.dataset.tried = "jpeg";
-            img.src = name + ".jpeg";
-        } else if (img.dataset.tried === "jpeg") {
+            img.dataset.tried = "JPEG";
+            img.src = "./" + name + ".JPEG";
+        } else if (img.dataset.tried === "JPEG") {
+            img.dataset.tried = "PNG";
+            img.src = "./" + name + ".PNG";
+        } else if (img.dataset.tried === "PNG") {
             img.dataset.tried = "done";
-            // 最後のフォールバックSVGイラスト
             img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%233b82f6'/><text x='50%' y='55%' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='sans-serif'>" + name.charAt(0).toUpperCase() + "</text></svg>";
         }
     }
@@ -467,12 +469,11 @@
     let userConfig = { name: "You", nickname: "sweetheart" };
     let inputLang = 'en-US';
 
-    /* キャラクター基本設定 */
     const CHARS = {
         leo: {
             name: "Leo", age: 24, job: "若手俳優",
             desc: "君の英語、僕が一番近くで聞いていたい。",
-            avatar: "leo.jpg", pitch: 1.1, rate: 1.0,
+            avatar: "./leo.jpg", pitch: 1.1, rate: 1.0,
             loveExp: 0, loveLevel: 1,
             greeting: "Good morning, {NICKNAME}. Did you sleep well? I was hoping you'd come talk to me today.",
             greetingJp: "おはよう！よく眠れた？今日も君が話しに来てくれるのを待ってたんだ。"
@@ -480,7 +481,7 @@
         noah: {
             name: "Noah", age: 21, job: "アイドル",
             desc: "別に、お前と話したいわけじゃない。……でも、来ないとつまらない。",
-            avatar: "noah.jpg", pitch: 0.75, rate: 0.88,
+            avatar: "./noah.jpg", pitch: 0.75, rate: 0.88,
             loveExp: 0, loveLevel: 1,
             greeting: "You're late. ...Oh, you're here. So, what are we talking about today?",
             greetingJp: "遅い。…あ、来た。で、今日は何話すの？"
@@ -488,7 +489,7 @@
         liam: {
             name: "Liam", age: 28, job: "IT Specialist",
             desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "liam.jpg", pitch: 0.9, rate: 0.95,
+            avatar: "./liam.jpg", pitch: 0.9, rate: 0.95,
             loveExp: 0, loveLevel: 1,
             greeting: "Hey, good morning {NICKNAME}. Take your time and talk to me slowly.",
             greetingJp: "やあ、おはよう！焦らずゆっくり話そうね。"
@@ -510,7 +511,6 @@
         loadVoices();
     }
 
-    /* 質問に的確・自然に回答するスマート会話ロジック */
     function getSmartReply(charKey, userText) {
         const text = userText.toLowerCase();
         
@@ -534,13 +534,12 @@
             if (charKey === 'noah') return { en: "Don't push yourself too hard. Go to sleep early tonight.", jp: "無理しすぎんなよ。今夜は早く寝な。" };
             if (charKey === 'liam') return { en: "Sounds like a long day. Take it easy tonight, okay?", jp: "大変な一日だったみたいだね。今夜は気楽に過ごそう。" };
         }
-        if (text.includes("good morning") || text.includes("morning")) {
-            if (charKey === 'leo') return { en: "Good morning, {NICKNAME}! Seeing your message made my day.", jp: "おはよう！君からのメッセージで今日一日が楽しみになったよ。" };
-            if (charKey === 'noah') return { en: "Morning. You took long enough to say hi...", jp: "おはよう。挨拶してくるの遅いんだけど…" };
-            if (charKey === 'liam') return { en: "Good morning! Have a wonderful day ahead.", jp: "おはよう！今日も良い一日になりますように。" };
+        if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+            if (charKey === 'leo') return { en: "Hey there, {NICKNAME}! I'm so happy to talk with you.", jp: "やあ！話せてすごく嬉しいよ。" };
+            if (charKey === 'noah') return { en: "Hey. What's up?", jp: "やあ。どうしたの？" };
+            if (charKey === 'liam') return { en: "Hello! How is your day going so far?", jp: "こんにちは！今日はどんな日を過ごしてる？" };
         }
 
-        // 汎用応答
         if (charKey === 'leo') return { en: "That's very interesting! Tell me more about it, {NICKNAME}.", jp: "すごく興味深いね！もっと詳しく教えて？" };
         if (charKey === 'noah') return { en: "Huh, is that so? Well, it's not bad talking about that with you.", jp: "へえ、そうなの？まあ、あんたとこういう話するのも悪くないけど。" };
         return { en: "I see! I really enjoy chatting with you like this.", jp: "なるほどね！こうやって君と喋るの、本当に楽しいよ。" };
@@ -638,7 +637,7 @@
             clearTimeout(autoSendTimer);
             autoSendTimer = setTimeout(() => {
                 stopSpeechRecognition();
-                triggerAutoSend();
+                submitUserText();
             }, 3000);
         };
 
@@ -655,15 +654,6 @@
         if (micBtn) { micBtn.classList.remove('recording'); micBtn.innerText = '🎙️'; }
     }
 
-    function triggerAutoSend() {
-        const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if (text) {
-            handleUserSendUI(text);
-            processCharResponse(text);
-        }
-    }
-
     window.onload = function() {
         Object.keys(CHARS).forEach(key => {
             const char = CHARS[key];
@@ -671,6 +661,13 @@
             chatHistories[key].push({ sender: 'char', text: text, jp: char.greetingJp });
         });
         renderChat();
+
+        // フォーム送信のイベントリスナー（テキスト入力から送信を確実に動かす設定）
+        const form = document.getElementById('chatForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitUserText();
+        });
     };
 
     function switchChar(key) {
@@ -748,16 +745,21 @@
 
     function sendQuick(text) {
         document.getElementById('userInput').value = text;
-        handleUserSendUI(text);
-        speakText(text, true);
-        processCharResponse(text);
+        submitUserText();
     }
 
-    function handleUserSendUI(text) {
+    function submitUserText() {
+        stopSpeechRecognition();
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if (!text) return;
+
         chatHistories[currentCharKey].push({ sender: 'user', text: text });
-        document.getElementById('userInput').value = '';
-        renderChat(true);
+        input.value = '';
+        renderChat(true); // 返信考え中表示
         addLoveExp(8);
+
+        processCharResponse(text);
     }
 
     async function processCharResponse(userText) {
@@ -780,7 +782,7 @@
             replyJp = matched.jp;
         }
 
-        /* 3秒（3000ms）溜めて返答 */
+        /* 3秒（3000ms）待機してから返答 */
         setTimeout(() => {
             chatHistories[currentCharKey].push({
                 sender: 'char',
@@ -790,17 +792,6 @@
             renderChat(false);
             speakText(replyEn);
         }, 3000);
-    }
-
-    function handleSend(e) {
-        e.preventDefault();
-        stopSpeechRecognition();
-        const input = document.getElementById('userInput');
-        const text = input.value.trim();
-        if (!text) return;
-
-        handleUserSendUI(text);
-        processCharResponse(text);
     }
 </script>
 
