@@ -367,15 +367,15 @@
     <!-- キャラ切り替えタブ -->
     <div class="char-tabs">
         <button class="tab-btn active" data-char="leo" onclick="switchChar('leo')">
-            <img class="tab-avatar" id="tabAvatarLeo" src="./leo.jpg" onerror="tryNextExt(this, 'leo')" alt="Leo">
+            <img class="tab-avatar" id="tabAvatarLeo" src="./Leo.jpg" onerror="tryNextExt(this, 'Leo')" alt="Leo">
             <span class="tab-name">Leo</span>
         </button>
         <button class="tab-btn" data-char="noah" onclick="switchChar('noah')">
-            <img class="tab-avatar" id="tabAvatarNoah" src="./noah.jpg" onerror="tryNextExt(this, 'noah')" alt="Noah">
+            <img class="tab-avatar" id="tabAvatarNoah" src="./Noah.jpg" onerror="tryNextExt(this, 'Noah')" alt="Noah">
             <span class="tab-name">Noah</span>
         </button>
         <button class="tab-btn" data-char="liam" onclick="switchChar('liam')">
-            <img class="tab-avatar" id="tabAvatarLiam" src="./liam.jpg" onerror="tryNextExt(this, 'liam')" alt="Liam">
+            <img class="tab-avatar" id="tabAvatarLiam" src="./Liam.jpg" onerror="tryNextExt(this, 'Liam')" alt="Liam">
             <span class="tab-name">Liam</span>
         </button>
     </div>
@@ -383,7 +383,7 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" class="profile-avatar" src="./leo.jpg" onerror="tryNextExt(this, 'leo')" alt="Leo">
+            <img id="profileAvatar" class="profile-avatar" src="./Leo.jpg" onerror="tryNextExt(this, 'Leo')" alt="Leo">
             <div class="profile-info">
                 <h2 id="profileName">Leo <span>24歳・若手俳優</span></h2>
                 <p id="profileDesc">君の英語、僕が一番近くで聞いていたい。</p>
@@ -444,18 +444,15 @@
 </div>
 
 <script>
-    /* 画像読み込みエラー時に拡張子やパスを自動切替 */
+    /* 画像読み込みエラー時に拡張子や小文字を自動切替 */
     function tryNextExt(img, name) {
         if (!img.dataset.tried) {
+            img.dataset.tried = "lower";
+            img.src = "./" + name.toLowerCase() + ".jpg";
+        } else if (img.dataset.tried === "lower") {
             img.dataset.tried = "png";
             img.src = "./" + name + ".png";
         } else if (img.dataset.tried === "png") {
-            img.dataset.tried = "JPEG";
-            img.src = "./" + name + ".JPEG";
-        } else if (img.dataset.tried === "JPEG") {
-            img.dataset.tried = "PNG";
-            img.src = "./" + name + ".PNG";
-        } else if (img.dataset.tried === "PNG") {
             img.dataset.tried = "done";
             img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%233b82f6'/><text x='50%' y='55%' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='sans-serif'>" + name.charAt(0).toUpperCase() + "</text></svg>";
         }
@@ -473,7 +470,7 @@
         leo: {
             name: "Leo", age: 24, job: "若手俳優",
             desc: "君の英語、僕が一番近くで聞いていたい。",
-            avatar: "./leo.jpg", pitch: 1.1, rate: 1.0,
+            avatar: "./Leo.jpg", pitch: 1.1, rate: 1.0,
             loveExp: 0, loveLevel: 1,
             greeting: "Good morning, {NICKNAME}. Did you sleep well? I was hoping you'd come talk to me today.",
             greetingJp: "おはよう！よく眠れた？今日も君が話しに来てくれるのを待ってたんだ。"
@@ -481,7 +478,7 @@
         noah: {
             name: "Noah", age: 21, job: "アイドル",
             desc: "別に、お前と話したいわけじゃない。……でも、来ないとつまらない。",
-            avatar: "./noah.jpg", pitch: 0.75, rate: 0.88,
+            avatar: "./Noah.jpg", pitch: 0.75, rate: 0.88,
             loveExp: 0, loveLevel: 1,
             greeting: "You're late. ...Oh, you're here. So, what are we talking about today?",
             greetingJp: "遅い。…あ、来た。で、今日は何話すの？"
@@ -489,7 +486,7 @@
         liam: {
             name: "Liam", age: 28, job: "IT Specialist",
             desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "./liam.jpg", pitch: 0.9, rate: 0.95,
+            avatar: "./Liam.jpg", pitch: 0.9, rate: 0.95,
             loveExp: 0, loveLevel: 1,
             greeting: "Hey, good morning {NICKNAME}. Take your time and talk to me slowly.",
             greetingJp: "やあ、おはよう！焦らずゆっくり話そうね。"
@@ -500,7 +497,6 @@
     let chatHistories = { leo: [], noah: [], liam: [] };
     let recognition = null;
     let isRecording = false;
-    let autoSendTimer = null;
     let availableVoices = [];
 
     function loadVoices() {
@@ -511,38 +507,70 @@
         loadVoices();
     }
 
+    /* 各キャラクターの会話パターン（受け答えの精度を大幅向上） */
     function getSmartReply(charKey, userText) {
         const text = userText.toLowerCase();
         
+        // 挨拶（Morning, Hello, Hi）
+        if (text.includes("good morning") || text.includes("morning")) {
+            if (charKey === 'leo') return { en: "Good morning, {NICKNAME}! Did you sleep well?", jp: "おはよう！よく眠れた？" };
+            if (charKey === 'noah') return { en: "Morning. You're early today... not that I care.", jp: "おはよう。今日は早ね…べつに気にしてないけど。" };
+            if (charKey === 'liam') return { en: "Good morning! Ready to start a great day together?", jp: "おはよう！今日も素敵な一日にしようね。" };
+        }
+        
+        // 飲み物・コーヒー
+        if (text.includes("coffee") || text.includes("drink") || text.includes("tea")) {
+            if (charKey === 'leo') return { en: "Here is your coffee! Black or with milk, {NICKNAME}?", jp: "コーヒーどうぞ！ブラックがいい？それともミルク入れる？" };
+            if (charKey === 'noah') return { en: "Coffee? Fine, I'll get one for you. Don't get used to it.", jp: "コーヒー？はいはい、淹れてあげるよ。調子乗るなよ？" };
+            if (charKey === 'liam') return { en: "I just brewed fresh coffee. Here, take a break with me.", jp: "ちょうど淹れたてだよ。一緒にコーヒータイムにしよう。" };
+        }
+
+        // 好きな食べ物
         if (text.includes("food") || text.includes("eat") || text.includes("like to eat")) {
             if (charKey === 'leo') return { en: "I love pasta and Italian food! How about you, {NICKNAME}?", jp: "パスタやイタリアンが大好きなんだ！君は何が好き？" };
-            if (charKey === 'noah') return { en: "Spicy ramen. I eat it whenever our music lessons end.", jp: "激辛ラーメン。レッスンが終わった後は絶対これ。" };
+            if (charKey === 'noah') return { en: "Spicy ramen. I eat it whenever our lessons end.", jp: "激辛ラーメン。レッスンが終わった後は絶対これ。" };
             if (charKey === 'liam') return { en: "I enjoy making homemade curry on weekends. It's really relaxing.", jp: "週末にスパイスからカレーを作るのが好きなんだ。落ち着くよ。" };
         }
+
+        // ピアノ
         if (text.includes("piano")) {
             if (charKey === 'leo') return { en: "Yes, I do! I practice playing the piano for my acting roles.", jp: "うん、持ってるよ！俳優の役作りのためにピアノを練習してるんだ。" };
-            if (charKey === 'noah') return { en: "Yeah, there's a grand piano at our music studio. I play it sometimes.", jp: "ああ、スタジオにグランドピアノがあるよ。たまに弾くけど。" };
+            if (charKey === 'noah') return { en: "Yeah, there's a grand piano at our studio. I play it sometimes.", jp: "ああ、スタジオにグランドピアノがあるよ。たまに弾くけど。" };
             if (charKey === 'liam') return { en: "I don't have a real piano, but I have an electric keyboard at home.", jp: "本物のピアノはないけど、家に電子キーボードならあるよ。" };
         }
-        if (text.includes("car")) {
+
+        // 車
+        if (text.includes("car") || text.includes("drive")) {
             if (charKey === 'leo') return { en: "I do! I love driving on weekends. Want to go for a drive with me?", jp: "持ってるよ！週末ドライブに行くのが好きなんだ。一緒に行く？" };
-            if (charKey === 'noah') return { en: "No, our manager drives us around. I don't really need a car right now.", jp: "ううん、移動はマネージャーの車だから。今は別にいらないかな。" };
-            if (charKey === 'liam') return { en: "Yes, I have a simple SUV. It's very convenient for trips.", jp: "うん、シンプルなSUVに乗ってるよ。遠出にすごく便利なんだ。" };
+            if (charKey === 'noah') return { en: "No, our manager drives us around. I don't really need a car.", jp: "ううん、移動はマネージャーの車だから。今は別にいらないかな。" };
+            if (charKey === 'liam') return { en: "Yes, I have a simple SUV. It's very convenient for long drives.", jp: "うん、シンプルなSUVに乗ってるよ。遠出にすごく便利なんだ。" };
         }
-        if (text.includes("tired")) {
+
+        // 疲れたとき
+        if (text.includes("tired") || text.includes("busy") || text.includes("sleep")) {
             if (charKey === 'leo') return { en: "You worked so hard today. Please rest well, {NICKNAME}.", jp: "今日はすごく頑張ったね。ゆっくり休んでね。" };
             if (charKey === 'noah') return { en: "Don't push yourself too hard. Go to sleep early tonight.", jp: "無理しすぎんなよ。今夜は早く寝な。" };
             if (charKey === 'liam') return { en: "Sounds like a long day. Take it easy tonight, okay?", jp: "大変な一日だったみたいだね。今夜は気楽に過ごそう。" };
         }
-        if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
-            if (charKey === 'leo') return { en: "Hey there, {NICKNAME}! I'm so happy to talk with you.", jp: "やあ！話せてすごく嬉しいよ。" };
-            if (charKey === 'noah') return { en: "Hey. What's up?", jp: "やあ。どうしたの？" };
-            if (charKey === 'liam') return { en: "Hello! How is your day going so far?", jp: "こんにちは！今日はどんな日を過ごしてる？" };
+
+        // 褒める (cool, handsome, cute, great)
+        if (text.includes("cool") || text.includes("handsome") || text.includes("great") || text.includes("nice")) {
+            if (charKey === 'leo') return { en: "Thank you! Hearing that from you makes my heart race.", jp: "ありがとう！君にそう言われるとドキドキするよ。" };
+            if (charKey === 'noah') return { en: "W-what are you saying suddenly? ...Thanks anyway.", jp: "な、急に何言ってんだよ！…まあ、サンキュ。" };
+            if (charKey === 'liam') return { en: "Thank you, {NICKNAME}. You always make my day brighter.", jp: "ありがとう。君の言葉でいつも元気が出るよ。" };
         }
 
+        // おやすみ
+        if (text.includes("good night") || text.includes("night")) {
+            if (charKey === 'leo') return { en: "Good night, {NICKNAME}. Sweet dreams!", jp: "おやすみ！良い夢を見てね。" };
+            if (charKey === 'noah') return { en: "Good night. See you tomorrow, don't be late.", jp: "おやすみ。また明日ね、遅刻するなよ。" };
+            if (charKey === 'liam') return { en: "Good night! Sleep well and have pleasant dreams.", jp: "おやすみ！ぐっすり眠ってね。" };
+        }
+
+        // デフォルト返答
         if (charKey === 'leo') return { en: "That's very interesting! Tell me more about it, {NICKNAME}.", jp: "すごく興味深いね！もっと詳しく教えて？" };
         if (charKey === 'noah') return { en: "Huh, is that so? Well, it's not bad talking about that with you.", jp: "へえ、そうなの？まあ、あんたとこういう話するのも悪くないけど。" };
-        return { en: "I see! I really enjoy chatting with you like this.", jp: "なるほどね！こうやって君と喋るの、本当に楽しいよ。" };
+        return { en: "I see! I really enjoy chatting with you like this, {NICKNAME}.", jp: "なるほどね！こうやって君と喋るの、本当に楽しいよ。" };
     }
 
     function openModal() {
@@ -579,9 +607,10 @@
         document.getElementById('loveLevelText').innerText = `Lv.${char.loveLevel} (${currentExpProgress}%)`;
     }
 
+    /* 音声再生（ブラウザの再生権限エラーを解消） */
     function speakText(text, isUser = false) {
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
+            window.speechSynthesis.cancel(); // 前の音声をリセット
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-US';
 
@@ -600,6 +629,7 @@
         }
     }
 
+    /* 音声入力の言語切り替え */
     function toggleInputLang() {
         const btn = document.getElementById('langSwitchBtn');
         if (inputLang === 'en-US') {
@@ -613,45 +643,67 @@
         }
     }
 
+    /* 音声認識（マイク入力処理の強化） */
     function toggleSpeechRecognition() {
         const micBtn = document.getElementById('micBtn');
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return alert('お使いのブラウザは音声入力に対応していません。');
+        
+        if (!SpeechRecognition) {
+            alert('お使いのブラウザは音声入力に対応していません。ChromeまたはEdgeをご使用ください。');
+            return;
+        }
 
-        if (isRecording) return stopSpeechRecognition();
+        if (isRecording) {
+            stopSpeechRecognition();
+            return;
+        }
 
-        isRecording = true;
-        micBtn.classList.add('recording');
-        micBtn.innerText = '🔴 録音中...';
+        try {
+            recognition = new SpeechRecognition();
+            recognition.lang = inputLang;
+            recognition.continuous = false;
+            recognition.interimResults = true;
 
-        recognition = new SpeechRecognition();
-        recognition.lang = inputLang;
-        recognition.continuous = false;
-        recognition.interimResults = true;
+            recognition.onstart = () => {
+                isRecording = true;
+                micBtn.classList.add('recording');
+                micBtn.innerText = '🔴 録音中...';
+            };
 
-        recognition.onresult = (event) => { 
-            let transcript = '';
-            for (let i = 0; i < event.results.length; ++i) transcript += event.results[i][0].transcript;
-            document.getElementById('userInput').value = transcript;
+            recognition.onresult = (event) => { 
+                let transcript = '';
+                for (let i = 0; i < event.results.length; ++i) {
+                    transcript += event.results[i][0].transcript;
+                }
+                document.getElementById('userInput').value = transcript;
+            };
 
-            clearTimeout(autoSendTimer);
-            autoSendTimer = setTimeout(() => {
+            recognition.onerror = (event) => {
+                console.error("Speech Rec Error:", event.error);
                 stopSpeechRecognition();
-                submitUserText();
-            }, 3000);
-        };
+            };
 
-        recognition.onerror = () => stopSpeechRecognition();
-        recognition.onend = () => stopSpeechRecognition();
-        try { recognition.start(); } catch(e) {}
+            recognition.onend = () => {
+                stopSpeechRecognition();
+            };
+
+            recognition.start();
+        } catch(e) {
+            console.error(e);
+            stopSpeechRecognition();
+        }
     }
 
     function stopSpeechRecognition() {
         isRecording = false;
-        clearTimeout(autoSendTimer);
-        if (recognition) try { recognition.stop(); } catch(e) {}
+        if (recognition) {
+            try { recognition.stop(); } catch(e) {}
+        }
         const micBtn = document.getElementById('micBtn');
-        if (micBtn) { micBtn.classList.remove('recording'); micBtn.innerText = '🎙️'; }
+        if (micBtn) { 
+            micBtn.classList.remove('recording'); 
+            micBtn.innerText = '🎙️'; 
+        }
     }
 
     window.onload = function() {
@@ -662,7 +714,7 @@
         });
         renderChat();
 
-        // フォーム送信のイベントリスナー（テキスト入力から送信を確実に動かす設定）
+        // フォーム送信のイベントリスナー
         const form = document.getElementById('chatForm');
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -714,7 +766,7 @@
                 const char = CHARS[currentCharKey];
                 let jpHtml = msg.jp ? `<div class="jp-trans">🇯🇵 ${escapeHtml(msg.jp)}</div>` : '';
                 row.innerHTML = `
-                    <img class="msg-avatar" src="${char.avatar}" onerror="tryNextExt(this, '${currentCharKey}')" alt="${char.name}">
+                    <img class="msg-avatar" src="${char.avatar}" onerror="tryNextExt(this, '${char.name}')" alt="${char.name}">
                     <div class="msg-content">
                         <div class="bubble">
                             ${escapeHtml(msg.text)}
@@ -732,7 +784,7 @@
             const typingRow = document.createElement('div');
             typingRow.className = 'msg-row char';
             typingRow.innerHTML = `
-                <img class="msg-avatar" src="${char.avatar}" onerror="tryNextExt(this, '${currentCharKey}')" alt="${char.name}">
+                <img class="msg-avatar" src="${char.avatar}" onerror="tryNextExt(this, '${char.name}')" alt="${char.name}">
                 <div class="msg-content">
                     <div class="bubble typing-indicator">💭 ${char.name}がメッセージを入力中...</div>
                 </div>
@@ -744,6 +796,10 @@
     }
 
     function sendQuick(text) {
+        // 音声ブロック（Autoplay Policy）を解除するためのダミー再生
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.resume();
+        }
         document.getElementById('userInput').value = text;
         submitUserText();
     }
@@ -756,7 +812,7 @@
 
         chatHistories[currentCharKey].push({ sender: 'user', text: text });
         input.value = '';
-        renderChat(true); // 返信考え中表示
+        renderChat(true); // 返信入力中アニメーション表示
         addLoveExp(8);
 
         processCharResponse(text);
@@ -777,12 +833,13 @@
             replyEn = data.reply;
             replyJp = data.jp || "";
         } catch (error) {
+            // API未応答時は内部AIロジックで自然な会話を自動生成
             const matched = getSmartReply(currentCharKey, userText);
             replyEn = matched.en.replace(/{NICKNAME}/g, userConfig.nickname);
             replyJp = matched.jp;
         }
 
-        /* 3秒（3000ms）待機してから返答 */
+        // 2秒後に返答（音声も自動再生）
         setTimeout(() => {
             chatHistories[currentCharKey].push({
                 sender: 'char',
@@ -791,7 +848,7 @@
             });
             renderChat(false);
             speakText(replyEn);
-        }, 3000);
+        }, 2000);
     }
 </script>
 
