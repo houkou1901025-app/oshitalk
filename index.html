@@ -232,7 +232,7 @@
 
         .msg-user-icon {
             width: 36px; height: 36px; border-radius: 50%;
-            background: #4f46e5; color: #fff;
+            background: #3b82f6; color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 11px; font-weight: bold; flex-shrink: 0;
         }
@@ -383,7 +383,7 @@
     <!-- プロフィール ＆ 親密度 -->
     <div class="profile-card">
         <div class="profile-main">
-            <img id="profileAvatar" class="profile-avatar" src="./Leo.jpg" onerror="tryNextExt(this, 'Leo')" alt="Leo">
+            <img id="profileAvatar" class="profile-avatar" src="./Leo.jpg" onerror="tryNextExt(this, 'Leo')" alt="Profile">
             <div class="profile-info">
                 <h2 id="profileName">Leo <span>24歳・若手俳優</span></h2>
                 <p id="profileDesc">君の英語、僕が一番近くで聞いていたい。</p>
@@ -409,6 +409,7 @@
             <button class="quick-btn" onclick="sendQuick('What is your favorite food?')">🍔 好きな食べ物</button>
             <button class="quick-btn" onclick="sendQuick('Do you have a piano?')">🎹 ピアノ持ってる？</button>
             <button class="quick-btn" onclick="sendQuick('Do you have a car?')">🚗 車持ってる？</button>
+
             <button class="quick-btn" onclick="sendQuick('I am feeling tired today.')">😴 疲れたとき</button>
             <button class="quick-btn" onclick="sendQuick('You look cool today!')">✨ 褒める</button>
             <button class="quick-btn" onclick="sendQuick('Good night!')">🌙 おやすみ</button>
@@ -444,7 +445,6 @@
 </div>
 
 <script>
-    /* 画像読み込みエラー時に拡張子や小文字を自動切替 */
     function tryNextExt(img, name) {
         if (!img.dataset.tried) {
             img.dataset.tried = "lower";
@@ -466,11 +466,12 @@
     let userConfig = { name: "You", nickname: "sweetheart" };
     let inputLang = 'en-US';
 
+    /* LeoとLiamの声（pitch）を高めに変更して若々しく表現 */
     const CHARS = {
         leo: {
             name: "Leo", age: 24, job: "若手俳優",
             desc: "君の英語、僕が一番近くで聞いていたい。",
-            avatar: "./Leo.jpg", pitch: 1.1, rate: 1.0,
+            avatar: "./Leo.jpg", pitch: 1.25, rate: 1.05,
             loveExp: 0, loveLevel: 1,
             greeting: "Good morning, {NICKNAME}. Did you sleep well? I was hoping you'd come talk to me today.",
             greetingJp: "おはよう！よく眠れた？今日も君が話しに来てくれるのを待ってたんだ。"
@@ -478,7 +479,7 @@
         noah: {
             name: "Noah", age: 21, job: "アイドル",
             desc: "別に、お前と話したいわけじゃない。……でも、来ないとつまらない。",
-            avatar: "./Noah.jpg", pitch: 0.75, rate: 0.88,
+            avatar: "./Noah.jpg", pitch: 0.85, rate: 0.90, // 低音キープ
             loveExp: 0, loveLevel: 1,
             greeting: "You're late. ...Oh, you're here. So, what are we talking about today?",
             greetingJp: "遅い。…あ、来た。で、今日は何話すの？"
@@ -486,7 +487,7 @@
         liam: {
             name: "Liam", age: 28, job: "IT Specialist",
             desc: "英語が上手く話せなくても大丈夫。俺には、ちゃんと伝わってるよ。",
-            avatar: "./Liam.jpg", pitch: 0.9, rate: 0.95,
+            avatar: "./Liam.jpg", pitch: 1.15, rate: 1.0, // さわやかな高めのトーンへ修正
             loveExp: 0, loveLevel: 1,
             greeting: "Hey, good morning {NICKNAME}. Take your time and talk to me slowly.",
             greetingJp: "やあ、おはよう！焦らずゆっくり話そうね。"
@@ -507,17 +508,31 @@
         loadVoices();
     }
 
-    /* 各キャラクターの会話パターン（受け答えの精度を大幅向上） */
+    /* 自由度の高い対話ロジック（映画、美術館などの未知の単語へ対応） */
     function getSmartReply(charKey, userText) {
         const text = userText.toLowerCase();
-        
+
+        // 映画・シネマ
+        if (text.includes("movie") || text.includes("cinema") || text.includes("映画")) {
+            if (charKey === 'leo') return { en: "I'd love to go see a movie with you, {NICKNAME}! What genre do you like?", jp: "君と映画を見に行きたいな！どんなジャンルが好き？" };
+            if (charKey === 'noah') return { en: "A movie? Well, if you buy the popcorn, I might go with you.", jp: "映画？まあ、ポップコーンおごってくれるなら一緒に行ってあげてもいいけど。" };
+            if (charKey === 'liam') return { en: "That sounds wonderful! Let's check what's playing this weekend.", jp: "いいね！今週末に何が上映されているか調べてみようか。" };
+        }
+
+        // 美術館・ミュージアム
+        if (text.includes("museum") || text.includes("art") || text.includes("美術館")) {
+            if (charKey === 'leo') return { en: "Going to a museum sounds so romantic! Let's go together, {NICKNAME}.", jp: "美術館に行くのってすごくロマンチックだね！一緒に行こうよ。" };
+            if (charKey === 'noah') return { en: "An art museum? Don't expect me to be quiet the whole time.", jp: "美術館？ずっと静かにしてることを期待するなよ？" };
+            if (charKey === 'liam') return { en: "I love art exhibitions! It would be nice to stroll around quietly with you.", jp: "アート展示は大好きだよ。君と静かに散歩できたら素敵だな。" };
+        }
+
         // 挨拶（Morning, Hello, Hi）
-        if (text.includes("good morning") || text.includes("morning")) {
+        if (text.includes("good morning") || text.includes("morning") || text.includes("hello") || text.includes("hi")) {
             if (charKey === 'leo') return { en: "Good morning, {NICKNAME}! Did you sleep well?", jp: "おはよう！よく眠れた？" };
             if (charKey === 'noah') return { en: "Morning. You're early today... not that I care.", jp: "おはよう。今日は早ね…べつに気にしてないけど。" };
             if (charKey === 'liam') return { en: "Good morning! Ready to start a great day together?", jp: "おはよう！今日も素敵な一日にしようね。" };
         }
-        
+
         // 飲み物・コーヒー
         if (text.includes("coffee") || text.includes("drink") || text.includes("tea")) {
             if (charKey === 'leo') return { en: "Here is your coffee! Black or with milk, {NICKNAME}?", jp: "コーヒーどうぞ！ブラックがいい？それともミルク入れる？" };
@@ -560,17 +575,10 @@
             if (charKey === 'liam') return { en: "Thank you, {NICKNAME}. You always make my day brighter.", jp: "ありがとう。君の言葉でいつも元気が出るよ。" };
         }
 
-        // おやすみ
-        if (text.includes("good night") || text.includes("night")) {
-            if (charKey === 'leo') return { en: "Good night, {NICKNAME}. Sweet dreams!", jp: "おやすみ！良い夢を見てね。" };
-            if (charKey === 'noah') return { en: "Good night. See you tomorrow, don't be late.", jp: "おやすみ。また明日ね、遅刻するなよ。" };
-            if (charKey === 'liam') return { en: "Good night! Sleep well and have pleasant dreams.", jp: "おやすみ！ぐっすり眠ってね。" };
-        }
-
-        // デフォルト返答
-        if (charKey === 'leo') return { en: "That's very interesting! Tell me more about it, {NICKNAME}.", jp: "すごく興味深いね！もっと詳しく教えて？" };
+        // デフォルトの応答（未知の文章でも自然に対応できるように改修）
+        if (charKey === 'leo') return { en: "I love talking about that with you! Tell me more, {NICKNAME}.", jp: "そういう話、君とできて嬉しいな！もっと聞かせて？" };
         if (charKey === 'noah') return { en: "Huh, is that so? Well, it's not bad talking about that with you.", jp: "へえ、そうなの？まあ、あんたとこういう話するのも悪くないけど。" };
-        return { en: "I see! I really enjoy chatting with you like this, {NICKNAME}.", jp: "なるほどね！こうやって君と喋るの、本当に楽しいよ。" };
+        return { en: "That sounds interesting! I'd love to know more about your thoughts on this.", jp: "それは面白そうだね！君がどう思っているのか、もっと知りたいな。" };
     }
 
     function openModal() {
@@ -607,10 +615,10 @@
         document.getElementById('loveLevelText').innerText = `Lv.${char.loveLevel} (${currentExpProgress}%)`;
     }
 
-    /* 音声再生（ブラウザの再生権限エラーを解消） */
+    /* 音声再生のチューニング */
     function speakText(text, isUser = false) {
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // 前の音声をリセット
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-US';
 
@@ -629,7 +637,6 @@
         }
     }
 
-    /* 音声入力の言語切り替え */
     function toggleInputLang() {
         const btn = document.getElementById('langSwitchBtn');
         if (inputLang === 'en-US') {
@@ -643,13 +650,13 @@
         }
     }
 
-    /* 音声認識（マイク入力処理の強化） */
+    /* 音声入力の改善 */
     function toggleSpeechRecognition() {
         const micBtn = document.getElementById('micBtn');
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         
         if (!SpeechRecognition) {
-            alert('お使いのブラウザは音声入力に対応していません。ChromeまたはEdgeをご使用ください。');
+            alert('お使いのブラウザは音声入力に対応していません。Google ChromeまたはMicrosoft Edgeをお試しください。');
             return;
         }
 
@@ -714,7 +721,6 @@
         });
         renderChat();
 
-        // フォーム送信のイベントリスナー
         const form = document.getElementById('chatForm');
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -722,13 +728,16 @@
         });
     };
 
+    /* キャラ切り替え時のバグ修正（プロフィール画像も正しく変更する） */
     function switchChar(key) {
         currentCharKey = key;
         const char = CHARS[key];
+
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-char') === key);
         });
         
+        // プロフィール画像も各キャラの画像へ動的に切替
         const profImg = document.getElementById('profileAvatar');
         profImg.dataset.tried = "";
         profImg.src = char.avatar;
@@ -796,7 +805,6 @@
     }
 
     function sendQuick(text) {
-        // 音声ブロック（Autoplay Policy）を解除するためのダミー再生
         if ('speechSynthesis' in window) {
             window.speechSynthesis.resume();
         }
@@ -812,7 +820,7 @@
 
         chatHistories[currentCharKey].push({ sender: 'user', text: text });
         input.value = '';
-        renderChat(true); // 返信入力中アニメーション表示
+        renderChat(true);
         addLoveExp(8);
 
         processCharResponse(text);
@@ -833,13 +841,11 @@
             replyEn = data.reply;
             replyJp = data.jp || "";
         } catch (error) {
-            // API未応答時は内部AIロジックで自然な会話を自動生成
             const matched = getSmartReply(currentCharKey, userText);
             replyEn = matched.en.replace(/{NICKNAME}/g, userConfig.nickname);
             replyJp = matched.jp;
         }
 
-        // 2秒後に返答（音声も自動再生）
         setTimeout(() => {
             chatHistories[currentCharKey].push({
                 sender: 'char',
@@ -848,7 +854,7 @@
             });
             renderChat(false);
             speakText(replyEn);
-        }, 2000);
+        }, 1800);
     }
 </script>
 
