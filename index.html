@@ -38,297 +38,117 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 18px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header p {
-            margin: 4px 0 0;
-            font-size: 0.8rem;
-            color: var(--text-sub);
-        }
-
-        /* キャラクター選択 */
-        .char-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .char-card {
-            flex: 1;
-            background: rgba(15, 23, 42, 0.6);
-            border: 2px solid transparent;
-            border-radius: 16px;
-            padding: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .char-card.active {
-            border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-2px);
-        }
-
-        .char-card img {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 4px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .char-card .name {
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-
-        /* 好感度＆音量調整バー */
-        .love-level-box {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 10px 12px;
-            margin-bottom: 12px;
-        }
-
-        .love-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .love-level-box img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-color);
-        }
-
-        .love-info {
-            flex: 1;
-        }
-
-        .love-title {
-            font-size: 0.8rem;
-            color: var(--text-sub);
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-
-        .love-title strong {
-            color: var(--text-main);
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 15%;
-            background: var(--accent-color);
-            transition: width 0.4s ease, background-color 0.3s ease;
-        }
-
-        /* 音量調整コントロール */
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            color: var(--text-sub);
-            padding-top: 4px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .volume-control input[type="range"] {
-            flex: 1;
-            height: 4px;
-            accent-color: var(--accent-color);
-            cursor: pointer;
-        }
-
-        /* チャットエリア */
-        .chat-area {
-            height: 270px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 12px;
-            padding-right: 4px;
-        }
-
-        .msg-row {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .msg-row.user {
-            flex-direction: row-reverse;
-        }
-
-        .msg-row img {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .bubble-container {
-            max-width: 78%;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .bubble {
-            padding: 10px 14px;
-            border-radius: 16px;
-            font-size: 0.88rem;
-            line-height: 1.45;
-        }
-
-        .msg-row.ai .bubble {
-            background: rgba(255, 255, 255, 0.1);
-            border-top-left-radius: 4px;
-        }
-
-        .msg-row.user .bubble {
-            background: var(--accent-color);
-            color: #0f172a;
-            font-weight: 600;
-            border-top-right-radius: 4px;
-        }
-
-        .jp-sub {
-            font-size: 0.75rem;
-            color: #cbd5e1;
-            margin-top: 4px;
-            display: block;
-            line-height: 1.3;
-        }
-
-        .english-tip {
-            font-size: 0.73rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-left: 3px solid var(--accent-color);
-            padding: 6px 10px;
-            border-radius: 0 8px 8px 0;
-            color: #e2e8f0;
-            margin-top: 4px;
-        }
-
-        /* クイックボタン */
-        .quick-actions {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            scrollbar-width: thin;
-        }
-
-        .quick-btn {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 18px;
-            font-size: 0.78rem;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .quick-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--accent-color);
-        }
-
-        /* 入力エリア */
-        .input-area {
-            display: flex;
-            gap: 8px;
             position: relative;
         }
 
-        .input-area input {
-            flex: 1;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 10px 16px;
-            color: #fff;
-            font-size: 0.88rem;
-            outline: none;
+        .header { text-align: center; margin-bottom: 12px; }
+        .header h1 {
+            margin: 0; font-size: 1.4rem; font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+        .header p { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-sub); }
 
-        .input-area input:focus {
+        /* キャラクター選択 */
+        .char-selector { display: flex; gap: 10px; margin-bottom: 12px; }
+        .char-card {
+            flex: 1; background: rgba(15, 23, 42, 0.6);
+            border: 2px solid transparent; border-radius: 16px;
+            padding: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+        }
+        .char-card.active {
             border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.08); transform: translateY(-2px);
+        }
+        .char-card img {
+            width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
+            margin-bottom: 4px; border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .char-card .name { font-weight: 700; font-size: 0.85rem; }
+
+        /* 好感度＆音量調整バー */
+        .love-level-box {
+            background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px; padding: 10px 12px; margin-bottom: 12px;
+        }
+        .love-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .love-level-box img {
+            width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color);
+        }
+        .love-info { flex: 1; }
+        .love-title { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .love-title strong { color: var(--text-main); }
+        .progress-bar { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 15%; background: var(--accent-color); transition: width 0.4s ease; }
+
+        .volume-control {
+            display: flex; align-items: center; gap: 8px; font-size: 0.75rem;
+            color: var(--text-sub); padding-top: 4px; border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .volume-control input[type="range"] { flex: 1; height: 4px; accent-color: var(--accent-color); cursor: pointer; }
+
+        /* チャットエリア */
+        .chat-area {
+            height: 270px; overflow-y: auto; display: flex; flex-direction: column;
+            gap: 12px; margin-bottom: 12px; padding-right: 4px;
+        }
+        .msg-row { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+        .msg-row.user { flex-direction: row-reverse; }
+        .msg-row img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .bubble-container { max-width: 78%; display: flex; flex-direction: column; gap: 4px; }
+        .bubble { padding: 10px 14px; border-radius: 16px; font-size: 0.88rem; line-height: 1.45; }
+        .msg-row.ai .bubble { background: rgba(255, 255, 255, 0.1); border-top-left-radius: 4px; }
+        .msg-row.user .bubble { background: var(--accent-color); color: #0f172a; font-weight: 600; border-top-right-radius: 4px; }
+        .jp-sub { font-size: 0.75rem; color: #cbd5e1; margin-top: 4px; display: block; line-height: 1.3; }
+        .english-tip {
+            font-size: 0.73rem; background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--accent-color); padding: 6px 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; margin-top: 4px;
         }
 
-        .btn {
-            background: var(--accent-color);
-            border: none;
-            color: #0f172a;
-            font-weight: bold;
-            padding: 0 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: opacity 0.2s;
+        /* クイックボタン */
+        .quick-actions { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 6px; }
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-main); padding: 6px 12px; border-radius: 18px; font-size: 0.78rem; white-space: nowrap; cursor: pointer;
         }
+        .quick-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color); }
 
-        .btn-mic {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        /* 入力エリア */
+        .input-area { display: flex; gap: 8px; position: relative; }
+        .input-area input {
+            flex: 1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 0.88rem; outline: none;
         }
+        .btn { background: var(--accent-color); border: none; color: #0f172a; font-weight: bold; padding: 0 16px; border-radius: 20px; cursor: pointer; }
+        .btn-mic { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn-mic.recording { background: #ef4444; }
 
-        .btn-mic.recording {
-            background: #ef4444;
-            color: #fff;
-            animation: pulse 1s infinite;
+        /* 🌟 推しアップPopup（モーダル）表示 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999;
         }
-
-        .voice-status {
-            position: absolute;
-            top: -22px;
-            left: 12px;
-            font-size: 0.7rem;
-            color: #ef4444;
-            display: none;
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card {
+            width: 85%; max-width: 340px; background: rgba(30, 41, 59, 0.95);
+            border: 2px solid var(--accent-color); border-radius: 24px; padding: 20px;
+            text-align: center; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+            transform: scale(0.8); transition: transform 0.3s ease;
         }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+        .modal-overlay.active .modal-card { transform: scale(1); }
+        .modal-card img {
+            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+            border: 4px solid var(--accent-color); margin-bottom: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+        }
+        .modal-name { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 8px; }
+        .modal-text-en { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+        .modal-text-jp { font-size: 0.8rem; color: #cbd5e1; margin-bottom: 14px; }
+        .modal-close-btn {
+            background: var(--accent-color); color: #0f172a; border: none;
+            padding: 8px 24px; border-radius: 20px; font-weight: bold; cursor: pointer;
         }
     </style>
 </head>
@@ -340,7 +160,6 @@
         <p>推しとの会話を通じて自然な英語を話そう！</p>
     </div>
 
-    <!-- キャラクター選択欄 -->
     <div class="char-selector">
         <div class="char-card active" onclick="selectChar('leo')" id="card-leo">
             <img src="leo.jpg" alt="Leo">
@@ -356,7 +175,6 @@
         </div>
     </div>
 
-    <!-- 好感度（Love Level）表示 ＆ 音量調整 -->
     <div class="love-level-box">
         <div class="love-header">
             <img id="love-avatar" src="leo.jpg" alt="Current Oshi">
@@ -370,7 +188,6 @@
                 </div>
             </div>
         </div>
-        <!-- 音量調整UI -->
         <div class="volume-control">
             <span>🔊 音量:</span>
             <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" onchange="updateVolume(this.value)">
@@ -378,10 +195,8 @@
         </div>
     </div>
 
-    <!-- チャット表示エリア -->
     <div class="chat-area" id="chat-area"></div>
 
-    <!-- クイック発言 (10種類) -->
     <div class="quick-actions">
         <button class="quick-btn" onclick="sendQuick('Good morning!')">☀️ 朝の挨拶</button>
         <button class="quick-btn" onclick="sendQuick('How was your day?')">💬 今日どうだった？</button>
@@ -395,112 +210,68 @@
         <button class="quick-btn" onclick="sendQuick('Good night, sweet dreams!')">🌙 おやすみ</button>
     </div>
 
-    <!-- メッセージ・音声入力エリア -->
     <div class="input-area">
-        <div class="voice-status" id="voice-status">🎙️ 音声入力中...（話し終えると自動送信）</div>
         <button class="btn btn-mic" id="mic-btn" onclick="toggleSpeech()">🎤</button>
         <input type="text" id="user-input" placeholder="英語でメッセージを入力..." onkeypress="handleKey(event)">
         <button class="btn" onclick="sendMessage()">送信</button>
     </div>
 </div>
 
+<!-- 🌟 推しのアップ表示Popupモーダル -->
+<div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <img id="modal-img" src="leo.jpg" alt="Oshi Large">
+        <div class="modal-name" id="modal-name">Leo</div>
+        <div class="modal-text-en" id="modal-text-en">Good morning, my love!</div>
+        <div class="modal-text-jp" id="modal-text-jp">おはよう、愛しい人！</div>
+        <button class="modal-close-btn" onclick="closeModal()">閉じる</button>
+    </div>
+</div>
+
 <script>
     const CHARS = {
-        leo: {
-            name: 'Leo',
-            desc: '溺愛・王子様',
-            avatar: 'leo.jpg',
-            color: '#f59e0b',
-            pitch: 0.9, // 落ち着いた男性声
-            rate: 0.9,
-            greet: 'Good morning, sweetheart. Did you sleep well? I was hoping you\'d come talk to me today.',
-            greetJp: 'おはよう。よく眠れた？今日も君が話しに来てくれるのを待っていたよ。'
-        },
-        noah: {
-            name: 'Noah',
-            desc: 'ツンデレ・天才アイドル',
-            avatar: 'noah.jpg',
-            color: '#8b5cf6',
-            pitch: 0.8, // 低めの男性声
-            rate: 0.95,
-            greet: 'You\'re late... Oh, you\'re here. So, what are we talking about today?',
-            greetJp: '遅い。...あ、来たんだ。で、今日は何について話すの？'
-        },
-        liam: {
-            name: 'Liam',
-            desc: '年下・わんこ系',
-            avatar: 'liam.jpg',
-            color: '#10b981',
-            pitch: 1.1, // 若々しい男性声
-            rate: 1.0,
-            greet: 'Hey! I\'m so happy to see you today! Tell me everything about your day!',
-            greetJp: 'ねえねえ！今日会えてすごく嬉しいよ！今日の出来事、全部教えて！'
-        }
+        leo: { name: 'Leo', desc: '溺愛・王子様', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.9, rate: 0.9, greet: 'Good morning, sweetheart. Did you sleep well?', greetJp: 'おはよう。よく眠れた？今日も君に会えて嬉しいよ。' },
+        noah: { name: 'Noah', desc: 'ツンデレ・天才アイドル', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.8, rate: 0.95, greet: 'You\'re late... Oh, you\'re here. So, what are we talking about today?', greetJp: '遅い。...あ、来たんだ。で、今日は何について話すの？' },
+        liam: { name: 'Liam', desc: '年下・わんこ系', avatar: 'liam.jpg', color: '#10b981', pitch: 1.1, rate: 1.0, greet: 'Hey! I\'m so happy to see you today! Tell me everything about your day!', greetJp: 'ねえねえ！今日会えてすごく嬉しいよ！' }
     };
 
     let currentChar = 'leo';
     let loveCounts = { leo: 15, noah: 10, liam: 20 };
     let currentVolume = 0.8;
-    let recognition = null;
-    let isRecording = false;
-    let silenceTimer = null;
     let maleVoices = [];
 
-    window.onload = () => {
-        selectChar('leo');
-        initSpeech();
-        initVoices();
-    };
+    window.onload = () => { selectChar('leo'); initVoices(); };
 
-    // 男性ボイスの検出・準備
     function initVoices() {
         if (!('speechSynthesis' in window)) return;
         const loadVoices = () => {
             const voices = window.speechSynthesis.getVoices();
-            // 英語かつ男性系のボイスを抽出
-            maleVoices = voices.filter(v => v.lang.startsWith('en') && (
-                v.name.includes('David') || v.name.includes('Mark') || v.name.includes('George') || 
-                v.name.includes('Guy') || v.name.includes('Male') || v.name.includes('Natural')
-            ));
+            maleVoices = voices.filter(v => v.lang.startsWith('en') && (v.name.includes('David') || v.name.includes('Mark') || v.name.includes('George') || v.name.includes('Guy') || v.name.includes('Male')));
         };
         loadVoices();
-        if (window.speechSynthesis.onvoiceschanged !== undefined) {
-            window.speechSynthesis.onvoiceschanged = loadVoices;
-        }
+        if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = loadVoices;
     }
 
-    // キャラクター切り替え
     function selectChar(key) {
         currentChar = key;
         const char = CHARS[key];
-
         document.querySelectorAll('.char-card').forEach(card => card.classList.remove('active'));
         document.getElementById(`card-${key}`).classList.add('active');
-
         document.documentElement.style.setProperty('--accent-color', char.color);
-
         document.getElementById('love-avatar').src = char.avatar;
         document.getElementById('char-title-name').innerText = `${char.name} (${char.desc})`;
         updateLoveUI();
 
         const chatArea = document.getElementById('chat-area');
         chatArea.innerHTML = '';
-        addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話を始めよう！`);
-    }
-
-    function addLoveProgress(points = 5) {
-        loveCounts[currentChar] += points;
-        updateLoveUI();
+        addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話を始めよう！`, false);
     }
 
     function updateLoveUI() {
-        const currentProgress = loveCounts[currentChar];
-        const level = Math.floor(currentProgress / 100) + 1;
-        const percentage = currentProgress % 100;
-
-        document.getElementById('love-lv').innerText = level;
-        document.getElementById('love-pct').innerText = percentage;
-        document.getElementById('love-progress').style.width = `${percentage}%`;
+        const prog = loveCounts[currentChar];
+        document.getElementById('love-lv').innerText = Math.floor(prog / 100) + 1;
+        document.getElementById('love-pct').innerText = prog % 100;
+        document.getElementById('love-progress').style.width = `${prog % 100}%`;
     }
 
     function updateVolume(val) {
@@ -508,11 +279,10 @@
         document.getElementById('volume-val').innerText = `${Math.round(currentVolume * 100)}%`;
     }
 
-    function addBubble(sender, text, subText = '', tipText = '') {
+    function addBubble(sender, text, subText = '', tipText = '', showPopup = true) {
         const chatArea = document.getElementById('chat-area');
         const row = document.createElement('div');
         row.className = `msg-row ${sender}`;
-
         const char = CHARS[currentChar];
         const avatarUrl = sender === 'ai' ? char.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop';
 
@@ -524,37 +294,49 @@
                 ${tipText ? `<div class="english-tip">💡 <strong>${char.name}'s Tip:</strong> ${tipText}</div>` : ''}
             </div>
         `;
+        
+        // バブルをタップしてもPopup表示できるように設定
+        row.onclick = () => openModal(char.avatar, char.name, text, subText);
+
         chatArea.appendChild(row);
         chatArea.scrollTop = chatArea.scrollHeight;
 
-        // AIの時だけ読み上げを実行
         if (sender === 'ai') {
             speakText(text);
+            if (showPopup) openModal(char.avatar, char.name, text, subText);
         }
+    }
+
+    // 🌟 推しモーダルPopupを開く関数
+    function openModal(imgSrc, name, enText, jpText) {
+        document.getElementById('modal-img').src = imgSrc;
+        document.getElementById('modal-name').innerText = name;
+        document.getElementById('modal-text-en').innerText = enText;
+        document.getElementById('modal-text-jp').innerText = jpText || '';
+        document.getElementById('oshi-modal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('oshi-modal').classList.remove('active');
     }
 
     async function sendMessage() {
         const input = document.getElementById('user-input');
         const text = input.value.trim();
         if (!text) return;
-
-        addBubble('user', text);
+        addBubble('user', text, '', '', false);
         input.value = '';
-        addLoveProgress(5);
-
+        loveCounts[currentChar] += 5;
+        updateLoveUI();
         await getAIReply(text);
     }
 
-    // クイック発言（重なり・被り防止処理）
     function sendQuick(text) {
-        window.speechSynthesis.cancel(); // 既存の読み上げを停止
-        addBubble('user', text);
-        addLoveProgress(3);
-
-        // 少し間を置いてAIだけが喋る
-        setTimeout(async () => {
-            await getAIReply(text);
-        }, 500);
+        window.speechSynthesis.cancel();
+        addBubble('user', text, '', '', false);
+        loveCounts[currentChar] += 3;
+        updateLoveUI();
+        setTimeout(async () => { await getAIReply(text); }, 400);
     }
 
     async function getAIReply(userText) {
@@ -565,149 +347,25 @@
                 body: JSON.stringify({ character: currentChar, message: userText })
             });
             const data = await response.json();
-            
             if (data.reply) {
-                addBubble('ai', data.reply, data.translation || '', data.tip || '');
-            } else {
-                throw new Error('API返答なし');
+                addBubble('ai', data.reply, data.translation || '', data.tip || '', true);
             }
         } catch (e) {
-            // API接続エラー時の高度なスマートフォールバック
-            const fallback = getSmartFallback(userText);
-            addBubble('ai', fallback.en, fallback.jp, fallback.tip);
+            addBubble('ai', "I'm so glad we're talking right now!", "今君とお話しできてすごく嬉しいよ！", "「so glad」で「すごく嬉しい」という意味になるよ。", true);
         }
     }
 
-    // キーワードを的確に拾う高精度フォールバック
-    function getSmartFallback(text) {
-        const lower = text.toLowerCase();
-        
-        if (lower.includes('plan') || lower.includes('today') || lower.includes('予定')) {
-            return {
-                en: "My plan today is to spend as much time with you as possible!",
-                jp: "今日の予定？できるだけ長い時間、君と一緒に過ごすことだよ！",
-                tip: "「spend time with ~」で「〜と一緒に時間を過ごす」という意味になるよ。"
-            };
-        }
-        if (lower.includes('night') || lower.includes('おやすみ')) {
-            return {
-                en: "Good night! Sleep tight, and I'll see you in your dreams.",
-                jp: "おやすみ。ゆっくり休んでね。夢の中で待っているよ。",
-                tip: "「Sleep tight」は「ぐっすり眠ってね」という親しい間柄の表現だよ。"
-            };
-        }
-        if (lower.includes('morning') || lower.includes('おはよう')) {
-            return {
-                en: "Good morning! Seeing your message makes my day starting so bright.",
-                jp: "おはよう！君のメッセージを見れて、最高の1日のスタートになったよ。",
-                tip: "「makes my day bright」で「1日を明るく彩ってくれる」という意味だよ。"
-            };
-        }
-        if (lower.includes('tired') || lower.includes('疲れた')) {
-            return {
-                en: "You worked so hard today. Take it easy and relax with me.",
-                jp: "今日は本当に頑張ったね。無理せず僕と一緒にのんびりしよう。",
-                tip: "「Take it easy」は「気楽にいこう・無理しないで」という励ましの言葉だよ。"
-            };
-        }
-        return {
-            en: "I'm always happy when I'm talking to you. Tell me more about what you like!",
-            jp: "君とお話ししている時はいつも幸せだよ。もっと好きなことを教えて？",
-            tip: "「Tell me more about ~」は相手に話をもっと促す定番表現だよ。"
-        };
-    }
-
-    // 音声認識（安定化修正）
-    function initSpeech() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return;
-
-        recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.interimResults = true;
-        recognition.continuous = false;
-
-        recognition.onresult = (event) => {
-            let transcript = '';
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                transcript += event.results[i][0].transcript;
-            }
-            document.getElementById('user-input').value = transcript;
-
-            clearTimeout(silenceTimer);
-            silenceTimer = setTimeout(() => {
-                if (isRecording && document.getElementById('user-input').value.trim() !== '') {
-                    stopSpeech();
-                    sendMessage();
-                }
-            }, 2000);
-        };
-
-        recognition.onerror = (e) => {
-            console.error("Speech Rec Error:", e);
-            stopSpeech();
-        };
-        recognition.onend = () => stopSpeech();
-    }
-
-    function toggleSpeech() {
-        if (!recognition) {
-            alert("お使いのブラウザは音声認識に対応していません。Chrome（PC/スマホ）等でお試しください。");
-            return;
-        }
-
-        if (isRecording) {
-            stopSpeech();
-        } else {
-            try {
-                recognition.start();
-                isRecording = true;
-                document.getElementById('mic-btn').classList.add('recording');
-                document.getElementById('mic-btn').innerText = '🔴';
-                document.getElementById('voice-status').style.display = 'block';
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    }
-
-    function stopSpeech() {
-        clearTimeout(silenceTimer);
-        if (recognition && isRecording) {
-            try { recognition.stop(); } catch(e){}
-        }
-        isRecording = false;
-        document.getElementById('mic-btn').classList.remove('recording');
-        document.getElementById('mic-btn').innerText = '🎤';
-        document.getElementById('voice-status').style.display = 'none';
-    }
-
-    // 音声読み上げ（男性声選択・音量調節機能付き）
     function speakText(text) {
         if (!('speechSynthesis' in window)) return;
         window.speechSynthesis.cancel();
-
         const uttr = new SpeechSynthesisUtterance(text);
         const char = CHARS[currentChar];
-
-        uttr.lang = 'en-US';
-        uttr.volume = currentVolume; // 音量バーの値を反映
-        uttr.pitch = char.pitch;     // キャラごとの声の高さ
-        uttr.rate = char.rate;
-
-        // 男性ボイスがあれば優先適用
-        if (maleVoices.length > 0) {
-            uttr.voice = maleVoices[0];
-        }
-
+        uttr.lang = 'en-US'; uttr.volume = currentVolume; uttr.pitch = char.pitch; uttr.rate = char.rate;
+        if (maleVoices.length > 0) uttr.voice = maleVoices[0];
         window.speechSynthesis.speak(uttr);
     }
 
-    function handleKey(event) {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    }
+    function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
 </script>
 
 </body>
