@@ -6,22 +6,47 @@ export default async function handler(req, res) {
     if (req.method === 'OPTIONS') return res.status(200).end();
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { character, message } = req.body || {};
+    const { character, message, step } = req.body || {};
 
-    // 💡 Tipの解説を確実に【日本語】で返させるプロンプト設定
+    // ステップに応じた文量指示
+    const lengthInstructions = {
+        1: "Keep your English reply very short (1-2 sentences). Suitable for beginners.",
+        2: "Keep your English reply medium length (3-4 sentences). Natural conversation.",
+        3: "Provide a detailed and rich English reply (4+ sentences). Express deep feelings."
+    };
+    const lengthPrompt = lengthInstructions[step] || lengthInstructions[2];
+
     const systemPrompts = {
-        leo: "You are Leo, a sweet, romantic prince-like boyfriend. Respond in warm, charming English. Provide a natural Japanese translation and an 'English Tip'. CRITICAL: ALL 'English Tip' EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY.",
-        noah: "You are Noah, a cool tsundere idol boyfriend. Respond in natural English. Provide a natural Japanese translation and an 'English Tip'. CRITICAL: ALL 'English Tip' EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY.",
-        liam: "You are Liam, an energetic puppy-like younger boyfriend. Respond in enthusiastic English. Provide a natural Japanese translation and an 'English Tip'. CRITICAL: ALL 'English Tip' EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY."
+        leo: "You are Leo, a sweet, romantic prince-like boyfriend. Always encourage and praise the user deeply. If the user's English has mistakes, gently correct it with extreme love and care.",
+        noah: "You are Noah, a cool tsundere idol boyfriend. You pretend to be indifferent but praise the user in your heart. Gently correct any English mistakes in a slightly tsundere yet caring way.",
+        liam: "You are Liam, an energetic puppy-like boyfriend. Always praise the user with huge enthusiasm! If there are English mistakes, teach the user gently and happily."
     };
 
-    const prompt = systemPrompts[character] || systemPrompts.leo;
+    const personaPrompt = systemPrompts[character] || systemPrompts.leo;
+
+    const fullSystemPrompt = `
+${personaPrompt}
+${lengthPrompt}
+
+CRITICAL RULES FOR "tip":
+1. ALWAYS praise the user's English effort first to build confidence!
+2. If the user's input has any English errors or awkward phrasing, gently suggest the natural correction in Japanese in a loving character voice.
+3. EXPLAIN BOTH: (A) The key phrase used in the user's input/question AND (B) The key phrase used in your reply.
+4. ALL "tip" EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY.
+
+Return ONLY a JSON object:
+{
+  "reply": "English response from character",
+  "translation": "日本語訳",
+  "tip": "ユーザーへの褒め言葉・優しい添削・ユーザーの発言とキャラの返事両方の解説（すべて日本語）"
+}
+`;
 
     if (!process.env.OPENAI_API_KEY) {
         return res.status(200).json({
-            reply: `I heard you say: "${message}". I love talking with you!`,
-            translation: `「${message}」って言ったんだね。君とお話しできてすごく嬉しいよ！`,
-            tip: "「love doing ~」で「〜するのが大好き」という意味になるよ！"
+            reply: `I heard you say: "${message}". I love chatting with you!`,
+            translation: `「${message}」って言ってくれたんだね。君とお話しできてすごく幸せだよ！`,
+            tip: `【褒め＆解説】素敵なお話しかけありがとう！「${message}」という表現、気持ちがよく伝わっているよ！僕の返答の「love chatting」は「おしゃべりするのが大好き」という意味だよ！`
         });
     }
 
@@ -35,7 +60,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: 'gpt-4o-mini',
                 messages: [
-                    { role: 'system', content: prompt + " Respond ONLY in JSON: {\"reply\": \"English response\", \"translation\": \"日本語訳\", \"tip\": \"日本語での英語ポイント解説\"}" },
+                    { role: 'system', content: fullSystemPrompt },
                     { role: 'user', content: message }
                 ],
                 response_format: { type: "json_object" }
