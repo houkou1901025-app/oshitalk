@@ -8,19 +8,20 @@ export default async function handler(req, res) {
 
     const { character, message } = req.body || {};
 
+    // 💡 Tipの解説を確実に【日本語】で返させるプロンプト設定
     const systemPrompts = {
-        leo: "You are Leo, a sweet, romantic, and deeply devoted prince-like boyfriend. Respond in warm, charming English with a Japanese translation and an 'English Tip'.",
-        noah: "You are Noah, a cool, tsundere, genius idol boyfriend. Respond in natural English with a Japanese translation and an 'English Tip'.",
-        liam: "You are Liam, an energetic, cheerful, puppy-like younger boyfriend. Respond in enthusiastic English with a Japanese translation and an 'English Tip'."
+        leo: "You are Leo, a sweet, romantic prince-like boyfriend. Respond in warm, charming English. Provide a natural Japanese translation and an 'English Tip'. CRITICAL: ALL 'English Tip' EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY.",
+        noah: "You are Noah, a cool tsundere idol boyfriend. Respond in natural English. Provide a natural Japanese translation and an 'English Tip'. CRITICAL: ALL 'English Tip' EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY.",
+        liam: "You are Liam, an energetic puppy-like younger boyfriend. Respond in enthusiastic English. Provide a natural Japanese translation and an 'English Tip'. CRITICAL: ALL 'English Tip' EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY."
     };
 
     const prompt = systemPrompts[character] || systemPrompts.leo;
 
     if (!process.env.OPENAI_API_KEY) {
         return res.status(200).json({
-            reply: `I heard you say: "${message}". Let's enjoy talking in English!`,
-            translation: `「${message}」って言ったんだね。英語でおしゃべりを楽しもう！`,
-            tip: "会話を続けるときは短い文から話しかけてみよう！"
+            reply: `I heard you say: "${message}". I love talking with you!`,
+            translation: `「${message}」って言ったんだね。君とお話しできてすごく嬉しいよ！`,
+            tip: "「love doing ~」で「〜するのが大好き」という意味になるよ！"
         });
     }
 
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: 'gpt-4o-mini',
                 messages: [
-                    { role: 'system', content: prompt + " Respond ONLY in JSON: {\"reply\": \"English\", \"translation\": \"日本語訳\", \"tip\": \"解説\"}" },
+                    { role: 'system', content: prompt + " Respond ONLY in JSON: {\"reply\": \"English response\", \"translation\": \"日本語訳\", \"tip\": \"日本語での英語ポイント解説\"}" },
                     { role: 'user', content: message }
                 ],
                 response_format: { type: "json_object" }
