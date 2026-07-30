@@ -17,139 +17,85 @@
         }
 
         body {
-            margin: 0;
-            padding: 16px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            margin: 0; padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color); color: var(--text-main);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box;
         }
 
         .container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 18px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-            position: relative;
+            width: 100%; max-width: 480px; background: var(--card-bg);
+            backdrop-filter: blur(12px); border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 18px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); position: relative;
         }
 
-        .header { text-align: center; margin-bottom: 12px; }
+        .header { text-align: center; margin-bottom: 10px; }
         .header h1 {
-            margin: 0; font-size: 1.4rem; font-weight: 700;
+            margin: 0; font-size: 1.3rem; font-weight: 700;
             background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .header p { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-sub); }
 
         /* キャラクター選択 */
-        .char-selector { display: flex; gap: 10px; margin-bottom: 12px; }
+        .char-selector { display: flex; gap: 8px; margin-bottom: 10px; }
         .char-card {
             flex: 1; background: rgba(15, 23, 42, 0.6);
             border: 2px solid transparent; border-radius: 16px;
-            padding: 8px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+            padding: 6px; text-align: center; cursor: pointer; transition: all 0.3s ease;
         }
-        .char-card.active {
-            border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.08); transform: translateY(-2px);
-        }
-        .char-card img {
-            width: 56px; height: 56px; border-radius: 50%; object-fit: cover;
-            margin-bottom: 4px; border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        .char-card .name { font-weight: 700; font-size: 0.85rem; }
+        .char-card.active { border-color: var(--accent-color); background: rgba(255, 255, 255, 0.08); }
+        .char-card img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.2); }
+        .char-card .name { font-weight: 700; font-size: 0.8rem; }
 
-        /* 好感度＆音量調整バー */
-        .love-level-box {
-            background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px; padding: 10px 12px; margin-bottom: 12px;
+        /* 設定バー（Step選択 & 履歴保存期間） */
+        .control-panel {
+            background: rgba(15, 23, 42, 0.5); border-radius: 12px; padding: 8px 12px;
+            margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 0.75rem;
         }
-        .love-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .love-level-box img {
-            width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color);
+        .control-row { display: flex; justify-content: space-between; align-items: center; }
+        .step-btns { display: flex; gap: 4px; }
+        .step-btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; padding: 2px 8px; border-radius: 10px; cursor: pointer; font-size: 0.7rem;
         }
-        .love-info { flex: 1; }
-        .love-title { font-size: 0.8rem; color: var(--text-sub); display: flex; justify-content: space-between; margin-bottom: 4px; }
-        .love-title strong { color: var(--text-main); }
-        .progress-bar { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 15%; background: var(--accent-color); transition: width 0.4s ease; }
-
-        .volume-control {
-            display: flex; align-items: center; gap: 8px; font-size: 0.75rem;
-            color: var(--text-sub); padding-top: 4px; border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .volume-control input[type="range"] { flex: 1; height: 4px; accent-color: var(--accent-color); cursor: pointer; }
+        .step-btn.active { background: var(--accent-color); color: #0f172a; font-weight: bold; }
+        select { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 4px; }
 
         /* チャットエリア */
-        .chat-area {
-            height: 270px; overflow-y: auto; display: flex; flex-direction: column;
-            gap: 12px; margin-bottom: 12px; padding-right: 4px;
-        }
-        .msg-row { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+        .chat-area { height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; padding-right: 4px; }
+        .msg-row { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
         .msg-row.user { flex-direction: row-reverse; }
-        .msg-row img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-        .bubble-container { max-width: 78%; display: flex; flex-direction: column; gap: 4px; }
-        .bubble { padding: 10px 14px; border-radius: 16px; font-size: 0.88rem; line-height: 1.45; }
-        .msg-row.ai .bubble { background: rgba(255, 255, 255, 0.1); border-top-left-radius: 4px; }
-        .msg-row.user .bubble { background: var(--accent-color); color: #0f172a; font-weight: 600; border-top-right-radius: 4px; }
-        .jp-sub { font-size: 0.75rem; color: #cbd5e1; margin-top: 4px; display: block; line-height: 1.3; }
-        .english-tip {
-            font-size: 0.73rem; background: rgba(0, 0, 0, 0.3);
-            border-left: 3px solid var(--accent-color); padding: 6px 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; margin-top: 4px;
-        }
+        .msg-row img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .bubble-container { max-width: 80%; display: flex; flex-direction: column; gap: 3px; }
+        .bubble { padding: 8px 12px; border-radius: 14px; font-size: 0.85rem; line-height: 1.4; }
+        .msg-row.ai .bubble { background: rgba(255, 255, 255, 0.1); border-top-left-radius: 2px; }
+        .msg-row.user .bubble { background: var(--accent-color); color: #0f172a; font-weight: 600; border-top-right-radius: 2px; }
+        .jp-sub { font-size: 0.73rem; color: #cbd5e1; margin-top: 2px; }
+        .english-tip { font-size: 0.72rem; background: rgba(0, 0, 0, 0.35); border-left: 3px solid var(--accent-color); padding: 6px 8px; border-radius: 0 6px 6px 0; color: #e2e8f0; margin-top: 3px; }
 
-        /* クイックボタン */
-        .quick-actions { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 6px; }
-        .quick-btn {
-            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12);
-            color: var(--text-main); padding: 6px 12px; border-radius: 18px; font-size: 0.78rem; white-space: nowrap; cursor: pointer;
-        }
-        .quick-btn:hover { background: rgba(255, 255, 255, 0.15); border-color: var(--accent-color); }
+        /* クイックアクション */
+        .quick-actions { display: flex; gap: 6px; margin-bottom: 10px; overflow-x: auto; padding-bottom: 4px; }
+        .quick-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-main); padding: 5px 10px; border-radius: 14px; font-size: 0.75rem; white-space: nowrap; cursor: pointer; }
 
         /* 入力エリア */
-        .input-area { display: flex; gap: 8px; position: relative; }
-        .input-area input {
-            flex: 1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 0.88rem; outline: none;
-        }
-        .btn { background: var(--accent-color); border: none; color: #0f172a; font-weight: bold; padding: 0 16px; border-radius: 20px; cursor: pointer; }
-        .btn-mic { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .btn-mic.recording { background: #ef4444; }
+        .input-area { display: flex; gap: 6px; }
+        .input-area input { flex: 1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 18px; padding: 8px 14px; color: #fff; font-size: 0.85rem; outline: none; }
+        .btn { background: var(--accent-color); border: none; color: #0f172a; font-weight: bold; padding: 0 14px; border-radius: 18px; cursor: pointer; }
+        .btn-mic { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); width: 38px; }
+        .btn-mic.recording { background: #ef4444; animation: pulse 1s infinite; }
 
-        /* 🌟 推しアップPopup（モーダル）表示 */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999;
-        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* Popup モーダル */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-card {
-            width: 85%; max-width: 340px; background: rgba(30, 41, 59, 0.95);
-            border: 2px solid var(--accent-color); border-radius: 24px; padding: 20px;
-            text-align: center; box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
-            transform: scale(0.8); transition: transform 0.3s ease;
-        }
-        .modal-overlay.active .modal-card { transform: scale(1); }
-        .modal-card img {
-            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
-            border: 4px solid var(--accent-color); margin-bottom: 12px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-        }
-        .modal-name { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 8px; }
-        .modal-text-en { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
-        .modal-text-jp { font-size: 0.8rem; color: #cbd5e1; margin-bottom: 14px; }
-        .modal-close-btn {
-            background: var(--accent-color); color: #0f172a; border: none;
-            padding: 8px 24px; border-radius: 20px; font-weight: bold; cursor: pointer;
-        }
+        .modal-card { width: 85%; max-width: 320px; background: rgba(30, 41, 59, 0.95); border: 2px solid var(--accent-color); border-radius: 20px; padding: 18px; text-align: center; }
+        .modal-card img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 10px; }
+        .modal-name { font-size: 1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 6px; }
+        .modal-text-en { font-size: 0.9rem; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+        .modal-text-jp { font-size: 0.78rem; color: #cbd5e1; margin-bottom: 12px; }
+        .modal-close-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 6px 20px; border-radius: 16px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -157,41 +103,37 @@
 <div class="container">
     <div class="header">
         <h1>Oshitalk English</h1>
-        <p>推しとの会話を通じて自然な英語を話そう！</p>
     </div>
 
     <div class="char-selector">
         <div class="char-card active" onclick="selectChar('leo')" id="card-leo">
-            <img src="leo.jpg" alt="Leo">
-            <div class="name">Leo</div>
+            <img src="leo.jpg" alt="Leo"><div class="name">Leo</div>
         </div>
         <div class="char-card" onclick="selectChar('noah')" id="card-noah">
-            <img src="noah.jpg" alt="Noah">
-            <div class="name">Noah</div>
+            <img src="noah.jpg" alt="Noah"><div class="name">Noah</div>
         </div>
         <div class="char-card" onclick="selectChar('liam')" id="card-liam">
-            <img src="liam.jpg" alt="Liam">
-            <div class="name">Liam</div>
+            <img src="liam.jpg" alt="Liam"><div class="name">Liam</div>
         </div>
     </div>
 
-    <div class="love-level-box">
-        <div class="love-header">
-            <img id="love-avatar" src="leo.jpg" alt="Current Oshi">
-            <div class="love-info">
-                <div class="love-title">
-                    <strong id="char-title-name">Leo (溺愛・王子様)</strong>
-                    <span>Love Lv. <span id="love-lv">1</span> (<span id="love-pct">15</span>%)</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="love-progress"></div>
-                </div>
+    <!-- コントロールパネル -->
+    <div class="control-panel">
+        <div class="control-row">
+            <span>📈 会話ステップ:</span>
+            <div class="step-btns">
+                <button class="step-btn" id="step-1" onclick="setStep(1)">Step 1 (初級)</button>
+                <button class="step-btn active" id="step-2" onclick="setStep(2)">Step 2 (中級)</button>
+                <button class="step-btn" id="step-3" onclick="setStep(3)">Step 3 (長文)</button>
             </div>
         </div>
-        <div class="volume-control">
-            <span>🔊 音量:</span>
-            <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.8" onchange="updateVolume(this.value)">
-            <span id="volume-val">80%</span>
+        <div class="control-row">
+            <span>💾 履歴保存期間:</span>
+            <select id="history-retention" onchange="saveHistorySetting(this.value)">
+                <option value="1">1日間保存</option>
+                <option value="7" selected>1週間保存</option>
+                <option value="999">無制限に保持</option>
+            </select>
         </div>
     </div>
 
@@ -201,13 +143,8 @@
         <button class="quick-btn" onclick="sendQuick('Good morning!')">☀️ 朝の挨拶</button>
         <button class="quick-btn" onclick="sendQuick('How was your day?')">💬 今日どうだった？</button>
         <button class="quick-btn" onclick="sendQuick('I missed you so much!')">💖 逢いたかった！</button>
-        <button class="quick-btn" onclick="sendQuick('What are your plans for today?')">📅 今日の予定は？</button>
-        <button class="quick-btn" onclick="sendQuick('I am a bit tired today.')">休 疲れたな...</button>
         <button class="quick-btn" onclick="sendQuick('Can you encourage me?')">🥺 励まして！</button>
-        <button class="quick-btn" onclick="sendQuick('What are you doing right now?')">👀 何してるの？</button>
-        <button class="quick-btn" onclick="sendQuick('Tell me something sweet!')">🍬 甘い言葉ちょうだい</button>
         <button class="quick-btn" onclick="sendQuick('I did my best today!')">🔥 今日がんばったよ！</button>
-        <button class="quick-btn" onclick="sendQuick('Good night, sweet dreams!')">🌙 おやすみ</button>
     </div>
 
     <div class="input-area">
@@ -217,39 +154,41 @@
     </div>
 </div>
 
-<!-- 🌟 推しのアップ表示Popupモーダル -->
+<!-- 推しモーダル Popup -->
 <div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
-        <img id="modal-img" src="leo.jpg" alt="Oshi Large">
+        <img id="modal-img" src="leo.jpg" alt="Oshi">
         <div class="modal-name" id="modal-name">Leo</div>
-        <div class="modal-text-en" id="modal-text-en">Good morning, my love!</div>
-        <div class="modal-text-jp" id="modal-text-jp">おはよう、愛しい人！</div>
+        <div class="modal-text-en" id="modal-text-en"></div>
+        <div class="modal-text-jp" id="modal-text-jp"></div>
         <button class="modal-close-btn" onclick="closeModal()">閉じる</button>
     </div>
 </div>
 
 <script>
+    // キャラクター定義 (Leoのピッチを1.05に上げて声を若返らせました)
     const CHARS = {
-        leo: { name: 'Leo', desc: '溺愛・王子様', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.9, rate: 0.9, greet: 'Good morning, sweetheart. Did you sleep well?', greetJp: 'おはよう。よく眠れた？今日も君に会えて嬉しいよ。' },
-        noah: { name: 'Noah', desc: 'ツンデレ・天才アイドル', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.8, rate: 0.95, greet: 'You\'re late... Oh, you\'re here. So, what are we talking about today?', greetJp: '遅い。...あ、来たんだ。で、今日は何について話すの？' },
-        liam: { name: 'Liam', desc: '年下・わんこ系', avatar: 'liam.jpg', color: '#10b981', pitch: 1.1, rate: 1.0, greet: 'Hey! I\'m so happy to see you today! Tell me everything about your day!', greetJp: 'ねえねえ！今日会えてすごく嬉しいよ！' }
+        leo: { name: 'Leo', avatar: 'leo.jpg', color: '#f59e0b', pitch: 1.05, rate: 0.95, greet: 'Good morning, sweetheart. I was thinking about you.', greetJp: 'おはよう。君のことを考えていたよ。' },
+        noah: { name: 'Noah', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.9, rate: 1.0, greet: 'You\'re here. So, what do you want to talk about today?', greetJp: '来たんだ。で、今日は何を話すの？' },
+        liam: { name: 'Liam', avatar: 'liam.jpg', color: '#10b981', pitch: 1.2, rate: 1.05, greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'ねえねえ！今日もお話しできてすごく嬉しいよ！' }
     };
 
     let currentChar = 'leo';
-    let loveCounts = { leo: 15, noah: 10, liam: 20 };
-    let currentVolume = 0.8;
-    let maleVoices = [];
+    let currentStep = 2;
+    let chatHistories = { leo: [], noah: [], liam: [] };
+    let isRecording = false;
+    let recognition = null;
 
-    window.onload = () => { selectChar('leo'); initVoices(); };
+    window.onload = () => {
+        loadHistories();
+        selectChar('leo');
+        setupSpeechRecognition();
+    };
 
-    function initVoices() {
-        if (!('speechSynthesis' in window)) return;
-        const loadVoices = () => {
-            const voices = window.speechSynthesis.getVoices();
-            maleVoices = voices.filter(v => v.lang.startsWith('en') && (v.name.includes('David') || v.name.includes('Mark') || v.name.includes('George') || v.name.includes('Guy') || v.name.includes('Male')));
-        };
-        loadVoices();
-        if (window.speechSynthesis.onvoiceschanged !== undefined) window.speechSynthesis.onvoiceschanged = loadVoices;
+    function setStep(s) {
+        currentStep = s;
+        document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`step-${s}`).classList.add('active');
     }
 
     function selectChar(key) {
@@ -258,28 +197,26 @@
         document.querySelectorAll('.char-card').forEach(card => card.classList.remove('active'));
         document.getElementById(`card-${key}`).classList.add('active');
         document.documentElement.style.setProperty('--accent-color', char.color);
-        document.getElementById('love-avatar').src = char.avatar;
-        document.getElementById('char-title-name').innerText = `${char.name} (${char.desc})`;
-        updateLoveUI();
 
+        renderChatHistory();
+    }
+
+    function renderChatHistory() {
         const chatArea = document.getElementById('chat-area');
         chatArea.innerHTML = '';
-        addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話を始めよう！`, false);
+        const history = chatHistories[currentChar];
+
+        if (!history || history.length === 0) {
+            const char = CHARS[currentChar];
+            addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話をスタートしよう！`, false, false);
+        } else {
+            history.forEach(item => {
+                addBubble(item.sender, item.text, item.subText, item.tipText, false, false);
+            });
+        }
     }
 
-    function updateLoveUI() {
-        const prog = loveCounts[currentChar];
-        document.getElementById('love-lv').innerText = Math.floor(prog / 100) + 1;
-        document.getElementById('love-pct').innerText = prog % 100;
-        document.getElementById('love-progress').style.width = `${prog % 100}%`;
-    }
-
-    function updateVolume(val) {
-        currentVolume = parseFloat(val);
-        document.getElementById('volume-val').innerText = `${Math.round(currentVolume * 100)}%`;
-    }
-
-    function addBubble(sender, text, subText = '', tipText = '', showPopup = true) {
+    function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true) {
         const chatArea = document.getElementById('chat-area');
         const row = document.createElement('div');
         row.className = `msg-row ${sender}`;
@@ -287,19 +224,23 @@
         const avatarUrl = sender === 'ai' ? char.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop';
 
         row.innerHTML = `
-            <img src="${avatarUrl}" alt="icon">
+            <img src="${avatarUrl}">
             <div class="bubble-container">
                 <div class="bubble">${text}</div>
                 ${subText ? `<span class="jp-sub">${subText}</span>` : ''}
                 ${tipText ? `<div class="english-tip">💡 <strong>${char.name}'s Tip:</strong> ${tipText}</div>` : ''}
             </div>
         `;
-        
-        // バブルをタップしてもPopup表示できるように設定
-        row.onclick = () => openModal(char.avatar, char.name, text, subText);
 
+        row.onclick = () => openModal(char.avatar, char.name, text, subText);
         chatArea.appendChild(row);
         chatArea.scrollTop = chatArea.scrollHeight;
+
+        if (save) {
+            if (!chatHistories[currentChar]) chatHistories[currentChar] = [];
+            chatHistories[currentChar].push({ sender, text, subText, tipText, time: Date.now() });
+            saveHistories();
+        }
 
         if (sender === 'ai') {
             speakText(text);
@@ -307,35 +248,60 @@
         }
     }
 
-    // 🌟 推しモーダルPopupを開く関数
-    function openModal(imgSrc, name, enText, jpText) {
-        document.getElementById('modal-img').src = imgSrc;
-        document.getElementById('modal-name').innerText = name;
-        document.getElementById('modal-text-en').innerText = enText;
-        document.getElementById('modal-text-jp').innerText = jpText || '';
-        document.getElementById('oshi-modal').classList.add('active');
+    // 🌟 音声入力 (Speech Recognition) 設定
+    function setupSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            console.warn("Speech Recognition not supported in this browser.");
+            return;
+        }
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            isRecording = true;
+            document.getElementById('mic-btn').classList.add('recording');
+        };
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('user-input').value = transcript;
+            stopSpeech();
+            sendMessage();
+        };
+
+        recognition.onerror = () => stopSpeech();
+        recognition.onend = () => stopSpeech();
     }
 
-    function closeModal() {
-        document.getElementById('oshi-modal').classList.remove('active');
+    function toggleSpeech() {
+        if (!recognition) {
+            alert("お使いのブラウザは音声入力に対応していません。(ChromeやSafariでお試しください)");
+            return;
+        }
+        if (isRecording) stopSpeech();
+        else recognition.start();
+    }
+
+    function stopSpeech() {
+        isRecording = false;
+        document.getElementById('mic-btn').classList.remove('recording');
+        if (recognition) recognition.stop();
     }
 
     async function sendMessage() {
         const input = document.getElementById('user-input');
         const text = input.value.trim();
         if (!text) return;
-        addBubble('user', text, '', '', false);
+        addBubble('user', text, '', '', false, true);
         input.value = '';
-        loveCounts[currentChar] += 5;
-        updateLoveUI();
         await getAIReply(text);
     }
 
     function sendQuick(text) {
         window.speechSynthesis.cancel();
-        addBubble('user', text, '', '', false);
-        loveCounts[currentChar] += 3;
-        updateLoveUI();
+        addBubble('user', text, '', '', false, true);
         setTimeout(async () => { await getAIReply(text); }, 400);
     }
 
@@ -344,14 +310,14 @@
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ character: currentChar, message: userText })
+                body: JSON.stringify({ character: currentChar, message: userText, step: currentStep })
             });
             const data = await response.json();
             if (data.reply) {
-                addBubble('ai', data.reply, data.translation || '', data.tip || '', true);
+                addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true);
             }
         } catch (e) {
-            addBubble('ai', "I'm so glad we're talking right now!", "今君とお話しできてすごく嬉しいよ！", "「so glad」で「すごく嬉しい」という意味になるよ。", true);
+            addBubble('ai', "I loved hearing from you!", "君からの言葉、すごく嬉しかったよ！", "【解説】「I loved hearing from you」で「あなたから連絡/言葉をもらえて嬉しかった」という意味になります！", true, true);
         }
     }
 
@@ -360,13 +326,40 @@
         window.speechSynthesis.cancel();
         const uttr = new SpeechSynthesisUtterance(text);
         const char = CHARS[currentChar];
-        uttr.lang = 'en-US'; uttr.volume = currentVolume; uttr.pitch = char.pitch; uttr.rate = char.rate;
-        if (maleVoices.length > 0) uttr.voice = maleVoices[0];
+        uttr.lang = 'en-US'; uttr.pitch = char.pitch; uttr.rate = char.rate;
         window.speechSynthesis.speak(uttr);
     }
 
+    function openModal(imgSrc, name, enText, jpText) {
+        document.getElementById('modal-img').src = imgSrc;
+        document.getElementById('modal-name').innerText = name;
+        document.getElementById('modal-text-en').innerText = enText;
+        document.getElementById('modal-text-jp').innerText = jpText || '';
+        document.getElementById('oshi-modal').classList.add('active');
+    }
+
+    function closeModal() { document.getElementById('oshi-modal').classList.remove('active'); }
+
+    function saveHistories() { localStorage.setItem('oshitalk_histories', JSON.stringify(chatHistories)); }
+
+    function loadHistories() {
+        const data = localStorage.getItem('oshitalk_histories');
+        const days = parseInt(document.getElementById('history-retention').value || '7');
+        if (data) {
+            const parsed = JSON.parse(data);
+            const now = Date.now();
+            const cutoff = now - (days * 24 * 60 * 60 * 1000);
+
+            // 期限切れデータのフィルタリング
+            Object.keys(parsed).forEach(k => {
+                parsed[k] = parsed[k].filter(item => item.time > cutoff);
+            });
+            chatHistories = parsed;
+        }
+    }
+
+    function saveHistorySetting(val) { loadHistories(); renderChatHistory(); }
     function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
 </script>
-
 </body>
 </html>
