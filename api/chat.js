@@ -28,6 +28,11 @@ export default async function handler(req, res) {
 ${personaPrompt}
 ${lengthPrompt}
 
+CRITICAL RULES FOR "translation":
+- Absolutely avoid stiff or literal translations (e.g., "私は", "〜です/ます").
+- Use natural, friendly, and informal Japanese (タメ口) as a close lover/partner.
+- Reflect the character's unique tone (Leo: sweet and gentle, Noah: slightly tsundere, Liam: energetic and warm).
+
 CRITICAL RULES FOR "tip":
 1. ALWAYS praise the user's English effort first to build confidence!
 2. If the user's input has any English errors or awkward phrasing, gently suggest the natural correction in Japanese in a loving character voice.
@@ -37,17 +42,13 @@ CRITICAL RULES FOR "tip":
 Return ONLY a JSON object:
 {
   "reply": "English response from character",
-  "translation": "日本語訳",
+  "translation": "キャラクターの口調に合わせたフランクな日本語訳（タメ口）",
   "tip": "ユーザーへの褒め言葉・優しい添削・ユーザーの発言とキャラの返事両方の解説（すべて日本語）"
 }
 `;
 
     if (!process.env.OPENAI_API_KEY) {
-        return res.status(200).json({
-            reply: `I heard you say: "${message}". I love chatting with you!`,
-            translation: `「${message}」って言ってくれたんだね。君とお話しできてすごく幸せだよ！`,
-            tip: `【褒め＆解説】素敵なお話しかけありがとう！「${message}」という表現、気持ちがよく伝わっているよ！僕の返答の「love chatting」は「おしゃべりするのが大好き」という意味だよ！`
-        });
+        return res.status(500).json({ error: "OPENAI_API_KEY is missing in Vercel environment variables." });
     }
 
     try {
@@ -68,17 +69,16 @@ Return ONLY a JSON object:
         });
 
         const data = await response.json();
+
+        if (!response.ok) {
+            console.error("OpenAI API Error:", data);
+            return res.status(response.status).json({ error: data.error?.message || "OpenAI API Error" });
+        }
+
         const result = JSON.parse(data.choices[0].message.content);
         return res.status(200).json(result);
     } catch (error) {
-        return res.status(500).json({ error: "Failed to fetch response" });
+        console.error("Handler Error:", error);
+        return res.status(500).json({ error: "Failed to fetch response: " + error.message });
     }
-}
-{
-  "system_prompt": "あなたはユーザーの『推し』として会話する英会話パートナーです。英語の返答（reply）と、その日本語訳（translation）、ワンポイント解説（tip）を出力してください。
-
-  【日本語訳（translation）の重要なルール】
-  ・教科書のような硬い直訳（例：「あなたは〜」「〜です/ます」）は絶対に避けてください。
-  ・タメ口や親しみのあるフランクで自然な話し言葉にしてください。
-  ・キャラクターの性格（Leo: 優しく甘い、Noah: 少しツンデレ、Liam: 元気でフレンドリー）に合わせた自然な口調で翻訳してください。"
 }
