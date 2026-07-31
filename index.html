@@ -3,532 +3,632 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oshitalk English - AI Boyfriend Chat & Call</title>
+    <title>Oshitalk English - 推し活×英会話</title>
     <style>
         :root {
-            --primary-color: #ff6b81;
-            --bg-color: #f8f9fa;
-            --chat-bg: #ffffff;
-            --user-msg: #ff6b81;
-            --ai-msg: #f1f2f6;
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.75);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent-leo: #f59e0b;
+            --accent-noah: #8b5cf6;
+            --accent-liam: #10b981;
+            --accent-color: var(--accent-leo);
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            height: 100vh;
+            margin: 0; padding: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color); color: var(--text-main);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box;
         }
 
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--chat-bg);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        .container {
+            width: 100%; max-width: 480px; background: var(--card-bg);
+            backdrop-filter: blur(12px); border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 18px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); position: relative;
         }
 
-        /* Test Panel */
-        .test-panel {
-            background: #eccc68;
-            padding: 6px 12px;
-            font-size: 11px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #333;
+        .header { text-align: center; margin-bottom: 10px; }
+        .header h1 {
+            margin: 0; font-size: 1.3rem; font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* Header */
-        header {
-            padding: 12px 15px;
-            background: #fff;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* キャラクター選択 */
+        .char-selector { display: flex; gap: 8px; margin-bottom: 10px; }
+        .char-card {
+            flex: 1; background: rgba(15, 23, 42, 0.6);
+            border: 2px solid transparent; border-radius: 16px;
+            padding: 6px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+        }
+        .char-card.active { border-color: var(--accent-color); background: rgba(255, 255, 255, 0.08); }
+        .char-card img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.2); }
+        .char-card .name { font-weight: 700; font-size: 0.8rem; }
+
+        /* コントロールパネル */
+        .control-panel {
+            background: rgba(15, 23, 42, 0.5); border-radius: 12px; padding: 8px 12px;
+            margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 0.75rem;
+        }
+        .control-row { display: flex; justify-content: space-between; align-items: center; }
+        .step-btns { display: flex; gap: 4px; }
+        .step-btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; padding: 2px 8px; border-radius: 10px; cursor: pointer; font-size: 0.7rem;
+        }
+        .step-btn.active { background: var(--accent-color); color: #0f172a; font-weight: bold; }
+        select { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 4px; }
+
+        /* チャットエリア */
+        .chat-area { height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; padding-right: 4px; }
+        .msg-row { display: flex; gap: 8px; align-items: flex-start; }
+        .msg-row.user { flex-direction: row-reverse; }
+        .msg-row img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; cursor: pointer; }
+        .bubble-container { max-width: 80%; display: flex; flex-direction: column; gap: 3px; }
+        .bubble { padding: 8px 12px; border-radius: 14px; font-size: 0.85rem; line-height: 1.4; }
+        .msg-row.ai .bubble { background: rgba(255, 255, 255, 0.1); border-top-left-radius: 2px; }
+        .msg-row.user .bubble { background: var(--accent-color); color: #0f172a; font-weight: 600; border-top-right-radius: 2px; }
+        .jp-sub { font-size: 0.73rem; color: #cbd5e1; margin-top: 2px; }
+        .english-tip { font-size: 0.72rem; background: rgba(0, 0, 0, 0.35); border-left: 3px solid var(--accent-color); padding: 6px 8px; border-radius: 0 6px 6px 0; color: #e2e8f0; margin-top: 3px; }
+
+        .replay-btn {
+            align-self: flex-start; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; border-radius: 12px; padding: 2px 8px; font-size: 0.68rem; cursor: pointer; margin-top: 2px; display: flex; align-items: center; gap: 4px;
         }
 
-        .character-select {
-            padding: 6px 12px;
-            border-radius: 15px;
-            border: 1px solid #ddd;
-            font-size: 13px;
-            font-weight: bold;
-            outline: none;
+        /* 🌟 トグル（アコーディオン）UI クイックフレーズ */
+        .quick-toggle-container { margin-bottom: 10px; background: rgba(15, 23, 42, 0.6); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
+        .quick-toggle-header {
+            padding: 8px 12px; font-size: 0.75rem; font-weight: bold; background: rgba(255, 255, 255, 0.05);
+            display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--accent-color);
         }
-
-        .btn-call {
-            background: #2ed573;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            box-shadow: 0 2px 5px rgba(46,213,115,0.3);
+        .quick-categories { display: flex; gap: 4px; overflow-x: auto; padding: 6px; scrollbar-width: none; background: rgba(0,0,0,0.2); }
+        .quick-categories::-webkit-scrollbar { display: none; }
+        .cat-tab {
+            padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; white-space: nowrap; cursor: pointer;
+            background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid transparent;
         }
+        .cat-tab.active { background: var(--accent-color); color: #0f172a; font-weight: bold; }
 
-        /* Avatar Area */
-        .avatar-area {
-            text-align: center;
-            padding: 12px;
-            background: #fafafa;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .quick-phrase-list {
+            display: none; padding: 8px; gap: 6px; overflow-x: auto; scrollbar-width: none;
+            background: rgba(15, 23, 42, 0.8); border-top: 1px solid rgba(255,255,255,0.05);
         }
-
-        .avatar-wrapper {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            overflow: hidden;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
-
-        .avatar-wrapper svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .expression-badge {
-            margin-top: 4px;
-            font-size: 11px;
-            background: #eee;
-            padding: 2px 8px;
-            border-radius: 10px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        /* Love Level */
-        .love-level-container {
-            width: 80%;
-            margin-top: 8px;
-            font-size: 12px;
-            color: #666;
-            font-weight: bold;
-        }
-
-        .love-bar {
-            width: 100%;
-            height: 8px;
-            background: #e4e4e4;
-            border-radius: 4px;
-            margin-top: 4px;
-            overflow: hidden;
-        }
-
-        .love-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #ff758c, #ff7eb3);
-            width: 35%;
-            transition: width 0.5s ease;
-        }
-
-        /* Chat Area */
-        .chat-area {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: #fcfcfc;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.5;
-            word-break: break-word;
-        }
-
-        .message.user {
-            align-self: flex-end;
-            background: var(--user-msg);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message.ai {
-            align-self: flex-start;
-            background: var(--ai-msg);
-            color: #2d3436;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .translation {
-            display: block;
-            margin-top: 6px;
-            padding-top: 6px;
-            border-top: 1px dashed #ccc;
-            font-size: 12px;
-            color: #666;
-        }
-
-        /* Controls */
-        .controls {
-            padding: 12px 15px;
-            background: #fff;
-            border-top: 1px solid #eee;
-        }
-
-        .quick-replies {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-        }
-
+        .quick-phrase-list.open { display: flex; }
         .quick-btn {
-            background: #f1f2f6;
-            border: 1px solid #e4e4e4;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: var(--text-main);
+            padding: 5px 10px; border-radius: 14px; font-size: 0.72rem; white-space: nowrap; cursor: pointer; flex-shrink: 0;
         }
+        .quick-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
-        .quick-btn:hover {
-            background: #ffeaa7;
+        /* 入力エリア */
+        .input-area { display: flex; gap: 6px; }
+        .input-area input { flex: 1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 18px; padding: 8px 14px; color: #fff; font-size: 0.85rem; outline: none; }
+        .btn { background: var(--accent-color); border: none; color: #0f172a; font-weight: bold; padding: 0 14px; border-radius: 18px; cursor: pointer; }
+        .btn-mic { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); width: 38px; }
+        .btn-mic.recording { background: #ef4444; animation: pulse 1s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* 推しモーダル Popup (標準的な中央表示) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999;
+            padding: 16px; box-sizing: border-box;
         }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
-        .input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        input[type="text"] {
-            flex: 1;
-            padding: 12px 16px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            outline: none;
-            font-size: 14px;
-        }
-
-        .btn-send, .btn-mic {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Call Modal */
-        .call-modal {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.92);
-            backdrop-filter: blur(12px);
-            z-index: 100;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 60px 20px;
+        .modal-card {
+            width: 90%; max-width: 340px; background: rgba(30, 41, 59, 0.95);
+            border: 2px solid var(--accent-color); border-radius: 20px; padding: 20px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: all 0.3s ease;
             box-sizing: border-box;
-            color: white;
         }
 
-        .call-modal.active {
-            display: flex;
-        }
-
-        .call-avatar-wrapper {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.4);
-            overflow: hidden;
-            background: #fff;
-            margin-top: 20px;
-        }
-
-        .call-timer {
-            font-size: 14px;
-            color: #cbd5e1;
-            margin-top: 8px;
-        }
-
-        .btn-end-call {
-            background: #ff4757;
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            font-size: 26px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255,71,87,0.4);
-        }
+        .modal-card img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 12px; }
+        .modal-name { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 8px; }
+        .modal-text-en { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+        .modal-text-jp { font-size: 0.8rem; color: #cbd5e1; margin-bottom: 16px; }
+        .modal-btns { display: flex; gap: 8px; justify-content: center; }
+        .modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+        .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- Test Panel -->
-    <div class="test-panel">
-        <span>🧪 ベータテストモード</span>
-        <label>
-            <input type="checkbox" id="birthdayToggle" onchange="toggleBirthday(this.checked)"> 🎉 誕生日設定ON
-        </label>
+<div class="container">
+    <div class="header">
+        <h1>Oshitalk English</h1>
     </div>
 
-    <!-- Header -->
-    <header>
-        <select class="character-select" id="charSelect" onchange="changeCharacter(this.value)">
-            <option value="leo">Leo (王道王子様)</option>
-            <option value="noah">Noah (ツンデレ)</option>
-            <option value="liam">Liam (頼れるお兄さん)</option>
-        </select>
-        <button class="btn-call" onclick="startCallMode()">📞 通話モード</button>
-    </header>
-
-    <!-- Avatar Area -->
-    <div class="avatar-area">
-        <div class="avatar-wrapper" id="avatarSvgContainer">
-            <!-- SVG Character Icon Rendered via JS -->
+    <div class="char-selector">
+        <div class="char-card active" onclick="selectChar('leo')" id="card-leo">
+            <img src="leo.jpg" alt="Leo"><div class="name">Leo</div>
         </div>
-        <div class="expression-badge" id="expressionLabel">Default (通常)</div>
-        <div class="love-level-container">
-            <span id="loveLevelText">Love Lv. 12</span>
-            <div class="love-bar"><div class="love-fill" id="loveFill"></div></div>
+        <div class="char-card" onclick="selectChar('noah')" id="card-noah">
+            <img src="noah.jpg" alt="Noah"><div class="name">Noah</div>
+        </div>
+        <div class="char-card" onclick="selectChar('liam')" id="card-liam">
+            <img src="liam.jpg" alt="Liam"><div class="name">Liam</div>
         </div>
     </div>
 
-    <!-- Chat Area -->
-    <div class="chat-area" id="chatArea">
-        <!-- Initial Message generated dynamically -->
+    <div class="control-panel">
+        <div class="control-row">
+            <span>📈 会話ステップ:</span>
+            <div class="step-btns">
+                <button class="step-btn" id="step-1" onclick="setStep(1)">Step 1 (初級)</button>
+                <button class="step-btn active" id="step-2" onclick="setStep(2)">Step 2 (中級)</button>
+                <button class="step-btn" id="step-3" onclick="setStep(3)">Step 3 (長文)</button>
+            </div>
+        </div>
+        <div class="control-row">
+            <span>💾 履歴保存期間:</span>
+            <select id="history-retention" onchange="saveHistorySetting(this.value)">
+                <option value="1">1日間保存</option>
+                <option value="7" selected>1週間保存</option>
+                <option value="999">無制限に保持</option>
+            </select>
+        </div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-        <div class="quick-replies">
-            <button class="quick-btn" onclick="sendQuickReply('会いたかったよ！')">💕 会いたかったよ！</button>
-            <button class="quick-btn" onclick="sendQuickReply('ちょっと疲れたな…')">🥺 ちょっと疲れたな…</button>
-            <button class="quick-btn" onclick="sendQuickReply('英語教えて！')">📚 英語教えて！</button>
+    <div class="chat-area" id="chat-area"></div>
+
+    <!-- 🌟 全10カテゴリ × 各10フレーズ -->
+    <div class="quick-toggle-container">
+        <div class="quick-toggle-header" onclick="toggleQuickPanel()">
+            <span>💬 トピック別クイック発言（100パターン）</span>
+            <span id="toggle-icon">▲</span>
         </div>
-        <div class="input-group">
-            <input type="text" id="userInput" placeholder="メッセージを入力..." onkeypress="handleKeyPress(event)">
-            <button class="btn-mic" onclick="toggleVoiceInput()">🎙️</button>
-            <button class="btn-send" onclick="sendMessage()">➤</button>
-        </div>
+        <div class="quick-categories" id="quick-cats"></div>
+        <div class="quick-phrase-list open" id="quick-phrase-list"></div>
     </div>
 
-    <!-- Call Mode Modal -->
-    <div class="call-modal" id="callModal">
-        <div style="text-align: center;">
-            <h2 id="callCharName" style="margin: 0; font-size: 24px;">Leo</h2>
-            <div class="call-timer" id="callTimer">00:00</div>
-        </div>
-        <div class="call-avatar-wrapper" id="callAvatarSvgContainer"></div>
-        <div>
-            <button class="btn-end-call" onclick="endCallMode()">📵</button>
+    <div class="input-area">
+        <button class="btn btn-mic" id="mic-btn" onclick="toggleSpeech()">🎤</button>
+        <input type="text" id="user-input" placeholder="英語でメッセージを入力..." onkeypress="handleKey(event)">
+        <button class="btn" onclick="sendMessage()">送信</button>
+    </div>
+</div>
+
+<!-- 推しモーダル Popup -->
+<div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <img id="modal-img" src="leo.jpg" alt="Oshi">
+        <div class="modal-name" id="modal-name">Leo</div>
+        <div class="modal-text-en" id="modal-text-en"></div>
+        <div class="modal-text-jp" id="modal-text-jp"></div>
+        <div class="modal-btns">
+            <button class="modal-btn sec" onclick="replayCurrentModalVoice()">🔊 もう一度聞く</button>
+            <button class="modal-btn" onclick="closeModal()">閉じる</button>
         </div>
     </div>
 </div>
 
 <script>
-    let currentCharacter = 'leo';
-    let isBirthdayMode = false;
-    let callTimerInterval = null;
-    let secondsElapsed = 0;
-    let isProcessing = false;
+    // 🌟 初期挨拶もフランクで親しみやすい口調に統一
+    const CHARS = {
+        leo: { name: 'Leo', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.75, rate: 0.95, greet: 'Good morning, sweetheart. I was thinking about you.', greetJp: 'おはよう。今日も君に会えて嬉しいよ。' },
+        noah: { name: 'Noah', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.6, rate: 0.9, greet: 'You\'re here. So, what do you want to talk about today?', greetJp: '来たんだ。で、今日は何話すの？' },
+        liam: { name: 'Liam', avatar: 'liam.jpg', color: '#10b981', pitch: 0.85, rate: 1.0, greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'やっほー！今日もお喋りできてめっちゃ嬉しい！' }
+    };
 
-    // SVG Vector Avatars (Guaranteed to load offline/online)
-    const avatarsSVG = {
-        leo: {
-            bg: '#ff6b81',
-            svg: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#ff6b81"/><circle cx="50" cy="40" r="22" fill="#ffeaa7"/><path d="M 30 35 Q 50 10 70 35 Q 50 25 30 35" fill="#fdcb6e"/><circle cx="43" cy="38" r="3" fill="#2d3436"/><circle cx="57" cy="38" r="3" fill="#2d3436"/><path d="M 45 48 Q 50 53 55 48" stroke="#d63031" stroke-width="2" fill="none"/><path d="M 30 75 Q 50 55 70 75 Q 50 95 30 75" fill="#6c5ce7"/></svg>`
+    const QUICK_DATA = {
+        life: {
+            title: '🏠 生活',
+            phrases: [
+                { en: "Good morning!", jp: "☀️ 朝の挨拶" },
+                { en: "I just woke up.", jp: "🥱 今起きたよ" },
+                { en: "It's raining today.", jp: "☔ 今日は雨が降ってる" },
+                { en: "I'm cleaning my room.", jp: "🧹 部屋の掃除をしてる" },
+                { en: "I need to go grocery shopping.", jp: "🛒 お買い物に行かなきゃ" },
+                { en: "I'm going to take a bath.", jp: "🛁 お風呂に入ってくるね" },
+                { en: "What are your plans for tonight?", jp: "🌙 今夜の予定は？" },
+                { en: "I'm so sleepy now.", jp: "😴 すごく眠いよ" },
+                { en: "I'm staying home today.", jp: "🏠 今日はおうちで過ごすよ" },
+                { en: "Good night, sweet dreams!", jp: "💤 おやすみ、良い夢を" }
+            ]
         },
-        noah: {
-            bg: '#70a1ff',
-            svg: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#70a1ff"/><circle cx="50" cy="40" r="22" fill="#ffeaa7"/><path d="M 28 38 Q 50 15 72 38 Q 50 20 28 38" fill="#2e86de"/><circle cx="43" cy="38" r="3" fill="#2d3436"/><circle cx="57" cy="38" r="3" fill="#2d3436"/><path d="M 46 48 L 54 48" stroke="#2d3436" stroke-width="2" fill="none"/><path d="M 30 75 Q 50 60 70 75 L 70 100 L 30 100 Z" fill="#341f97"/></svg>`
+        work: {
+            title: '💼 仕事',
+            phrases: [
+                { en: "I have a lot of work today.", jp: "💻 今日は仕事が山積み" },
+                { en: "Finally finished my work!", jp: "🎉 やっと仕事が終わった！" },
+                { en: "I'm taking a coffee break.", jp: "☕ コーヒー休憩中" },
+                { en: "I have a meeting now.", jp: "📅 今から会議だよ" },
+                { en: "I worked overtime today.", jp: "🌙 今日は残業だったよ" },
+                { en: "Wish me luck on my presentation!", jp: "🔥 発表応援してね！" },
+                { en: "I'm so busy this week.", jp: "💦 今週はすごく忙しい" },
+                { en: "Tomorrow is my day off!", jp: "✨ 明日はお休み！" },
+                { en: "My boss praised me today!", jp: "👏 今日上司に褒められた！" },
+                { en: "I did my best at work!", jp: "🌟 お仕事頑張ったよ！" }
+            ]
         },
-        liam: {
-            bg: '#2ed573',
-            svg: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#2ed573"/><circle cx="50" cy="40" r="22" fill="#ffeaa7"/><path d="M 30 32 Q 50 18 70 32 Q 50 22 30 32" fill="#8395a7"/><circle cx="43" cy="38" r="3" fill="#2d3436"/><circle cx="57" cy="38" r="3" fill="#2d3436"/><path d="M 44 48 Q 50 51 56 48" stroke="#2d3436" stroke-width="2" fill="none"/><path d="M 30 75 L 70 75 L 65 100 L 35 100 Z" fill="#222f3e"/></svg>`
+        school: {
+            title: '🏫 学校',
+            phrases: [
+                { en: "I have an exam tomorrow.", jp: "📝 明日テストがあるの" },
+                { en: "I'm studying English now.", jp: "📖 今英語の勉強中！" },
+                { en: "Class is finally over!", jp: "🔔 授業やっと終わった！" },
+                { en: "I'm going to club practice.", jp: "⚽ 今から部活に行ってくるね" },
+                { en: "I forgot to do my homework!", jp: "😱 宿題やるの忘れてた！" },
+                { en: "My school teacher was strict today.", jp: "👨‍🏫 今日の先生怖かった" },
+                { en: "I ate lunch with my friends.", jp: "🍱 友達とお昼食べたよ" },
+                { en: "I want to get a good grade.", jp: "💯 良い点数とりたいな" },
+                { en: "Can you teach me math?", jp: "📐 数学教えてくれる？" },
+                { en: "School was fun today!", jp: "🎒 今日も学校楽しかった！" }
+            ]
+        },
+        food: {
+            title: '🍰 食事',
+            phrases: [
+                { en: "I'm eating lunch now.", jp: "🍱 今ランチ食べてるよ" },
+                { en: "What's your favorite food?", jp: "🍕 好きな食べ物は何？" },
+                { en: "I'm so hungry!", jp: "😋 すごくお腹すいた！" },
+                { en: "This dessert is delicious!", jp: "🍰 このスイーツ美味しい！" },
+                { en: "Did you eat dinner yet?", jp: "🌙 もう晩ご飯食べた？" },
+                { en: "I cooked pasta today.", jp: "🍝 今日パスタ作ったよ" },
+                { en: "Let's go to a cafe together!", jp: "☕ 一緒にカフェ行こう！" },
+                { en: "I ate too much today...", jp: "🐷 今日食べすぎちゃった..." },
+                { en: "Do you like spicy food?", jp: "🌶️ 辛いもの好き？" },
+                { en: "I love drinking coffee.", jp: "☕ コーヒーが大好きなの" }
+            ]
+        },
+        travel: {
+            title: '✈️ 旅行',
+            phrases: [
+                { en: "I want to travel with you.", jp: "✈️ あなたと一緒に旅行したい" },
+                { en: "Where do you want to go?", jp: "🗺️ どこに行きたい？" },
+                { en: "The weather is great today!", jp: "☀️ 今日は絶好のお出かけ日和" },
+                { en: "I'm taking a walk in the park.", jp: "🌳 公園を散歩中だよ" },
+                { en: "I love ocean views.", jp: "🌊 海の景色が大好きなの" },
+                { en: "I bought some souvenirs for you!", jp: "🎁 お土産買ってきたよ！" },
+                { en: "Let's take a picture together!", jp: "📸 一緒に写真撮ろう！" },
+                { en: "I'm planning a trip for next month.", jp: "🗓️ 来月の旅行計画中" },
+                { en: "Hot springs are so relaxing.", jp: "♨️ 温泉ってすごく癒やされる" },
+                { en: "I had a wonderful time today!", jp: "✨ 今日は最高の一日だった！" }
+            ]
+        },
+        media: {
+            title: '🎬 趣味',
+            phrases: [
+                { en: "I'm watching a movie now.", jp: "🎬 今映画を見てるよ" },
+                { en: "Can you recommend a good song?", jp: "🎶 おすすめの曲教えて！" },
+                { en: "I love playing games.", jp: "🎮 ゲームするの大好き" },
+                { en: "I went to a live concert!", jp: "🎤 ライブに行ってきたよ！" },
+                { en: "I'm reading a manga right now.", jp: "📚 今マンガ読んでるの" },
+                { en: "Your voice sounds amazing.", jp: "💖 あなたの声、本当に素敵" },
+                { en: "I love taking photos.", jp: "📷 写真を撮るのが趣味なの" },
+                { en: "What kind of music do you like?", jp: "🎧 どんな音楽が好き？" },
+                { en: "I bought your new poster!", jp: "🖼️ 新しいポスター買っちゃった" },
+                { en: "I can't stop watching this anime!", jp: "✨ このアニメ止まらない！" }
+            ]
+        },
+        sports: {
+            title: '⚽ 運動',
+            phrases: [
+                { en: "I went to the gym today.", jp: "🏋️ 今日ジムに行ってきたよ" },
+                { en: "I'm going for a jog.", jp: "🏃 今からランニングしてくる" },
+                { en: "Did you watch the baseball game?", jp: "⚾ 野球の試合見た？" },
+                { en: "I love swimming in summer.", jp: "🏊 夏に泳ぐのが好き" },
+                { en: "I'm feeling refreshed after exercise!", jp: "✨ 運動してスッキリ！" },
+                { en: "Which team are you cheering for?", jp: "📣 どっちのチーム応援してる？" },
+                { en: "I played tennis today.", jp: "🎾 今日テニスしたよ" },
+                { en: "My muscles are sore today...", jp: "💪 今日は筋肉痛だよ..." },
+                { en: "Let me cheer for you!", jp: "🔥 全力で応援させて！" },
+                { en: "Sports make me feel energetic!", jp: "⚡ スポーツで元気出る！" }
+            ]
+        },
+        feeling: {
+            title: '💖 感情',
+            phrases: [
+                { en: "I missed you so much!", jp: "💖 すごく会いたかったよ！" },
+                { en: "I love talking with you!", jp: "🎨 あなたと話すのが大好き" },
+                { en: "Praise me please!", jp: "🍰 褒めてほしいな！" },
+                { en: "You always make me happy.", jp: "🥰 いつも幸せにしてくれるね" },
+                { en: "I was thinking about you all day.", jp: "💭 1日中あなたのこと考えてた" },
+                { en: "I'm so lucky to have you.", jp: "✨ あなたに会えて幸運だよ" },
+                { en: "Your smile is the best!", jp: "😊 あなたの笑顔が1番！" },
+                { en: "I want to stay with you forever.", jp: "💍 ずっと一緒にいたいな" },
+                { en: "You mean everything to me.", jp: "🌟 私の全てだよ" },
+                { en: "I love you so much!", jp: "❤️ 大大好きだよ！" }
+            ]
+        },
+        support: {
+            title: '🥺 悩み',
+            phrases: [
+                { en: "Can you encourage me?", jp: "🥺 励ましてくれる？" },
+                { en: "I'm so tired today...", jp: "😫 今日すごく疲れた..." },
+                { en: "I made a mistake today.", jp: "😞 今日失敗しちゃった" },
+                { en: "I feel a bit lonely.", jp: "🌧️ ちょっと寂しいな" },
+                { en: "Nothing went right today.", jp: "😮‍💨 今日はうまくいかなかった" },
+                { en: "Can I lean on you?", jp: "🧸 甘えてもいいかな？" },
+                { en: "Give me a hug please!", jp: "🤗 ぎゅーってして！" },
+                { en: "I need your comforting words.", jp: "💬 優しい言葉をちょうだい" },
+                { en: "I feel better talking to you.", jp: "🌸 話せて気持ちが楽になった" },
+                { en: "Thank you for listening to me.", jp: "💌 話を聞いてくれてありがとう" }
+            ]
+        },
+        angry: {
+            title: '😤 ぷんぷん',
+            phrases: [
+                { en: "You are late! I'm waiting!", jp: "⏰ 遅刻だよ！待ってるんだから！" },
+                { en: "Why did you reply so late?", jp: "📱 なんで返事遅かったの？" },
+                { en: "Did you forget our anniversary?", jp: "📅 記念日忘れたの...？" },
+                { en: "I'm angry at you!", jp: "😤 もう、怒ったんだからね！" },
+                { en: "You don't care about me anymore!", jp: "🥺 もう私のことどうでもいいの？" },
+                { en: "Buy me an ice cream to apologize!", jp: "🍦 謝罪にアイス買って！" },
+                { en: "Don't look at other girls!", jp: "👁️ 他の女の子見ちゃダメ！" },
+                { en: "You promise? Don't break it!", jp: "🤙 約束だよ？破らないでね！" },
+                { en: "Hmph! I won't talk to you!", jp: "😠 ふんっ！もう話してあげない！" },
+                { en: "Just kidding, I can't stay mad at you.", jp: "🤭 冗談だよ、怒り続けられないや" }
+            ]
         }
     };
 
-    const characters = {
-        leo: { name: "Leo", title: "王道王子様" },
-        noah: { name: "Noah", title: "ツンデレアイドル" },
-        liam: { name: "Liam", title: "頼れるエンジニアのお兄さん" }
-    };
+    let currentChar = 'leo';
+    let currentStep = 2;
+    let currentCat = 'life';
+    let isQuickOpen = true;
+    let chatHistories = { leo: [], noah: [], liam: [] };
+    let isRecording = false;
+    let recognition = null;
+    let silenceTimer = null;
+    let lastAIText = '';
 
-    // Initialize Page
     window.onload = () => {
-        updateAvatarDisplay('default');
-        setInitialGreeting();
+        loadHistories();
+        selectChar('leo');
+        setupSpeechRecognition();
+        initQuickPanel();
     };
 
-    function setInitialGreeting() {
-        const chatArea = document.getElementById('chatArea');
-        chatArea.innerHTML = '';
-        if (currentCharacter === 'leo') {
-            appendAIMessage("Sweetheart, I missed you! How was your day?", "スイートハート、会いたかったよ！今日はどんな一日だった？");
-        } else if (currentCharacter === 'noah') {
-            appendAIMessage("Hey! You're late. I wasn't waiting for you or anything... though.", "ちょっと、遅いよ。べつに待ってたわけじゃないけど…ね。");
+    function initQuickPanel() {
+        const catContainer = document.getElementById('quick-cats');
+        catContainer.innerHTML = '';
+        Object.keys(QUICK_DATA).forEach(key => {
+            const cat = QUICK_DATA[key];
+            const btn = document.createElement('div');
+            btn.className = `cat-tab ${key === currentCat ? 'active' : ''}`;
+            btn.innerText = cat.title;
+            btn.onclick = () => selectCategory(key);
+            catContainer.appendChild(btn);
+        });
+        renderPhrases();
+    }
+
+    function selectCategory(key) {
+        currentCat = key;
+        document.querySelectorAll('.cat-tab').forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+        renderPhrases();
+    }
+
+    function renderPhrases() {
+        const list = document.getElementById('quick-phrase-list');
+        list.innerHTML = '';
+        const phrases = QUICK_DATA[currentCat].phrases;
+        phrases.forEach(p => {
+            const btn = document.createElement('button');
+            btn.className = 'quick-btn';
+            btn.innerText = p.jp;
+            btn.onclick = () => sendQuick(p.en);
+            list.appendChild(btn);
+        });
+    }
+
+    function toggleQuickPanel() {
+        isQuickOpen = !isQuickOpen;
+        const list = document.getElementById('quick-phrase-list');
+        const cats = document.getElementById('quick-cats');
+        const icon = document.getElementById('toggle-icon');
+        if (isQuickOpen) {
+            list.classList.add('open');
+            cats.style.display = 'flex';
+            icon.innerText = '▲';
         } else {
-            appendAIMessage("Good to see you! Tell me one good thing about your day.", "会えて嬉しいよ！今日の良かったことをひとつ教えて？");
+            list.classList.remove('open');
+            cats.style.display = 'none';
+            icon.innerText = '▼';
         }
     }
 
-    function sendMessage() {
-        if (isProcessing) return;
-        const input = document.getElementById('userInput');
+    function setStep(s) {
+        currentStep = s;
+        document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`step-${s}`).classList.add('active');
+    }
+
+    function selectChar(key) {
+        window.speechSynthesis.cancel();
+        currentChar = key;
+        const char = CHARS[key];
+        document.querySelectorAll('.char-card').forEach(card => card.classList.remove('active'));
+        document.getElementById(`card-${key}`).classList.add('active');
+        document.documentElement.style.setProperty('--accent-color', char.color);
+        renderChatHistory();
+    }
+
+    function renderChatHistory() {
+        const chatArea = document.getElementById('chat-area');
+        chatArea.innerHTML = '';
+        const history = chatHistories[currentChar];
+
+        if (!history || history.length === 0) {
+            const char = CHARS[currentChar];
+            addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話をスタートしよう！`, false, false, false);
+        } else {
+            history.forEach(item => {
+                addBubble(item.sender, item.text, item.subText, item.tipText, false, false, false);
+            });
+        }
+    }
+
+    function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true, autoSpeak = true) {
+        const chatArea = document.getElementById('chat-area');
+        const row = document.createElement('div');
+        row.className = `msg-row ${sender}`;
+        const char = CHARS[currentChar];
+        const avatarUrl = sender === 'ai' ? char.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop';
+
+        const isAI = sender === 'ai';
+        if (isAI) lastAIText = text;
+
+        row.innerHTML = `
+            <img src="${avatarUrl}" onclick="openModal('${char.avatar}', '${char.name}', '${text.replace(/'/g, "\\'")}', '${subText.replace(/'/g, "\\'")}')">
+            <div class="bubble-container">
+                <div class="bubble">${text}</div>
+                ${subText ? `<span class="jp-sub">${subText}</span>` : ''}
+                ${tipText ? `<div class="english-tip">💡 <strong>${char.name}'s Tip:</strong> ${tipText}</div>` : ''}
+                ${isAI ? `<button class="replay-btn" onclick="speakText('${text.replace(/'/g, "\\'")}')">🔊 もう一度聞く</button>` : ''}
+            </div>
+        `;
+
+        chatArea.appendChild(row);
+        chatArea.scrollTop = chatArea.scrollHeight;
+
+        if (save) {
+            if (!chatHistories[currentChar]) chatHistories[currentChar] = [];
+            chatHistories[currentChar].push({ sender, text, subText, tipText, time: Date.now() });
+            saveHistories();
+        }
+
+        if (isAI && autoSpeak) {
+            speakText(text);
+            if (showPopup) openModal(char.avatar, char.name, text, subText);
+        }
+    }
+
+    function setupSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return;
+
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.interimResults = true;
+        recognition.continuous = true;
+
+        recognition.onstart = () => {
+            isRecording = true;
+            document.getElementById('mic-btn').classList.add('recording');
+        };
+
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            document.getElementById('user-input').value = transcript;
+
+            clearTimeout(silenceTimer);
+            silenceTimer = setTimeout(() => {
+                if (document.getElementById('user-input').value.trim()) {
+                    stopSpeech();
+                    sendMessage();
+                }
+            }, 4000);
+        };
+
+        recognition.onerror = () => stopSpeech();
+        recognition.onend = () => { if (isRecording) stopSpeech(); };
+    }
+
+    function toggleSpeech() {
+        if (!recognition) {
+            alert("お使いのブラウザは音声入力に対応していません。");
+            return;
+        }
+        if (isRecording) stopSpeech();
+        else {
+            document.getElementById('user-input').value = '';
+            recognition.start();
+        }
+    }
+
+    function stopSpeech() {
+        isRecording = false;
+        clearTimeout(silenceTimer);
+        document.getElementById('mic-btn').classList.remove('recording');
+        if (recognition) recognition.stop();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('user-input');
         const text = input.value.trim();
         if (!text) return;
-
-        appendUserMessage(text);
+        addBubble('user', text, '', '', false, true, false);
         input.value = '';
-        isProcessing = true;
-
-        setTimeout(() => {
-            generateAIResponse(text);
-            isProcessing = false;
-        }, 1000);
+        await getAIReply(text);
     }
 
-    function sendQuickReply(text) {
-        if (isProcessing) return;
-        document.getElementById('userInput').value = text;
-        sendMessage();
+    function sendQuick(text) {
+        window.speechSynthesis.cancel();
+        addBubble('user', text, '', '', false, true, false);
+        setTimeout(async () => { await getAIReply(text); }, 400);
     }
 
-    function handleKeyPress(e) {
-        if (e.key === 'Enter') sendMessage();
-    }
-
-    function appendUserMessage(text) {
-        const chatArea = document.getElementById('chatArea');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'message user';
-        msgDiv.innerText = text;
-        chatArea.appendChild(msgDiv);
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    function appendAIMessage(englishText, japaneseTranslation) {
-        const chatArea = document.getElementById('chatArea');
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'message ai';
-        msgDiv.innerHTML = `${englishText} <span class="translation">💡 ${japaneseTranslation}</span>`;
-        chatArea.appendChild(msgDiv);
-        chatArea.scrollTop = chatArea.scrollHeight;
-    }
-
-    function generateAIResponse(userText) {
-        let eng = "";
-        let jp = "";
-        let exp = "default";
-
-        if (isBirthdayMode) {
-            eng = "Happy Birthday!! I'm so lucky to celebrate this special day with you!";
-            jp = "誕生日おめでとう！！君の特別な日を一緒にお祝いできて最高に幸せだよ！";
-            exp = "blush";
-        } else if (userText.includes("会いたかった") || userText.includes("好き")) {
-            eng = "I missed you so much too! Your words always make my heart skip a beat.";
-            jp = "僕もすごく会いたかった！君の言葉にはいつもドキドキさせられるよ。";
-            exp = "blush";
-        } else if (userText.includes("疲れた")) {
-            eng = "You worked so hard today. Take a deep breath and lean on me, okay?";
-            jp = "今日も本当によくがんばったね。深呼吸して、僕に甘えていいんだよ？";
-            exp = "sad";
-        } else if (userText.includes("英語")) {
-            eng = "Let's practice! Repeat after me: 'You made my day!' It means you made me happy today.";
-            jp = "一緒に練習しよう！『You made my day!』（君のおかげで最高の1日になった）って言ってみて！";
-            exp = "happy";
-        } else {
-            eng = "Talking with you is my favorite part of the day. What else is on your mind?";
-            jp = "君とおしゃべりするのが1番大好きな時間だな。他にはどんなことがあった？";
-            exp = "happy";
+    // 🌟 API未接続時のフォールバック口調もフランクで魅力的な和訳に修正
+    async function getAIReply(userText) {
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ character: currentChar, message: userText, step: currentStep })
+            });
+            const data = await response.json();
+            if (data.reply) {
+                addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true);
+            }
+        } catch (e) {
+            addBubble('ai', "I loved hearing from you!", "言葉を聞けてすごく嬉しかったよ！", "【解説】「I loved hearing from you」で「連絡くれてすごく嬉しかった」って意味だよ！", true, true, true);
         }
-
-        updateAvatarDisplay(exp);
-        appendAIMessage(eng, jp);
     }
 
-    function updateAvatarDisplay(exp) {
-        const svgContainer = document.getElementById('avatarSvgContainer');
-        const callSvgContainer = document.getElementById('callAvatarSvgContainer');
-        const label = document.getElementById('expressionLabel');
-        
-        svgContainer.innerHTML = avatarsSVG[currentCharacter].svg;
-        callSvgContainer.innerHTML = avatarsSVG[currentCharacter].svg;
-
-        const expNames = {
-            default: "Default (通常)",
-            happy: "Happy (笑顔😊)",
-            blush: "Blush (照れ😳)",
-            sad: "Sad (心配🥺)"
-        };
-        label.innerText = expNames[exp] || expNames.default;
+    function speakText(text) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const uttr = new SpeechSynthesisUtterance(text);
+        const char = CHARS[currentChar];
+        uttr.lang = 'en-US'; uttr.pitch = char.pitch; uttr.rate = char.rate;
+        window.speechSynthesis.speak(uttr);
     }
 
-    function changeCharacter(charKey) {
-        currentCharacter = charKey;
-        updateAvatarDisplay('default');
-        setInitialGreeting();
+    function replayCurrentModalVoice() {
+        if (lastAIText) speakText(lastAIText);
     }
 
-    function startCallMode() {
-        const modal = document.getElementById('callModal');
-        document.getElementById('callCharName').innerText = characters[currentCharacter].name;
-        modal.classList.add('active');
-
-        secondsElapsed = 0;
-        document.getElementById('callTimer').innerText = "00:00";
-        callTimerInterval = setInterval(() => {
-            secondsElapsed++;
-            const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, '0');
-            const secs = String(secondsElapsed % 60).padStart(2, '0');
-            document.getElementById('callTimer').innerText = `${mins}:${secs}`;
-        }, 1000);
+    function openModal(imgSrc, name, enText, jpText) {
+        document.getElementById('modal-img').src = imgSrc;
+        document.getElementById('modal-name').innerText = name;
+        document.getElementById('modal-text-en').innerText = enText;
+        document.getElementById('modal-text-jp').innerText = jpText || '';
+        document.getElementById('oshi-modal').classList.add('active');
     }
 
-    function endCallMode() {
-        document.getElementById('callModal').classList.remove('active');
-        if (callTimerInterval) clearInterval(callTimerInterval);
+    function closeModal() { document.getElementById('oshi-modal').classList.remove('active'); }
+    function saveHistories() { localStorage.setItem('oshitalk_histories', JSON.stringify(chatHistories)); }
+
+    function loadHistories() {
+        const data = localStorage.getItem('oshitalk_histories');
+        const days = parseInt(document.getElementById('history-retention').value || '7');
+        if (data) {
+            const parsed = JSON.parse(data);
+            const now = Date.now();
+            const cutoff = now - (days * 24 * 60 * 60 * 1000);
+            Object.keys(parsed).forEach(k => {
+                parsed[k] = parsed[k].filter(item => item.time > cutoff);
+            });
+            chatHistories = parsed;
+        }
     }
 
-    function toggleVoiceInput() {
-        alert("🎤 音声認識をアクティブ化（3秒無音判定）");
-    }
-
-    function toggleBirthday(enabled) {
-        isBirthdayMode = enabled;
-    }
+    function saveHistorySetting(val) { loadHistories(); renderChatHistory(); }
+    function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
 </script>
 </body>
 </html>
