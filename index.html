@@ -189,18 +189,14 @@
 
     <div class="chat-area" id="chat-area"></div>
 
-    <!-- 🌟 全10カテゴリ × 各10フレーズ（トグル式アコーディオン） -->
+    <!-- 🌟 全10カテゴリ × 各10フレーズ -->
     <div class="quick-toggle-container">
         <div class="quick-toggle-header" onclick="toggleQuickPanel()">
             <span>💬 トピック別クイック発言（100パターン）</span>
             <span id="toggle-icon">▲</span>
         </div>
-        <div class="quick-categories" id="quick-cats">
-            <!-- JavaScriptでカテゴリタブを自動生成 -->
-        </div>
-        <div class="quick-phrase-list open" id="quick-phrase-list">
-            <!-- JavaScriptでフレーズボタンを自動生成 -->
-        </div>
+        <div class="quick-categories" id="quick-cats"></div>
+        <div class="quick-phrase-list open" id="quick-phrase-list"></div>
     </div>
 
     <div class="input-area">
@@ -225,13 +221,13 @@
 </div>
 
 <script>
+    // 🌟 初期挨拶もフランクで親しみやすい口調に統一
     const CHARS = {
-        leo: { name: 'Leo', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.75, rate: 0.95, greet: 'Good morning, sweetheart. I was thinking about you.', greetJp: 'おはよう。君のことを考えていたよ。' },
-        noah: { name: 'Noah', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.6, rate: 0.9, greet: 'You\'re here. So, what do you want to talk about today?', greetJp: '来たんだ。で、今日は何を話すの？' },
-        liam: { name: 'Liam', avatar: 'liam.jpg', color: '#10b981', pitch: 0.85, rate: 1.0, greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'ねえねえ！今日もお話しできてすごく嬉しいよ！' }
+        leo: { name: 'Leo', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.75, rate: 0.95, greet: 'Good morning, sweetheart. I was thinking about you.', greetJp: 'おはよう。今日も君に会えて嬉しいよ。' },
+        noah: { name: 'Noah', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.6, rate: 0.9, greet: 'You\'re here. So, what do you want to talk about today?', greetJp: '来たんだ。で、今日は何話すの？' },
+        liam: { name: 'Liam', avatar: 'liam.jpg', color: '#10b981', pitch: 0.85, rate: 1.0, greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'やっほー！今日もお喋りできてめっちゃ嬉しい！' }
     };
 
-    // 🌟 10カテゴリ × 各10フレーズのデータベース
     const QUICK_DATA = {
         life: {
             title: '🏠 生活',
@@ -586,6 +582,7 @@
         setTimeout(async () => { await getAIReply(text); }, 400);
     }
 
+    // 🌟 API未接続時のフォールバック口調もフランクで魅力的な和訳に修正
     async function getAIReply(userText) {
         try {
             const response = await fetch('/api/chat', {
@@ -598,7 +595,7 @@
                 addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true);
             }
         } catch (e) {
-            addBubble('ai', "I loved hearing from you!", "君からの言葉、すごく嬉しかったよ！", "【解説】「I loved hearing from you」で「あなたから連絡ができて嬉しかった」という意味だよ！", true, true, true);
+            addBubble('ai', "I loved hearing from you!", "言葉を聞けてすごく嬉しかったよ！", "【解説】「I loved hearing from you」で「連絡くれてすごく嬉しかった」って意味だよ！", true, true, true);
         }
     }
 
