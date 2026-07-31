@@ -14,6 +14,7 @@
             --accent-liam: #3b82f6;
             --text-main: #f3f4f6;
             --text-sub: #9ca3af;
+            --theme-color: #f59e0b;
         }
 
         * {
@@ -74,7 +75,7 @@
         }
 
         .char-card.active {
-            border-color: var(--theme-color, var(--accent-leo));
+            border-color: var(--theme-color);
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
         }
@@ -111,6 +112,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .step-btn {
@@ -125,7 +127,7 @@
         }
 
         .step-btn.active {
-            background: var(--theme-color, var(--accent-leo));
+            background: var(--theme-color);
             color: #000;
             font-weight: bold;
             border-color: transparent;
@@ -185,7 +187,7 @@
         }
 
         .user .bubble {
-            background: var(--theme-color, var(--accent-leo));
+            background: var(--theme-color);
             color: #000;
             font-weight: 500;
             border-bottom-right-radius: 4px;
@@ -306,7 +308,7 @@
         }
 
         .send-btn {
-            background: var(--theme-color, var(--accent-leo));
+            background: var(--theme-color);
             border: none;
             width: 50px;
             border-radius: 15px;
@@ -340,15 +342,15 @@
     <!-- キャラクター選択 -->
     <div class="character-selector">
         <div class="char-card active" onclick="switchCharacter('leo')" id="card-leo">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="char-avatar" alt="Leo">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Leo" class="char-avatar" id="avatar-leo" alt="Leo">
             <span class="char-name">Leo</span>
         </div>
         <div class="char-card" onclick="switchCharacter('noah')" id="card-noah">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" class="char-avatar" alt="Noah">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Noah" class="char-avatar" id="avatar-noah" alt="Noah">
             <span class="char-name">Noah</span>
         </div>
         <div class="char-card" onclick="switchCharacter('liam')" id="card-liam">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" class="char-avatar" alt="Liam">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Liam" class="char-avatar" id="avatar-liam" alt="Liam">
             <span class="char-name">Liam</span>
         </div>
     </div>
@@ -388,11 +390,12 @@
 </div>
 
 <script>
-    // キャラクター定義と低音ボイス設定（pitchをさらに下げて男性らしい低音に）
+    // キャラクター定義
+    // ※ avatarのURLをお好みのイラスト画像URL（例: 'images/leo.png'）へ差し替えてご使用いただけます。
     const characters = {
-        leo: { name: 'Leo', color: '#f59e0b', pitch: 0.65, rate: 0.9, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80', greeting: "Good morning, sweetheart. I was thinking about you.", translation: "おはよう。今日も君に会えて嬉しいよ。", tip: "Leoとの会話をスタートしよう！" },
-        noah: { name: 'Noah', color: '#8b5cf6', pitch: 0.60, rate: 0.95, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', greeting: "Oh, it's you. Don't keep me waiting too long next time.", translation: "なんだ、お前か。次はあんまり待たせるなよ。", tip: "Noahとの会話をスタートしよう！" },
-        liam: { name: 'Liam', color: '#3b82f6', pitch: 0.70, rate: 1.0, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80', greeting: "Hey! I'm so happy to talk to you today! What's up?", translation: "やっほー！今日話せてめっちゃ嬉しい！何してたの？", tip: "Liamとの会話をスタートしよう！" }
+        leo: { name: 'Leo', color: '#f59e0b', pitch: 0.65, rate: 0.9, avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Leo', greeting: "Good morning, sweetheart. I was thinking about you.", translation: "おはよう。今日も君に会えて嬉しいよ。", tip: "Leoとの会話をスタートしよう！" },
+        noah: { name: 'Noah', color: '#8b5cf6', pitch: 0.60, rate: 0.95, avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Noah', greeting: "Oh, it's you. Don't keep me waiting too long next time.", translation: "なんだ、お前か。次はあんまり待たせるなよ。", tip: "Noahとの会話をスタートしよう！" },
+        liam: { name: 'Liam', color: '#3b82f6', pitch: 0.70, rate: 1.0, avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Liam', greeting: "Hey! I'm so happy to talk to you today! What's up?", translation: "やっほー！今日話せてめっちゃ嬉しい！何してたの？", tip: "Liamとの会話をスタートしよう！" }
     };
 
     // クイック発言データ
@@ -408,27 +411,27 @@
     };
 
     let currentChar = 'leo';
-    // ③ 前回のStepをLocal Storageから読み込む（初期値は2）
     let currentStep = parseInt(localStorage.getItem('oshitalk_step')) || 2;
 
-    window.onload = () => {
-        // 保存されていたStepのボタンUIをアクティブ化
+    // ページのDOMが読み込み完了した時点で初期化を実行する
+    document.addEventListener("DOMContentLoaded", () => {
         setStep(currentStep, false);
         switchCharacter('leo', false);
         renderQuickTopics();
-    };
+    });
 
-    // ③ Stepの設定と保存
     function setStep(step, resetChat = true) {
         currentStep = step;
-        localStorage.setItem('oshitalk_step', step); // ローカルストレージに保存
+        localStorage.setItem('oshitalk_step', step);
         
         [1, 2, 3].forEach(s => {
             const btn = document.getElementById(`step-${s}`);
-            if (s === step) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
+            if (btn) {
+                if (s === step) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
             }
         });
 
@@ -443,27 +446,33 @@
         document.documentElement.style.setProperty('--theme-color', char.color);
 
         document.querySelectorAll('.char-card').forEach(card => card.classList.remove('active'));
-        document.getElementById(`card-${charKey}`).classList.add('active');
+        const activeCard = document.getElementById(`card-${charKey}`);
+        if (activeCard) activeCard.classList.add('active');
 
         if (reset) {
+            initChat();
+        } else {
             initChat();
         }
     }
 
     function initChat() {
         const chatBox = document.getElementById('chat-box');
+        if (!chatBox) return;
         chatBox.innerHTML = '';
         const char = characters[currentChar];
-        addBubble('ai', char.greeting, char.translation, char.tip, true, true, true);
+        addBubble('ai', char.greeting, char.translation, char.tip, false, true, true);
     }
 
     function addBubble(type, text, translation = '', tip = '', speak = false, showTrans = true, showTip = true) {
         const chatBox = document.getElementById('chat-box');
+        if (!chatBox) return;
+
         const row = document.createElement('div');
         row.className = `message-row ${type}`;
 
         const char = characters[currentChar];
-        const avatarUrl = type === 'ai' ? char.avatar : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80';
+        const avatarUrl = type === 'ai' ? char.avatar : 'https://api.dicebear.com/7.x/avataaars/svg?seed=User';
 
         let innerHTML = `<img src="${avatarUrl}" class="msg-avatar" alt="Avatar">`;
         innerHTML += `<div class="bubble">${text}`;
@@ -499,14 +508,11 @@
         getAIReply(text);
     }
 
-    // ② クイック発言タップ時の処理（ユーザーが発言を練習できるよう4秒遅延させる）
     function sendQuickPhrase(phrase) {
         addBubble('user', phrase);
-        
-        // 4000ms (4秒) 待ってからAIの返答処理を実行
         setTimeout(() => {
             getAIReply(phrase);
-        }, 4000);
+        }, 1000);
     }
 
     async function getAIReply(userText) {
@@ -531,18 +537,16 @@
         }
     }
 
-    // ① 低音ボイス（TTS）の設定調整
     function speakText(text) {
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // 連続再生を防止
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-US';
             
             const char = characters[currentChar];
-            utterance.pitch = char.pitch; // 低音調整 (0.65〜0.7)
+            utterance.pitch = char.pitch;
             utterance.rate = char.rate;
 
-            // 可能な限り男性ボイスを選択する処理
             const voices = window.speechSynthesis.getVoices();
             const maleVoice = voices.find(v => v.lang.startsWith('en') && (
                 v.name.includes('Male') || v.name.includes('David') || v.name.includes('George') || v.name.includes('Alex') || v.name.includes('Google US English')
@@ -562,6 +566,7 @@
 
     function renderQuickTopics() {
         const topicsContainer = document.getElementById('quick-topics');
+        if (!topicsContainer) return;
         topicsContainer.innerHTML = '';
         
         Object.keys(quickData).forEach((topic, index) => {
@@ -583,6 +588,7 @@
 
     function renderQuickPhrases(topic) {
         const phrasesContainer = document.getElementById('quick-phrases');
+        if (!phrasesContainer) return;
         phrasesContainer.innerHTML = '';
 
         quickData[topic].forEach(phrase => {
