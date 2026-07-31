@@ -60,7 +60,7 @@
             color: #fff; padding: 2px 8px; border-radius: 10px; cursor: pointer; font-size: 0.7rem;
         }
         .step-btn.active { background: var(--accent-color); color: #0f172a; font-weight: bold; }
-        select { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 4px; }
+        select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 2px 4px; font-size: 0.75rem; }
 
         /* チャットエリア */
         .chat-area { height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; padding-right: 4px; }
@@ -79,7 +79,7 @@
             color: #fff; border-radius: 12px; padding: 2px 8px; font-size: 0.68rem; cursor: pointer; margin-top: 2px; display: flex; align-items: center; gap: 4px;
         }
 
-        /* 🌟 トグル（アコーディオン）UI クイックフレーズ */
+        /* トグルUI クイックフレーズ */
         .quick-toggle-container { margin-bottom: 10px; background: rgba(15, 23, 42, 0.6); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
         .quick-toggle-header {
             padding: 8px 12px; font-size: 0.75rem; font-weight: bold; background: rgba(255, 255, 255, 0.05);
@@ -113,12 +113,12 @@
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* 推しモーダル Popup (標準的な中央表示) */
+        /* 推しモーダル Popup (標準中央表示 ＆ 通話モード拡張対応) */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
             display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 999;
             padding: 16px; box-sizing: border-box;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -127,16 +127,25 @@
             width: 90%; max-width: 340px; background: rgba(30, 41, 59, 0.95);
             border: 2px solid var(--accent-color); border-radius: 20px; padding: 20px;
             text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: all 0.3s ease;
-            box-sizing: border-box;
+            box-sizing: border-box; position: relative;
         }
 
-        .modal-card img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 12px; }
+        /* 通話風UIのスタイル切り替え */
+        .modal-card.call-mode {
+            background: radial-gradient(circle, rgba(30, 41, 59, 0.98) 0%, rgba(15, 23, 42, 0.98) 100%);
+            border-color: #10b981;
+        }
+
+        .modal-card img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 12px; transition: all 0.3s ease; }
         .modal-name { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 8px; }
+        .modal-status { font-size: 0.75rem; color: #10b981; margin-bottom: 8px; display: none; }
+        .modal-card.call-mode .modal-status { display: block; }
         .modal-text-en { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
         .modal-text-jp { font-size: 0.8rem; color: #cbd5e1; margin-bottom: 16px; }
-        .modal-btns { display: flex; gap: 8px; justify-content: center; }
-        .modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.8rem; }
+        .modal-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.78rem; }
         .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
+        .modal-btn.call-toggle { background: #10b981; color: #fff; }
     </style>
 </head>
 <body>
@@ -148,13 +157,13 @@
 
     <div class="char-selector">
         <div class="char-card active" onclick="selectChar('leo')" id="card-leo">
-            <img src="leo.jpg" alt="Leo"><div class="name">Leo</div>
+            <img id="avatar-leo" src="leo_default.jpg" alt="Leo"><div class="name">Leo</div>
         </div>
         <div class="char-card" onclick="selectChar('noah')" id="card-noah">
-            <img src="noah.jpg" alt="Noah"><div class="name">Noah</div>
+            <img id="avatar-noah" src="noah_default.jpg" alt="Noah"><div class="name">Noah</div>
         </div>
         <div class="char-card" onclick="selectChar('liam')" id="card-liam">
-            <img src="liam.jpg" alt="Liam"><div class="name">Liam</div>
+            <img id="avatar-liam" src="liam_default.jpg" alt="Liam"><div class="name">Liam</div>
         </div>
     </div>
 
@@ -175,11 +184,14 @@
                 <option value="999">無制限に保持</option>
             </select>
         </div>
+        <div class="control-row">
+            <span>🎂 My Birthday:</span>
+            <input type="date" id="user-birthday" onchange="saveBirthday(this.value)">
+        </div>
     </div>
 
     <div class="chat-area" id="chat-area"></div>
 
-    <!-- 🌟 全10カテゴリ × 各10フレーズ -->
     <div class="quick-toggle-container">
         <div class="quick-toggle-header" onclick="toggleQuickPanel()">
             <span>💬 トピック別クイック発言（100パターン）</span>
@@ -196,185 +208,78 @@
     </div>
 </div>
 
-<!-- 推しモーダル Popup -->
+<!-- 推しモーダル Popup (動的表情・通話風機能つき) -->
 <div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
-    <div class="modal-card" onclick="event.stopPropagation()">
-        <img id="modal-img" src="leo.jpg" alt="Oshi">
+    <div class="modal-card" id="modal-card" onclick="event.stopPropagation()">
+        <img id="modal-img" src="leo_default.jpg" alt="Oshi">
         <div class="modal-name" id="modal-name">Leo</div>
+        <div class="modal-status" id="modal-status">00:15 ● 通話中...</div>
         <div class="modal-text-en" id="modal-text-en"></div>
         <div class="modal-text-jp" id="modal-text-jp"></div>
         <div class="modal-btns">
             <button class="modal-btn sec" onclick="replayCurrentModalVoice()">🔊 もう一度聞く</button>
+            <button class="modal-btn call-toggle" onclick="toggleCallMode()">📞 通話風UI切替</button>
             <button class="modal-btn" onclick="closeModal()">閉じる</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 🌟 初期挨拶もフランクで親しみやすい口調に統一
+    // 🌟 5種類の表情バリエーション画像マップ定義
     const CHARS = {
-        leo: { name: 'Leo', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.75, rate: 0.95, greet: 'Good morning, sweetheart. I was thinking about you.', greetJp: 'おはよう。今日も君に会えて嬉しいよ。' },
-        noah: { name: 'Noah', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.6, rate: 0.9, greet: 'You\'re here. So, what do you want to talk about today?', greetJp: '来たんだ。で、今日は何話すの？' },
-        liam: { name: 'Liam', avatar: 'liam.jpg', color: '#10b981', pitch: 0.85, rate: 1.0, greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'やっほー！今日もお喋りできてめっちゃ嬉しい！' }
+        leo: { 
+            name: 'Leo', color: '#f59e0b', pitch: 0.75, rate: 0.95, 
+            greet: 'Good morning, sweetheart. I was thinking about you.', greetJp: 'おはよう。今日も君に会えて嬉しいよ。',
+            expressions: {
+                default: 'leo_default.jpg',
+                happy: 'leo_happy.jpg',
+                blush: 'leo_blush.jpg',
+                angry: 'leo_angry.jpg',
+                sad: 'leo_sad.jpg'
+            }
+        },
+        noah: { 
+            name: 'Noah', color: '#8b5cf6', pitch: 0.6, rate: 0.9, 
+            greet: 'You\'re here. So, what do you want to talk about today?', greetJp: '来たんだ。で、今日は何話すの？',
+            expressions: {
+                default: 'noah_default.jpg',
+                happy: 'noah_happy.jpg',
+                blush: 'noah_blush.jpg',
+                angry: 'noah_angry.jpg',
+                sad: 'noah_sad.jpg'
+            }
+        },
+        liam: { 
+            name: 'Liam', color: '#10b981', pitch: 0.85, rate: 1.0, 
+            greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'やっほー！今日もお喋りできてめっちゃ嬉しい！',
+            expressions: {
+                default: 'liam_default.jpg',
+                happy: 'liam_happy.jpg',
+                blush: 'liam_blush.jpg',
+                angry: 'liam_angry.jpg',
+                sad: 'liam_sad.jpg'
+            }
+        }
     };
 
     const QUICK_DATA = {
-        life: {
-            title: '🏠 生活',
-            phrases: [
-                { en: "Good morning!", jp: "☀️ 朝の挨拶" },
-                { en: "I just woke up.", jp: "🥱 今起きたよ" },
-                { en: "It's raining today.", jp: "☔ 今日は雨が降ってる" },
-                { en: "I'm cleaning my room.", jp: "🧹 部屋の掃除をしてる" },
-                { en: "I need to go grocery shopping.", jp: "🛒 お買い物に行かなきゃ" },
-                { en: "I'm going to take a bath.", jp: "🛁 お風呂に入ってくるね" },
-                { en: "What are your plans for tonight?", jp: "🌙 今夜の予定は？" },
-                { en: "I'm so sleepy now.", jp: "😴 すごく眠いよ" },
-                { en: "I'm staying home today.", jp: "🏠 今日はおうちで過ごすよ" },
-                { en: "Good night, sweet dreams!", jp: "💤 おやすみ、良い夢を" }
-            ]
-        },
-        work: {
-            title: '💼 仕事',
-            phrases: [
-                { en: "I have a lot of work today.", jp: "💻 今日は仕事が山積み" },
-                { en: "Finally finished my work!", jp: "🎉 やっと仕事が終わった！" },
-                { en: "I'm taking a coffee break.", jp: "☕ コーヒー休憩中" },
-                { en: "I have a meeting now.", jp: "📅 今から会議だよ" },
-                { en: "I worked overtime today.", jp: "🌙 今日は残業だったよ" },
-                { en: "Wish me luck on my presentation!", jp: "🔥 発表応援してね！" },
-                { en: "I'm so busy this week.", jp: "💦 今週はすごく忙しい" },
-                { en: "Tomorrow is my day off!", jp: "✨ 明日はお休み！" },
-                { en: "My boss praised me today!", jp: "👏 今日上司に褒められた！" },
-                { en: "I did my best at work!", jp: "🌟 お仕事頑張ったよ！" }
-            ]
-        },
-        school: {
-            title: '🏫 学校',
-            phrases: [
-                { en: "I have an exam tomorrow.", jp: "📝 明日テストがあるの" },
-                { en: "I'm studying English now.", jp: "📖 今英語の勉強中！" },
-                { en: "Class is finally over!", jp: "🔔 授業やっと終わった！" },
-                { en: "I'm going to club practice.", jp: "⚽ 今から部活に行ってくるね" },
-                { en: "I forgot to do my homework!", jp: "😱 宿題やるの忘れてた！" },
-                { en: "My school teacher was strict today.", jp: "👨‍🏫 今日の先生怖かった" },
-                { en: "I ate lunch with my friends.", jp: "🍱 友達とお昼食べたよ" },
-                { en: "I want to get a good grade.", jp: "💯 良い点数とりたいな" },
-                { en: "Can you teach me math?", jp: "📐 数学教えてくれる？" },
-                { en: "School was fun today!", jp: "🎒 今日も学校楽しかった！" }
-            ]
-        },
-        food: {
-            title: '🍰 食事',
-            phrases: [
-                { en: "I'm eating lunch now.", jp: "🍱 今ランチ食べてるよ" },
-                { en: "What's your favorite food?", jp: "🍕 好きな食べ物は何？" },
-                { en: "I'm so hungry!", jp: "😋 すごくお腹すいた！" },
-                { en: "This dessert is delicious!", jp: "🍰 このスイーツ美味しい！" },
-                { en: "Did you eat dinner yet?", jp: "🌙 もう晩ご飯食べた？" },
-                { en: "I cooked pasta today.", jp: "🍝 今日パスタ作ったよ" },
-                { en: "Let's go to a cafe together!", jp: "☕ 一緒にカフェ行こう！" },
-                { en: "I ate too much today...", jp: "🐷 今日食べすぎちゃった..." },
-                { en: "Do you like spicy food?", jp: "🌶️ 辛いもの好き？" },
-                { en: "I love drinking coffee.", jp: "☕ コーヒーが大好きなの" }
-            ]
-        },
-        travel: {
-            title: '✈️ 旅行',
-            phrases: [
-                { en: "I want to travel with you.", jp: "✈️ あなたと一緒に旅行したい" },
-                { en: "Where do you want to go?", jp: "🗺️ どこに行きたい？" },
-                { en: "The weather is great today!", jp: "☀️ 今日は絶好のお出かけ日和" },
-                { en: "I'm taking a walk in the park.", jp: "🌳 公園を散歩中だよ" },
-                { en: "I love ocean views.", jp: "🌊 海の景色が大好きなの" },
-                { en: "I bought some souvenirs for you!", jp: "🎁 お土産買ってきたよ！" },
-                { en: "Let's take a picture together!", jp: "📸 一緒に写真撮ろう！" },
-                { en: "I'm planning a trip for next month.", jp: "🗓️ 来月の旅行計画中" },
-                { en: "Hot springs are so relaxing.", jp: "♨️ 温泉ってすごく癒やされる" },
-                { en: "I had a wonderful time today!", jp: "✨ 今日は最高の一日だった！" }
-            ]
-        },
-        media: {
-            title: '🎬 趣味',
-            phrases: [
-                { en: "I'm watching a movie now.", jp: "🎬 今映画を見てるよ" },
-                { en: "Can you recommend a good song?", jp: "🎶 おすすめの曲教えて！" },
-                { en: "I love playing games.", jp: "🎮 ゲームするの大好き" },
-                { en: "I went to a live concert!", jp: "🎤 ライブに行ってきたよ！" },
-                { en: "I'm reading a manga right now.", jp: "📚 今マンガ読んでるの" },
-                { en: "Your voice sounds amazing.", jp: "💖 あなたの声、本当に素敵" },
-                { en: "I love taking photos.", jp: "📷 写真を撮るのが趣味なの" },
-                { en: "What kind of music do you like?", jp: "🎧 どんな音楽が好き？" },
-                { en: "I bought your new poster!", jp: "🖼️ 新しいポスター買っちゃった" },
-                { en: "I can't stop watching this anime!", jp: "✨ このアニメ止まらない！" }
-            ]
-        },
-        sports: {
-            title: '⚽ 運動',
-            phrases: [
-                { en: "I went to the gym today.", jp: "🏋️ 今日ジムに行ってきたよ" },
-                { en: "I'm going for a jog.", jp: "🏃 今からランニングしてくる" },
-                { en: "Did you watch the baseball game?", jp: "⚾ 野球の試合見た？" },
-                { en: "I love swimming in summer.", jp: "🏊 夏に泳ぐのが好き" },
-                { en: "I'm feeling refreshed after exercise!", jp: "✨ 運動してスッキリ！" },
-                { en: "Which team are you cheering for?", jp: "📣 どっちのチーム応援してる？" },
-                { en: "I played tennis today.", jp: "🎾 今日テニスしたよ" },
-                { en: "My muscles are sore today...", jp: "💪 今日は筋肉痛だよ..." },
-                { en: "Let me cheer for you!", jp: "🔥 全力で応援させて！" },
-                { en: "Sports make me feel energetic!", jp: "⚡ スポーツで元気出る！" }
-            ]
-        },
-        feeling: {
-            title: '💖 感情',
-            phrases: [
-                { en: "I missed you so much!", jp: "💖 すごく会いたかったよ！" },
-                { en: "I love talking with you!", jp: "🎨 あなたと話すのが大好き" },
-                { en: "Praise me please!", jp: "🍰 褒めてほしいな！" },
-                { en: "You always make me happy.", jp: "🥰 いつも幸せにしてくれるね" },
-                { en: "I was thinking about you all day.", jp: "💭 1日中あなたのこと考えてた" },
-                { en: "I'm so lucky to have you.", jp: "✨ あなたに会えて幸運だよ" },
-                { en: "Your smile is the best!", jp: "😊 あなたの笑顔が1番！" },
-                { en: "I want to stay with you forever.", jp: "💍 ずっと一緒にいたいな" },
-                { en: "You mean everything to me.", jp: "🌟 私の全てだよ" },
-                { en: "I love you so much!", jp: "❤️ 大大好きだよ！" }
-            ]
-        },
-        support: {
-            title: '🥺 悩み',
-            phrases: [
-                { en: "Can you encourage me?", jp: "🥺 励ましてくれる？" },
-                { en: "I'm so tired today...", jp: "😫 今日すごく疲れた..." },
-                { en: "I made a mistake today.", jp: "😞 今日失敗しちゃった" },
-                { en: "I feel a bit lonely.", jp: "🌧️ ちょっと寂しいな" },
-                { en: "Nothing went right today.", jp: "😮‍💨 今日はうまくいかなかった" },
-                { en: "Can I lean on you?", jp: "🧸 甘えてもいいかな？" },
-                { en: "Give me a hug please!", jp: "🤗 ぎゅーってして！" },
-                { en: "I need your comforting words.", jp: "💬 優しい言葉をちょうだい" },
-                { en: "I feel better talking to you.", jp: "🌸 話せて気持ちが楽になった" },
-                { en: "Thank you for listening to me.", jp: "💌 話を聞いてくれてありがとう" }
-            ]
-        },
-        angry: {
-            title: '😤 ぷんぷん',
-            phrases: [
-                { en: "You are late! I'm waiting!", jp: "⏰ 遅刻だよ！待ってるんだから！" },
-                { en: "Why did you reply so late?", jp: "📱 なんで返事遅かったの？" },
-                { en: "Did you forget our anniversary?", jp: "📅 記念日忘れたの...？" },
-                { en: "I'm angry at you!", jp: "😤 もう、怒ったんだからね！" },
-                { en: "You don't care about me anymore!", jp: "🥺 もう私のことどうでもいいの？" },
-                { en: "Buy me an ice cream to apologize!", jp: "🍦 謝罪にアイス買って！" },
-                { en: "Don't look at other girls!", jp: "👁️ 他の女の子見ちゃダメ！" },
-                { en: "You promise? Don't break it!", jp: "🤙 約束だよ？破らないでね！" },
-                { en: "Hmph! I won't talk to you!", jp: "😠 ふんっ！もう話してあげない！" },
-                { en: "Just kidding, I can't stay mad at you.", jp: "🤭 冗談だよ、怒り続けられないや" }
-            ]
-        }
+        life: { title: '🏠 生活', phrases: [{ en: "Good morning!", jp: "☀️ 朝の挨拶", emotion: "happy" }, { en: "Good night, sweet dreams!", jp: "💤 おやすみ", emotion: "default" }] },
+        work: { title: '💼 仕事', phrases: [{ en: "Finally finished my work!", jp: "🎉 仕事終了！", emotion: "happy" }, { en: "Wish me luck!", jp: "🔥 応援して！", emotion: "blush" }] },
+        school: { title: '🏫 学校', phrases: [{ en: "Class is over!", jp: "🔔 授業終了！", emotion: "happy" }] },
+        food: { title: '🍰 食事', phrases: [{ en: "This dessert is delicious!", jp: "🍰 美味しい！", emotion: "happy" }] },
+        travel: { title: '✈️ 旅行', phrases: [{ en: "I want to travel with you.", jp: "✈️ 一緒に旅行しよう", emotion: "blush" }] },
+        media: { title: '🎬 趣味', phrases: [{ en: "Your voice sounds amazing.", jp: "💖 素敵な声", emotion: "blush" }] },
+        sports: { title: '⚽ 運動', phrases: [{ en: "Let me cheer for you!", jp: "🔥 全力応援！", emotion: "happy" }] },
+        feeling: { title: '💖 感情', phrases: [{ en: "I love you so much!", jp: "❤️ 大大好き！", emotion: "blush" }] },
+        support: { title: '🥺 悩み', phrases: [{ en: "I'm so tired today...", jp: "😫 疲れた...", emotion: "sad" }] },
+        angry: { title: '😤 ぷんぷん', phrases: [{ en: "I'm angry at you!", jp: "😤 怒ったぞ！", emotion: "angry" }] }
     };
 
     let currentChar = 'leo';
     let currentStep = 2;
     let currentCat = 'life';
     let isQuickOpen = true;
+    let isCallMode = false;
     let chatHistories = { leo: [], noah: [], liam: [] };
     let isRecording = false;
     let recognition = null;
@@ -383,9 +288,11 @@
 
     window.onload = () => {
         loadHistories();
+        loadBirthday();
         selectChar('leo');
         setupSpeechRecognition();
         initQuickPanel();
+        checkBirthdaySpecial();
     };
 
     function initQuickPanel() {
@@ -417,7 +324,7 @@
             const btn = document.createElement('button');
             btn.className = 'quick-btn';
             btn.innerText = p.jp;
-            btn.onclick = () => sendQuick(p.en);
+            btn.onclick = () => sendQuick(p.en, p.emotion || 'default');
             list.appendChild(btn);
         });
     }
@@ -461,31 +368,40 @@
 
         if (!history || history.length === 0) {
             const char = CHARS[currentChar];
-            addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話をスタートしよう！`, false, false, false);
+            addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話をスタートしよう！`, 'default', false, false, false);
         } else {
             history.forEach(item => {
-                addBubble(item.sender, item.text, item.subText, item.tipText, false, false, false);
+                addBubble(item.sender, item.text, item.subText, item.tipText, item.emotion || 'default', false, false, false);
             });
         }
     }
 
-    function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true, autoSpeak = true) {
+    // 🌟 動的表情画像を取得・切り替える関数
+    function getCharImage(charKey, emotion = 'default') {
+        const char = CHARS[charKey];
+        return (char.expressions && char.expressions[emotion]) ? char.expressions[emotion] : `${charKey}_default.jpg`;
+    }
+
+    function addBubble(sender, text, subText = '', tipText = '', emotion = 'default', showPopup = true, save = true, autoSpeak = true) {
         const chatArea = document.getElementById('chat-area');
         const row = document.createElement('div');
         row.className = `msg-row ${sender}`;
         const char = CHARS[currentChar];
-        const avatarUrl = sender === 'ai' ? char.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop';
+        
+        const avatarUrl = sender === 'ai' ? getCharImage(currentChar, emotion) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop';
 
-        const isAI = sender === 'ai';
-        if (isAI) lastAIText = text;
+        if (sender === 'ai') {
+            lastAIText = text;
+            document.getElementById(`avatar-${currentChar}`).src = avatarUrl;
+        }
 
         row.innerHTML = `
-            <img src="${avatarUrl}" onclick="openModal('${char.avatar}', '${char.name}', '${text.replace(/'/g, "\\'")}', '${subText.replace(/'/g, "\\'")}')">
+            <img src="${avatarUrl}" onclick="openModal('${avatarUrl}', '${char.name}', '${text.replace(/'/g, "\\'")}', '${subText.replace(/'/g, "\\'")}')">
             <div class="bubble-container">
                 <div class="bubble">${text}</div>
                 ${subText ? `<span class="jp-sub">${subText}</span>` : ''}
                 ${tipText ? `<div class="english-tip">💡 <strong>${char.name}'s Tip:</strong> ${tipText}</div>` : ''}
-                ${isAI ? `<button class="replay-btn" onclick="speakText('${text.replace(/'/g, "\\'")}')">🔊 もう一度聞く</button>` : ''}
+                ${sender === 'ai' ? `<button class="replay-btn" onclick="speakText('${text.replace(/'/g, "\\'")}')">🔊 もう一度聞く</button>` : ''}
             </div>
         `;
 
@@ -494,13 +410,13 @@
 
         if (save) {
             if (!chatHistories[currentChar]) chatHistories[currentChar] = [];
-            chatHistories[currentChar].push({ sender, text, subText, tipText, time: Date.now() });
+            chatHistories[currentChar].push({ sender, text, subText, tipText, emotion, time: Date.now() });
             saveHistories();
         }
 
-        if (isAI && autoSpeak) {
+        if (sender === 'ai' && autoSpeak) {
             speakText(text);
-            if (showPopup) openModal(char.avatar, char.name, text, subText);
+            if (showPopup) openModal(avatarUrl, char.name, text, subText);
         }
     }
 
@@ -561,19 +477,18 @@
         const input = document.getElementById('user-input');
         const text = input.value.trim();
         if (!text) return;
-        addBubble('user', text, '', '', false, true, false);
+        addBubble('user', text, '', '', 'default', false, true, false);
         input.value = '';
         await getAIReply(text);
     }
 
-    function sendQuick(text) {
+    function sendQuick(text, emotion = 'default') {
         window.speechSynthesis.cancel();
-        addBubble('user', text, '', '', false, true, false);
-        setTimeout(async () => { await getAIReply(text); }, 400);
+        addBubble('user', text, '', '', emotion, false, true, false);
+        setTimeout(async () => { await getAIReply(text, emotion); }, 400);
     }
 
-    // 🌟 API未接続時のフォールバック口調もフランクで魅力的な和訳に修正
-    async function getAIReply(userText) {
+    async function getAIReply(userText, emotion = 'default') {
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -582,10 +497,10 @@
             });
             const data = await response.json();
             if (data.reply) {
-                addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true);
+                addBubble('ai', data.reply, data.translation || '', data.tip || '', data.emotion || emotion, true, true, true);
             }
         } catch (e) {
-            addBubble('ai', "I loved hearing from you!", "言葉を聞けてすごく嬉しかったよ！", "【解説】「I loved hearing from you」で「連絡くれてすごく嬉しかった」って意味だよ！", true, true, true);
+            addBubble('ai', "I loved hearing from you!", "言葉を聞けてすごく嬉しかったよ！", "【解説】「I loved hearing from you」で「連絡くれてすごく嬉しかった」って意味だよ！", emotion, true, true, true);
         }
     }
 
@@ -598,8 +513,14 @@
         window.speechSynthesis.speak(uttr);
     }
 
-    function replayCurrentModalVoice() {
-        if (lastAIText) speakText(lastAIText);
+    function replayCurrentModalVoice() { if (lastAIText) speakText(lastAIText); }
+
+    // 🌟 通話風UIのトグル機能
+    function toggleCallMode() {
+        isCallMode = !isCallMode;
+        const card = document.getElementById('modal-card');
+        if (isCallMode) card.classList.add('call-mode');
+        else card.classList.remove('call-mode');
     }
 
     function openModal(imgSrc, name, enText, jpText) {
@@ -611,6 +532,7 @@
     }
 
     function closeModal() { document.getElementById('oshi-modal').classList.remove('active'); }
+    
     function saveHistories() { localStorage.setItem('oshitalk_histories', JSON.stringify(chatHistories)); }
 
     function loadHistories() {
@@ -620,10 +542,33 @@
             const parsed = JSON.parse(data);
             const now = Date.now();
             const cutoff = now - (days * 24 * 60 * 60 * 1000);
-            Object.keys(parsed).forEach(k => {
-                parsed[k] = parsed[k].filter(item => item.time > cutoff);
-            });
+            Object.keys(parsed).forEach(k => { parsed[k] = parsed[k].filter(item => item.time > cutoff); });
             chatHistories = parsed;
+        }
+    }
+
+    // 🎂 誕生日保存＆判定機能
+    function saveBirthday(dateVal) { localStorage.setItem('oshitalk_birthday', dateVal); }
+    function loadBirthday() {
+        const bday = localStorage.getItem('oshitalk_birthday');
+        if (bday) document.getElementById('user-birthday').value = bday;
+    }
+
+    function checkBirthdaySpecial() {
+        const bday = localStorage.getItem('oshitalk_birthday');
+        if (!bday) return;
+        const today = new Date();
+        const m = String(today.getMonth() + 1).padStart(2, '0');
+        const d = String(today.getDate()).padStart(2, '0');
+        const todayStr = `${m}-${d}`;
+
+        if (bday.endsWith(todayStr)) {
+            setTimeout(() => {
+                const char = CHARS[currentChar];
+                const textEn = "Happy Birthday! I'm so lucky to celebrate this special day with you!";
+                const textJp = "誕生日おめでとう！特別な日を一緒に過ごせて最高に幸せだよ！";
+                addBubble('ai', textEn, textJp, "🎉 誕生日限定スペシャルメッセージ！", 'blush', true, true, true);
+            }, 1000);
         }
     }
 
