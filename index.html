@@ -112,33 +112,51 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
 .modal-card.call-mode {
   width: 100vw !important; height: 100vh !important; max-width: 100vw !important; border-radius: 0 !important;
   border: none !important; background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%) !important;
-  display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 40px 20px 30px !important; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px 16px !important; box-sizing: border-box;
   overflow-y: auto;
 }
-.call-header { display: none; font-size: 1.1rem; color: #10b981; font-weight: bold; }
+.call-header { display: none; font-size: 1rem; color: #10b981; font-weight: bold; margin-bottom: 4px; }
 .modal-card.call-mode .call-header { display: block; }
 .modal-card.call-mode img {
-  width: 50vw !important; height: 50vw !important; max-width: 180px !important; max-height: 180px !important;
-  border-radius: 50% !important; border: 4px solid #10b981 !important; box-shadow: 0 0 35px rgba(16, 185, 129, 0.6) !important;
-  margin-bottom: 6px;
+  width: 120px !important; height: 120px !important;
+  border-radius: 50% !important; border: 3px solid #10b981 !important; box-shadow: 0 0 25px rgba(16, 185, 129, 0.5) !important;
+  margin-bottom: 4px; flex-shrink: 0;
 }
 
-/* 回答例アシスト表示（通話モード用） */
+/* ① 修正: 波形マークのアニメーションで文字が揺れないように固定高さを設定 */
+.wave-animation { display: none; justify-content: center; align-items: center; gap: 6px; height: 24px; margin: 4px 0; }
+.modal-card.call-mode .wave-animation { display: flex; }
+.wave-bar { width: 5px; height: 20px; background: #10b981; border-radius: 3px; transform-origin: center; animation: wave 1.2s infinite ease-in-out; }
+.wave-bar:nth-child(2) { animation-delay: 0.2s; }
+.wave-bar:nth-child(3) { animation-delay: 0.4s; }
+@keyframes wave { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1.1); } }
+
+/* ⑤ 修正: 通話モード内の会話テキストエリア（自分と相手の両方を表示） */
+.call-dialog-container {
+  display: none; width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 10px; box-sizing: border-box; max-height: 150px; overflow-y: auto; text-align: left; margin-bottom: 6px;
+}
+.modal-card.call-mode .call-dialog-container { display: flex; flex-direction: column; gap: 8px; }
+.call-msg { font-size: 0.88rem; line-height: 1.35; padding: 6px 10px; border-radius: 12px; }
+.call-msg.ai { background: rgba(255, 255, 255, 0.12); color: #fff; border-top-left-radius: 2px; }
+.call-msg.user { background: var(--accent-color); color: #0f172a; font-weight: 600; align-self: flex-end; border-top-right-radius: 2px; }
+
+/* ④ 修正: 回答例アシスト表示（通話モード用） */
 .call-assist-box {
-  display: none; width: 100%; max-width: 420px; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(16, 185, 129, 0.4);
-  border-radius: 16px; padding: 10px; margin: 8px 0; text-align: left; box-sizing: border-box;
+  display: none; width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 16px; padding: 8px 12px; margin: 4px 0; text-align: left; box-sizing: border-box;
 }
 .modal-card.call-mode .call-assist-box { display: block; }
-.call-assist-title { font-size: 0.78rem; color: #10b981; font-weight: bold; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.call-assist-title { font-size: 0.78rem; color: #10b981; font-weight: bold; margin-bottom: 4px; display: flex; justify-content: space-between; }
 .call-assist-item {
   background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px;
-  padding: 6px 10px; margin-bottom: 6px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;
+  padding: 5px 10px; margin-bottom: 4px; font-size: 0.82rem; cursor: pointer; transition: background 0.2s;
 }
 .call-assist-item:hover { background: rgba(16, 185, 129, 0.2); }
 .call-assist-item:last-child { margin-bottom: 0; }
 
-/* 通話コントロール & 入力エリア */
-.call-control-container { display: none; width: 100%; max-width: 420px; flex-direction: column; gap: 8px; }
+/* ② 修正: 通話コントロール & 入力エリア */
+.call-control-container { display: none; width: 100%; max-width: 440px; flex-direction: column; gap: 6px; }
 .modal-card.call-mode .call-control-container { display: flex; }
 
 .call-mode-toggle { display: flex; justify-content: center; gap: 12px; font-size: 0.8rem; color: #cbd5e1; }
@@ -146,31 +164,24 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
 
 .call-transcribe-preview {
   background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
-  padding: 8px 12px; font-size: 0.9rem; color: #fff; min-height: 38px; text-align: left; word-break: break-all;
+  padding: 6px 10px; font-size: 0.88rem; color: #fff; min-height: 32px; text-align: left; word-break: break-all;
 }
 
 .call-btn-group { display: flex; gap: 6px; justify-content: center; }
 .call-action-btn {
-  flex: 1; padding: 8px 0; border-radius: 14px; border: none; font-size: 0.82rem; font-weight: bold; cursor: pointer; color: #fff;
+  flex: 1; padding: 7px 0; border-radius: 12px; border: none; font-size: 0.8rem; font-weight: bold; cursor: pointer; color: #fff;
 }
 .btn-mic-start { background: #10b981; }
 .btn-mic-stop { background: #f59e0b; }
 .btn-mic-clear { background: #64748b; }
 .btn-mic-send { background: #3b82f6; }
 
-.wave-animation { display: none; justify-content: center; align-items: center; gap: 5px; margin: 4px 0; }
-.modal-card.call-mode .wave-animation { display: flex; }
-.wave-bar { width: 5px; height: 16px; background: #10b981; border-radius: 3px; animation: wave 1s infinite ease-in-out; }
-.wave-bar:nth-child(2) { animation-delay: 0.2s; }
-.wave-bar:nth-child(3) { animation-delay: 0.4s; }
-@keyframes wave { 0%, 100% { height: 8px; } 50% { height: 22px; } }
-
-.modal-card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 8px; transition: all 0.3s ease; }
-.modal-name { font-size: 1.2rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
-.modal-text-en { font-size: 1rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
-.modal-text-jp { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px; }
-.modal-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 8px 14px; border-radius: 18px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+.modal-card img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 6px; transition: all 0.3s ease; }
+.modal-name { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 2px; }
+.modal-text-en { font-size: 0.95rem; font-weight: 600; line-height: 1.35; margin-bottom: 4px; }
+.modal-text-jp { font-size: 0.82rem; color: #cbd5e1; margin-bottom: 8px; }
+.modal-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
+.modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 7px 14px; border-radius: 16px; font-weight: bold; cursor: pointer; font-size: 0.82rem; }
 .modal-btn.sec { background: rgba(255, 255, 255, 0.18); color: #fff; }
 .modal-btn.call { background: #10b981; color: #fff; }
 
@@ -259,10 +270,13 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
     </div>
 
     <div class="modal-name" id="modal-name">Leo</div>
-    <div class="modal-text-en" id="modal-text-en"></div>
-    <div class="modal-text-jp" id="modal-text-jp"></div>
+    
+    <!-- ⑤ 修正: 通話モード用のダイアログ履歴表示（最新発言） -->
+    <div class="call-dialog-container" id="call-dialog-container">
+      <div class="call-msg ai" id="call-ai-msg">...</div>
+    </div>
 
-    <!-- ② 通話モード専用：回答例アシスト表示 -->
+    <!-- ④ 修正: 動的返答ヒント（アシスト表示） -->
     <div class="call-assist-box">
       <div class="call-assist-title">
         <span>💡 返答ヒント (タップして入力)</span>
@@ -271,7 +285,7 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
       <div id="call-assist-list"></div>
     </div>
 
-    <!-- ① & ② 通話モードコントロール -->
+    <!-- ② 修正: 通話モードコントロール -->
     <div class="call-control-container">
       <div class="call-mode-toggle">
         <label><input type="radio" name="callSendMode" value="auto" checked onchange="changeCallSendMode('auto')"> ① 4秒後に自動送信</label>
@@ -288,7 +302,7 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
       </div>
     </div>
 
-    <div class="modal-btns" style="margin-top:12px;">
+    <div class="modal-btns">
       <button class="modal-btn sec" onclick="replayCurrentModalVoice()">🔊 もう一度聞く</button>
       <button class="modal-btn call" id="btn-toggle-call" onclick="toggleCallMode()">通話モード切替</button>
       <button class="modal-btn" onclick="closeModal()">切断して閉じる</button>
@@ -437,6 +451,7 @@ window.onload = () => {
   checkBirthday();
 };
 
+/* ③ 修正: キャラアイコン・通話モード双方の画像（表情）を確実に切り替え */
 function setExpression(expr) {
   currentExpression = expr || 'default';
   const char = CHARS[currentChar];
@@ -444,7 +459,9 @@ function setExpression(expr) {
   
   const charImg = document.querySelector(`#card-${currentChar} img`);
   if (charImg) charImg.src = imgSrc;
-  document.getElementById('modal-img').src = imgSrc;
+  
+  const modalImg = document.getElementById('modal-img');
+  if (modalImg) modalImg.src = imgSrc;
 }
 
 function detectExpression(text, category = '') {
@@ -518,37 +535,55 @@ function loadStepSetting() {
   if (savedStep) { setStep(parseInt(savedStep)); } else { setStep(2); }
 }
 
-/* ② 通話モードの回答例（アシスト機能）生成 */
+/* ④ 修正: 会話内容に応じた動的ヒント（返答アシスト）の生成 */
 function updateCallAssistList(aiText = '') {
   const assistContainer = document.getElementById('call-assist-list');
   if (!assistContainer) return;
   assistContainer.innerHTML = '';
 
   let samples = [];
-  if (currentStep === 1) {
+  const textLower = aiText.toLowerCase();
+
+  // 会話コンテキストに応じた分岐
+  if (textLower.includes('how are you') || textLower.includes('doing')) {
     samples = [
-      { en: "Thank you!", jp: "ありがとう！" },
-      { en: "I'm so happy today.", jp: "今日すごく幸せだよ。" },
-      { en: "Tell me more!", jp: "もっと教えて！" }
+      { en: "I'm doing great, thank you!", jp: "すごく元気だよ、ありがとう！" },
+      { en: "I was thinking about you.", jp: "あなたのこと考えてたよ。" },
+      { en: "A bit tired, but happy to talk!", jp: "少し疲れてるけど話せて嬉しい！" }
     ];
-  } else if (currentStep === 2) {
+  } else if (textLower.includes('love') || textLower.includes('like') || textLower.includes('sweetheart')) {
     samples = [
-      { en: "I really love talking with you.", jp: "あなたとお話しするの本当に好き。" },
-      { en: "That sounds like a great idea!", jp: "それすごく良いアイディアだね！" },
-      { en: "What are you doing later?", jp: "このあと何する予定なの？" }
+      { en: "I love you so much too!", jp: "私もあなたのこと大大好き！" },
+      { en: "You always make my heart race.", jp: "いつも胸がドキドキするよ。" },
+      { en: "Stop making me blush!", jp: "照れさせないでよ！" }
     ];
   } else {
-    samples = [
-      { en: "I was thinking about our future plans together.", jp: "一緒にするこれからの計画のこと考えてたんだ。" },
-      { en: "Whenever I hear your voice, I feel super relaxed.", jp: "あなたの声を聞くといつでもすごくリラックスできるよ。" },
-      { en: "Could you tell me more about your favorite things?", jp: "あなたの好きなことについてもっと詳しく教えてくれる？" }
-    ];
+    // ステップごとのデフォルトヒント
+    if (currentStep === 1) {
+      samples = [
+        { en: "That's so cool!", jp: "それすごくかっこいい！" },
+        { en: "I agree with you.", jp: "私も同感だよ。" },
+        { en: "Tell me more about it!", jp: "もっと詳しく教えて！" }
+      ];
+    } else if (currentStep === 2) {
+      samples = [
+        { en: "I really love talking with you like this.", jp: "こうしてあなたとお話しするの本当に好き。" },
+        { en: "That sounds like a wonderful idea!", jp: "それすごく素敵なアイディアだね！" },
+        { en: "What should we do next time?", jp: "次は何しようか？" }
+      ];
+    } else {
+      samples = [
+        { en: "Hearing your voice always brightens up my whole day.", jp: "あなたの声を聞くと1日中元気になるよ。" },
+        { en: "I'd love to know more about what you like to do.", jp: "あなたの好きなことについてもっと教えてほしいな。" },
+        { en: "Whenever I'm with you, time just flies by so fast.", jp: "あなたと一緒にいると時間がすぐ過ぎちゃうね。" }
+      ];
+    }
   }
 
   samples.forEach(s => {
     const div = document.createElement('div');
     div.className = 'call-assist-item';
-    div.innerHTML = `<strong>${s.en}</strong> <span style="font-size:0.78rem; color:#cbd5e1;">(${s.jp})</span>`;
+    div.innerHTML = `<strong>${s.en}</strong> <span style="font-size:0.75rem; color:#cbd5e1;">(${s.jp})</span>`;
     div.onclick = () => {
       setTranscribeText(s.en);
     };
@@ -567,7 +602,7 @@ function toggleCallMode() {
   if (isCallMode) {
     cardBox.classList.add('call-mode');
     btn.innerText = "通常表示に戻す";
-    updateCallAssistList();
+    updateCallAssistList(lastAIText);
   } else {
     cardBox.classList.remove('call-mode');
     btn.innerText = "通話モード切替";
@@ -577,8 +612,6 @@ function toggleCallMode() {
 function openModal(imgSrc, name, enText, jpText) {
   document.getElementById('modal-img').src = imgSrc;
   document.getElementById('modal-name').innerText = name;
-  document.getElementById('modal-text-en').innerText = enText;
-  document.getElementById('modal-text-jp').innerText = jpText || '';
   document.getElementById('oshi-modal').classList.add('active');
   updateCallAssistList(enText);
 }
@@ -670,6 +703,7 @@ function renderChatHistory() {
   }
 }
 
+/* ⑤ 修正: 通常チャット＆通話モード双方へのメッセージ追加処理 */
 function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true, autoSpeak = true) {
   const chatArea = document.getElementById('chat-area');
   const row = document.createElement('div');
@@ -677,7 +711,10 @@ function addBubble(sender, text, subText = '', tipText = '', showPopup = true, s
   const char = CHARS[currentChar];
   const avatarUrl = sender === 'ai' ? (char.expressions[currentExpression] || char.expressions.default) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop';
   
-  if (sender === 'ai') lastAIText = text;
+  if (sender === 'ai') {
+    lastAIText = text;
+    updateCallAssistList(text); // AIの発言に応じてアシストヒント更新
+  }
   
   row.innerHTML = `
     <img src="${avatarUrl}" onclick="openModal('${avatarUrl}', '${char.name}', '${text.replace(/'/g, "\\'")}', '${subText.replace(/'/g, "\\'")}')">
@@ -691,6 +728,16 @@ function addBubble(sender, text, subText = '', tipText = '', showPopup = true, s
   chatArea.appendChild(row);
   chatArea.scrollTop = chatArea.scrollHeight;
 
+  // ⑤ 通話モード内のダイアログにも反映
+  const callContainer = document.getElementById('call-dialog-container');
+  if (callContainer) {
+    const callMsg = document.createElement('div');
+    callMsg.className = `call-msg ${sender}`;
+    callMsg.innerText = (sender === 'ai' ? `${char.name}: ` : 'You: ') + text;
+    callContainer.appendChild(callMsg);
+    callContainer.scrollTop = callContainer.scrollHeight;
+  }
+
   if (save) {
     if (!chatHistories[currentChar]) chatHistories[currentChar] = [];
     chatHistories[currentChar].push({ sender, text, subText, tipText, time: Date.now() });
@@ -698,11 +745,10 @@ function addBubble(sender, text, subText = '', tipText = '', showPopup = true, s
   }
   if (sender === 'ai' && autoSpeak) {
     speakText(text);
-    if (showPopup) openModal(avatarUrl, char.name, text, subText);
+    if (showPopup && !isCallMode) openModal(avatarUrl, char.name, text, subText);
   }
 }
 
-/* ３＆４. 音声入力＆文字起こし連携修復 */
 function setTranscribeText(text) {
   document.getElementById('user-input').value = text;
   const preview = document.getElementById('call-transcribe-preview');
@@ -713,6 +759,7 @@ function clearSpeechText() {
   setTranscribeText('');
 }
 
+/* ② 修正: 4秒無音での自動送信タイマー処理を強固に修復 */
 function setupSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) return;
@@ -735,17 +782,20 @@ function setupSpeechRecognition() {
     for (let i = event.resultIndex; i < event.results.length; i++) {
       transcript += event.results[i][0].transcript;
     }
-    setTranscribeText(transcript);
-    
-    // ① 4秒自動送信タイマー（自動送信モード時のみ）
-    clearTimeout(silenceTimer);
-    if (callSendMode === 'auto') {
-      silenceTimer = setTimeout(() => {
-        if (document.getElementById('user-input').value.trim()) {
-          stopSpeech();
-          sendMessage();
-        }
-      }, 4000);
+    if (transcript.trim()) {
+      setTranscribeText(transcript);
+      
+      // ① 4秒無音タイマーの再セット
+      clearTimeout(silenceTimer);
+      if (callSendMode === 'auto') {
+        silenceTimer = setTimeout(() => {
+          const currentVal = document.getElementById('user-input').value.trim();
+          if (currentVal && isRecording) {
+            stopSpeech();
+            sendMessage();
+          }
+        }, 4000);
+      }
     }
   };
   
