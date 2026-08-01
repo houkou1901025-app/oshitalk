@@ -24,7 +24,6 @@ body {
   box-sizing: border-box;
 }
 
-/* ⑥ アプリ全体サイズアップ (480px -> 540px) */
 .container {
   width: 100%; max-width: 540px; background: var(--card-bg);
   backdrop-filter: blur(16px); border-radius: 28px;
@@ -33,7 +32,6 @@ body {
   padding: 24px;
 }
 
-/* フォントサイズ・UI調整 */
 .header { text-align: center; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
 .header h1 {
   margin: 0; font-size: 1.5rem; font-weight: 800;
@@ -47,7 +45,6 @@ body {
   box-shadow: 0 3px 10px rgba(245, 158, 11, 0.4);
 }
 
-/* 好感度 UI */
 .love-level-box {
   background: rgba(15, 23, 42, 0.65); border-radius: 14px;
   padding: 8px 14px; margin-bottom: 12px; display: flex; align-items: center;
@@ -60,7 +57,6 @@ body {
 .love-bar-bg { flex: 1; height: 10px; background: rgba(255, 255, 255, 0.12); border-radius: 5px; overflow: hidden; }
 .love-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-color), #ec4899); width: 0%; transition: width 0.4s ease; }
 
-/* キャラクター選択 */
 .char-selector { display: flex; gap: 10px; margin-bottom: 14px; }
 .char-card {
   flex: 1; background: rgba(15, 23, 42, 0.6); border: 2px solid transparent;
@@ -70,7 +66,6 @@ body {
 .char-card img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.25); }
 .char-card .name { font-weight: 700; font-size: 0.95rem; margin-top: 2px; }
 
-/* コントロールパネル */
 .control-panel {
   background: rgba(15, 23, 42, 0.55); border-radius: 14px; padding: 10px 14px;
   margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 0.85rem;
@@ -81,7 +76,6 @@ body {
 .step-btn.active { background: var(--accent-color); color: #0f172a; font-weight: bold; }
 select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 8px; padding: 4px 8px; font-size: 0.85rem; }
 
-/* チャットエリア */
 .chat-area { height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; padding-right: 4px; }
 .msg-row { display: flex; gap: 10px; align-items: flex-start; }
 .msg-row.user { flex-direction: row-reverse; }
@@ -94,7 +88,6 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
 .english-tip { font-size: 0.8rem; background: rgba(0, 0, 0, 0.4); border-left: 3px solid var(--accent-color); padding: 6px 10px; border-radius: 0 8px 8px 0; color: #e2e8f0; margin-top: 4px; }
 .replay-btn { align-self: flex-start; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; border-radius: 12px; padding: 3px 10px; font-size: 0.75rem; cursor: pointer; margin-top: 3px; }
 
-/* トピック別クイック発言 */
 .quick-toggle-container { margin-bottom: 14px; background: rgba(15, 23, 42, 0.65); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
 .quick-toggle-header { padding: 10px 14px; font-size: 0.88rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--accent-color); }
 .quick-categories { display: flex; gap: 6px; overflow-x: auto; padding: 8px; scrollbar-width: none; background: rgba(0,0,0,0.25); }
@@ -104,7 +97,6 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
 .quick-phrase-list.open { display: flex; }
 .quick-btn { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: var(--text-main); padding: 6px 12px; border-radius: 16px; font-size: 0.82rem; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
 
-/* 入力エリア */
 .input-area { display: flex; gap: 8px; }
 .input-area input { flex: 1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 20px; padding: 10px 16px; color: #fff; font-size: 0.95rem; outline: none; }
 .btn { background: var(--accent-color); border: none; color: #0f172a; font-weight: bold; padding: 0 18px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
@@ -112,48 +104,76 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
 .btn-mic.recording { background: #ef4444; animation: pulse 1s infinite; }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-/* モーダル共通 */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 999; }
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
 .modal-card { width: 88%; max-width: 360px; background: rgba(30, 41, 59, 0.95); border: 2px solid var(--accent-color); border-radius: 24px; padding: 24px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.8); transition: all 0.3s ease; position: relative; }
 
-/* ②② 通話風UI（Call Mode）全画面＆電話UI強化 */
+/* 通話風UI（Call Mode） */
 .modal-card.call-mode {
   width: 100vw !important; height: 100vh !important; max-width: 100vw !important; border-radius: 0 !important;
   border: none !important; background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%) !important;
-  display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 50px 24px 40px !important; box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 40px 20px 30px !important; box-sizing: border-box;
+  overflow-y: auto;
 }
 .call-header { display: none; font-size: 1.1rem; color: #10b981; font-weight: bold; }
 .modal-card.call-mode .call-header { display: block; }
 .modal-card.call-mode img {
-  width: 70vw !important; height: 70vw !important; max-width: 280px !important; max-height: 280px !important;
+  width: 50vw !important; height: 50vw !important; max-width: 180px !important; max-height: 180px !important;
   border-radius: 50% !important; border: 4px solid #10b981 !important; box-shadow: 0 0 35px rgba(16, 185, 129, 0.6) !important;
+  margin-bottom: 6px;
 }
-.call-mic-area { display: none; margin: 15px 0; flex-direction: column; align-items: center; gap: 8px; }
-.modal-card.call-mode .call-mic-area { display: flex; }
-.call-mic-btn {
-  width: 70px; height: 70px; border-radius: 50%; background: #10b981; color: #fff; border: none; font-size: 1.8rem;
-  display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-}
-.call-mic-btn.recording { background: #ef4444; animation: pulse 1s infinite; }
 
-.wave-animation { display: none; justify-content: center; align-items: center; gap: 5px; margin: 10px 0; }
+/* 回答例アシスト表示（通話モード用） */
+.call-assist-box {
+  display: none; width: 100%; max-width: 420px; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 16px; padding: 10px; margin: 8px 0; text-align: left; box-sizing: border-box;
+}
+.modal-card.call-mode .call-assist-box { display: block; }
+.call-assist-title { font-size: 0.78rem; color: #10b981; font-weight: bold; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.call-assist-item {
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px;
+  padding: 6px 10px; margin-bottom: 6px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;
+}
+.call-assist-item:hover { background: rgba(16, 185, 129, 0.2); }
+.call-assist-item:last-child { margin-bottom: 0; }
+
+/* 通話コントロール & 入力エリア */
+.call-control-container { display: none; width: 100%; max-width: 420px; flex-direction: column; gap: 8px; }
+.modal-card.call-mode .call-control-container { display: flex; }
+
+.call-mode-toggle { display: flex; justify-content: center; gap: 12px; font-size: 0.8rem; color: #cbd5e1; }
+.call-mode-toggle label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+
+.call-transcribe-preview {
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
+  padding: 8px 12px; font-size: 0.9rem; color: #fff; min-height: 38px; text-align: left; word-break: break-all;
+}
+
+.call-btn-group { display: flex; gap: 6px; justify-content: center; }
+.call-action-btn {
+  flex: 1; padding: 8px 0; border-radius: 14px; border: none; font-size: 0.82rem; font-weight: bold; cursor: pointer; color: #fff;
+}
+.btn-mic-start { background: #10b981; }
+.btn-mic-stop { background: #f59e0b; }
+.btn-mic-clear { background: #64748b; }
+.btn-mic-send { background: #3b82f6; }
+
+.wave-animation { display: none; justify-content: center; align-items: center; gap: 5px; margin: 4px 0; }
 .modal-card.call-mode .wave-animation { display: flex; }
-.wave-bar { width: 5px; height: 18px; background: #10b981; border-radius: 3px; animation: wave 1s infinite ease-in-out; }
+.wave-bar { width: 5px; height: 16px; background: #10b981; border-radius: 3px; animation: wave 1s infinite ease-in-out; }
 .wave-bar:nth-child(2) { animation-delay: 0.2s; }
 .wave-bar:nth-child(3) { animation-delay: 0.4s; }
-@keyframes wave { 0%, 100% { height: 10px; } 50% { height: 28px; } }
+@keyframes wave { 0%, 100% { height: 8px; } 50% { height: 22px; } }
 
-.modal-card img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 12px; transition: all 0.3s ease; }
-.modal-name { font-size: 1.25rem; font-weight: bold; color: var(--accent-color); margin-bottom: 8px; }
-.modal-text-en { font-size: 1.05rem; font-weight: 600; line-height: 1.45; margin-bottom: 8px; }
-.modal-text-jp { font-size: 0.88rem; color: #cbd5e1; margin-bottom: 16px; }
+.modal-card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 8px; transition: all 0.3s ease; }
+.modal-name { font-size: 1.2rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
+.modal-text-en { font-size: 1rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+.modal-text-jp { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px; }
 .modal-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 10px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
+.modal-btn { background: var(--accent-color); color: #0f172a; border: none; padding: 8px 14px; border-radius: 18px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
 .modal-btn.sec { background: rgba(255, 255, 255, 0.18); color: #fff; }
 .modal-btn.call { background: #10b981; color: #fff; }
 
-/* ① Premiumプランモーダル */
 .plan-card { background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; margin: 12px 0; text-align: left; font-size: 0.88rem; }
 .plan-title { color: #f59e0b; font-weight: bold; display: flex; justify-content: space-between; font-size: 0.98rem; }
 .pay-btn { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 14px; font-weight: bold; cursor: pointer; margin-top: 12px; font-size: 0.95rem; }
@@ -167,7 +187,6 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
     <button class="subscribe-btn" onclick="openPayModal()">✨ Premium</button>
   </div>
 
-  <!-- 好感度 バー -->
   <div class="love-level-box">
     <span class="love-badge" id="love-level-badge">Lv.1 Sweetheart</span>
     <div class="love-bar-bg">
@@ -176,7 +195,6 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
     <span id="love-exp-text" style="font-size:0.78rem; color: #cbd5e1;">0/100</span>
   </div>
 
-  <!-- キャラクター選択 -->
   <div class="char-selector">
     <div class="char-card active" onclick="selectChar('leo')" id="card-leo">
       <img id="avatar-leo" src="leo.jpg" alt="Leo"><div class="name">Leo</div>
@@ -214,7 +232,6 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
 
   <div class="chat-area" id="chat-area"></div>
 
-  <!-- ① トピック別クイック発言（10×10 = 100パターン復元） -->
   <div class="quick-toggle-container">
     <div class="quick-toggle-header" onclick="toggleQuickPanel()">
       <span>トピック別クイック発言 (100パターン)</span>
@@ -231,7 +248,7 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
   </div>
 </div>
 
-<!-- 推しモーダル Popup (通話風UI拡張) -->
+<!-- 推しモーダル / 通話モード -->
 <div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
   <div class="modal-card" id="modal-card-box" onclick="event.stopPropagation()">
     <div class="call-header" id="call-header">📞 音声通話中...</div>
@@ -241,16 +258,37 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
       <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
     </div>
 
-    <!-- ② 通話用マイクボタン -->
-    <div class="call-mic-area">
-      <button class="call-mic-btn" id="call-mic-btn" onclick="toggleSpeech()">🎤</button>
-      <span style="font-size: 0.75rem; color: #10b981;">タップして推しに話しかける</span>
-    </div>
-
     <div class="modal-name" id="modal-name">Leo</div>
     <div class="modal-text-en" id="modal-text-en"></div>
     <div class="modal-text-jp" id="modal-text-jp"></div>
-    <div class="modal-btns">
+
+    <!-- ② 通話モード専用：回答例アシスト表示 -->
+    <div class="call-assist-box">
+      <div class="call-assist-title">
+        <span>💡 返答ヒント (タップして入力)</span>
+        <span style="font-weight:normal; opacity:0.8;" id="assist-step-label">Step 2</span>
+      </div>
+      <div id="call-assist-list"></div>
+    </div>
+
+    <!-- ① & ② 通話モードコントロール -->
+    <div class="call-control-container">
+      <div class="call-mode-toggle">
+        <label><input type="radio" name="callSendMode" value="auto" checked onchange="changeCallSendMode('auto')"> ① 4秒後に自動送信</label>
+        <label><input type="radio" name="callSendMode" value="manual" onchange="changeCallSendMode('manual')"> ② 手動で送信操作</label>
+      </div>
+
+      <div class="call-transcribe-preview" id="call-transcribe-preview">音声を入力してください...</div>
+
+      <div class="call-btn-group">
+        <button class="call-action-btn btn-mic-start" id="call-btn-start" onclick="toggleSpeech()">🎙️ 音声入力</button>
+        <button class="call-action-btn btn-mic-stop" id="call-btn-stop" onclick="stopSpeech()" style="display:none;">⏹️ 録音終了</button>
+        <button class="call-action-btn btn-mic-clear" onclick="clearSpeechText()">🗑️ 削除</button>
+        <button class="call-action-btn btn-mic-send" onclick="sendCallMessage()">📤 送信</button>
+      </div>
+    </div>
+
+    <div class="modal-btns" style="margin-top:12px;">
       <button class="modal-btn sec" onclick="replayCurrentModalVoice()">🔊 もう一度聞く</button>
       <button class="modal-btn call" id="btn-toggle-call" onclick="toggleCallMode()">通話モード切替</button>
       <button class="modal-btn" onclick="closeModal()">切断して閉じる</button>
@@ -258,18 +296,18 @@ select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid
   </div>
 </div>
 
-<!-- ① Premium登録モーダル -->
+<!-- Premium登録モーダル -->
 <div class="modal-overlay" id="pay-modal" onclick="closePayModal()">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-name" style="color: #ec4899;">Oshitalk Premium</div>
     <p style="font-size: 0.88rem; color: #cbd5e1;">推しとの特別な会話体験を解禁！</p>
     
     <div class="plan-card">
-      <div class="plan-title"><span>月額 VIP プラン</span> <span>¥980 / 月</span></div>
+      <div class="plan-title"><span>月額 Premium プラン</span> <span>¥980 / 月</span></div>
       <p style="font-size: 0.78rem; color: #94a3b8; margin: 6px 0 0 0;">
         ・ハンズフリー通話モード完全解放<br>
         ・ボイス再生＆感情アニメーション無制限<br>
-        ・限定シチュエーション＆誕生日イベント
+        ・回答例アシスト機能＆誕生日イベント
       </p>
     </div>
 
@@ -300,7 +338,6 @@ const CHARS = {
   }
 };
 
-/* ① クイック発言 10×10 (100パターン完全復元) */
 const QUICK_DATA = {
   life: { title: '生活', phrases: [
     {en: "Good morning!", jp: "朝の挨拶"}, {en: "I just woke up.", jp: "今起きたよ"},
@@ -376,7 +413,7 @@ const QUICK_DATA = {
 
 let currentChar = 'leo';
 let currentExpression = 'default';
-let currentStep = 2; // 前回Step記憶用
+let currentStep = 2;
 let currentCat = 'life';
 let isQuickOpen = true;
 let chatHistories = { leo: [], noah: [], liam: [] };
@@ -385,6 +422,7 @@ let recognition = null;
 let silenceTimer = null;
 let lastAIText = '';
 let isCallMode = false;
+let callSendMode = 'auto'; // 'auto' or 'manual'
 let loveExp = 0;
 let loveLevel = 1;
 
@@ -392,14 +430,13 @@ window.onload = () => {
   loadHistories();
   loadBirthday();
   loadLoveLevel();
-  loadStepSetting(); // ③ 前回のStep呼び出し
+  loadStepSetting();
   selectChar('leo');
   setupSpeechRecognition();
   initQuickPanel();
   checkBirthday();
 };
 
-/* ⑤ 表情切り替え（会話判定からの自動変化） */
 function setExpression(expr) {
   currentExpression = expr || 'default';
   const char = CHARS[currentChar];
@@ -419,7 +456,6 @@ function detectExpression(text, category = '') {
   return 'default';
 }
 
-/* 好感度 */
 function addLoveExp(pts) {
   loveExp += pts;
   const maxExp = loveLevel * 100;
@@ -453,7 +489,6 @@ function loadLoveLevel() {
   updateLoveUI();
 }
 
-/* 誕生日 */
 function saveBirthday(val) { localStorage.setItem('oshitalk_user_birthday', val); }
 function loadBirthday() { const b = localStorage.getItem('oshitalk_user_birthday'); if (b) document.getElementById('user-birthday').value = b; }
 function checkBirthday() {
@@ -469,19 +504,62 @@ function checkBirthday() {
   }
 }
 
-/* ③ 会話Stepの記憶・呼び出し */
 function setStep(s) {
   currentStep = s;
   localStorage.setItem('oshitalk_saved_step', s);
   document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(`step-${s}`).classList.add('active');
+  const label = document.getElementById('assist-step-label');
+  if (label) label.innerText = `Step ${s}`;
+  updateCallAssistList();
 }
 function loadStepSetting() {
   const savedStep = localStorage.getItem('oshitalk_saved_step');
   if (savedStep) { setStep(parseInt(savedStep)); } else { setStep(2); }
 }
 
-/* ② 通話風UI（Call Mode）トグル */
+/* ② 通話モードの回答例（アシスト機能）生成 */
+function updateCallAssistList(aiText = '') {
+  const assistContainer = document.getElementById('call-assist-list');
+  if (!assistContainer) return;
+  assistContainer.innerHTML = '';
+
+  let samples = [];
+  if (currentStep === 1) {
+    samples = [
+      { en: "Thank you!", jp: "ありがとう！" },
+      { en: "I'm so happy today.", jp: "今日すごく幸せだよ。" },
+      { en: "Tell me more!", jp: "もっと教えて！" }
+    ];
+  } else if (currentStep === 2) {
+    samples = [
+      { en: "I really love talking with you.", jp: "あなたとお話しするの本当に好き。" },
+      { en: "That sounds like a great idea!", jp: "それすごく良いアイディアだね！" },
+      { en: "What are you doing later?", jp: "このあと何する予定なの？" }
+    ];
+  } else {
+    samples = [
+      { en: "I was thinking about our future plans together.", jp: "一緒にするこれからの計画のこと考えてたんだ。" },
+      { en: "Whenever I hear your voice, I feel super relaxed.", jp: "あなたの声を聞くといつでもすごくリラックスできるよ。" },
+      { en: "Could you tell me more about your favorite things?", jp: "あなたの好きなことについてもっと詳しく教えてくれる？" }
+    ];
+  }
+
+  samples.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'call-assist-item';
+    div.innerHTML = `<strong>${s.en}</strong> <span style="font-size:0.78rem; color:#cbd5e1;">(${s.jp})</span>`;
+    div.onclick = () => {
+      setTranscribeText(s.en);
+    };
+    assistContainer.appendChild(div);
+  });
+}
+
+function changeCallSendMode(mode) {
+  callSendMode = mode;
+}
+
 function toggleCallMode() {
   isCallMode = !isCallMode;
   const cardBox = document.getElementById('modal-card-box');
@@ -489,26 +567,27 @@ function toggleCallMode() {
   if (isCallMode) {
     cardBox.classList.add('call-mode');
     btn.innerText = "通常表示に戻す";
+    updateCallAssistList();
   } else {
     cardBox.classList.remove('call-mode');
     btn.innerText = "通話モード切替";
   }
 }
 
-/* モーダル表示 */
 function openModal(imgSrc, name, enText, jpText) {
   document.getElementById('modal-img').src = imgSrc;
   document.getElementById('modal-name').innerText = name;
   document.getElementById('modal-text-en').innerText = enText;
   document.getElementById('modal-text-jp').innerText = jpText || '';
   document.getElementById('oshi-modal').classList.add('active');
+  updateCallAssistList(enText);
 }
 function closeModal() {
   document.getElementById('oshi-modal').classList.remove('active');
   if (isCallMode) toggleCallMode();
+  stopSpeech();
 }
 
-/* Premiumモーダル */
 function openPayModal() { document.getElementById('pay-modal').classList.add('active'); }
 function closePayModal() { document.getElementById('pay-modal').classList.remove('active'); }
 function processPayment() {
@@ -516,7 +595,6 @@ function processPayment() {
   closePayModal();
 }
 
-/* クイックパネル */
 function initQuickPanel() {
   const catContainer = document.getElementById('quick-cats');
   catContainer.innerHTML = '';
@@ -624,7 +702,17 @@ function addBubble(sender, text, subText = '', tipText = '', showPopup = true, s
   }
 }
 
-/* ④ 音声入力＆4.0秒後自動送信タイマー */
+/* ３＆４. 音声入力＆文字起こし連携修復 */
+function setTranscribeText(text) {
+  document.getElementById('user-input').value = text;
+  const preview = document.getElementById('call-transcribe-preview');
+  if (preview) preview.innerText = text || '音声を入力してください...';
+}
+
+function clearSpeechText() {
+  setTranscribeText('');
+}
+
 function setupSpeechRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) return;
@@ -636,8 +724,10 @@ function setupSpeechRecognition() {
   recognition.onstart = () => {
     isRecording = true;
     document.getElementById('mic-btn').classList.add('recording');
-    const callMicBtn = document.getElementById('call-mic-btn');
-    if (callMicBtn) callMicBtn.classList.add('recording');
+    const startBtn = document.getElementById('call-btn-start');
+    const stopBtn = document.getElementById('call-btn-stop');
+    if (startBtn) startBtn.style.display = 'none';
+    if (stopBtn) stopBtn.style.display = 'block';
   };
 
   recognition.onresult = (event) => {
@@ -645,16 +735,18 @@ function setupSpeechRecognition() {
     for (let i = event.resultIndex; i < event.results.length; i++) {
       transcript += event.results[i][0].transcript;
     }
-    document.getElementById('user-input').value = transcript;
+    setTranscribeText(transcript);
     
-    // ④ 自動送信タイマー：4.0秒（4000ms）
+    // ① 4秒自動送信タイマー（自動送信モード時のみ）
     clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(() => {
-      if (document.getElementById('user-input').value.trim()) {
-        stopSpeech();
-        sendMessage();
-      }
-    }, 4000);
+    if (callSendMode === 'auto') {
+      silenceTimer = setTimeout(() => {
+        if (document.getElementById('user-input').value.trim()) {
+          stopSpeech();
+          sendMessage();
+        }
+      }, 4000);
+    }
   };
   
   recognition.onerror = (e) => { stopSpeech(); };
@@ -665,7 +757,7 @@ function toggleSpeech() {
   if (!recognition) { alert("お使いのブラウザは音声入力に対応していません。"); return; }
   if (isRecording) stopSpeech();
   else {
-    document.getElementById('user-input').value = '';
+    setTranscribeText('');
     try { recognition.start(); } catch (err) { stopSpeech(); }
   }
 }
@@ -674,9 +766,16 @@ function stopSpeech() {
   isRecording = false;
   clearTimeout(silenceTimer);
   document.getElementById('mic-btn').classList.remove('recording');
-  const callMicBtn = document.getElementById('call-mic-btn');
-  if (callMicBtn) callMicBtn.classList.remove('recording');
+  const startBtn = document.getElementById('call-btn-start');
+  const stopBtn = document.getElementById('call-btn-stop');
+  if (startBtn) startBtn.style.display = 'block';
+  if (stopBtn) stopBtn.style.display = 'none';
   if (recognition) { try { recognition.stop(); } catch(e) {} }
+}
+
+function sendCallMessage() {
+  stopSpeech();
+  sendMessage();
 }
 
 async function sendMessage() {
@@ -684,11 +783,10 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
 
-  // ⑤ 感情から自動表情変化
   const expr = detectExpression(text);
   setExpression(expr);
   addBubble('user', text, '', '', false, true, false);
-  input.value = '';
+  setTranscribeText('');
   addLoveExp(15);
   await getAIReply(text);
 }
