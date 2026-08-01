@@ -106,6 +106,7 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 .quick-toggle-container { margin-bottom: 14px; background: rgba(15, 23, 42, 0.65); border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
 .quick-toggle-header { padding: 10px 14px; font-size: 0.88rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--accent-color); }
 .quick-categories { display: flex; gap: 6px; overflow-x: auto; padding: 8px; scrollbar-width: none; background: rgba(0,0,0,0.25); }
+.quick-categories::-webkit-scrollbar { display: none; }
 .cat-tab { padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; background: rgba(255, 255, 255, 0.08); color: var(--text-main); }
 .cat-tab.active { background: var(--accent-color); color: #0f172a; font-weight: bold; }
 .quick-phrase-list { display: flex; flex-wrap: wrap; padding: 10px; gap: 8px; max-height: 180px; overflow-y: auto; background: rgba(15, 23, 42, 0.85); }
@@ -164,9 +165,9 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 .call-assist-title { font-size: 0.78rem; color: #10b981; font-weight: bold; margin-bottom: 4px; display: flex; justify-content: space-between; }
 .call-assist-item {
   background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px;
-  padding: 5px 10px; margin-bottom: 4px; font-size: 0.82rem; cursor: pointer; transition: background 0.2s;
+  padding: 6px 10px; margin-bottom: 5px; font-size: 0.82rem; cursor: pointer; transition: background 0.2s;
 }
-.call-assist-item:hover { background: rgba(16, 185, 129, 0.2); }
+.call-assist-item:hover { background: rgba(16, 185, 129, 0.25); border-color: #10b981; }
 .call-assist-item:last-child { margin-bottom: 0; }
 
 .call-control-container { display: none; width: 100%; max-width: 440px; flex-direction: column; gap: 6px; }
@@ -260,7 +261,7 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 
   <div class="quick-toggle-container">
     <div class="quick-toggle-header" onclick="toggleQuickPanel()">
-      <span>トピック別クイック発言 (100フレーズ)</span>
+      <span>トピック別クイック発言 (全10カテゴリ・100フレーズ)</span>
       <span id="toggle-icon">▲</span>
     </div>
     <div class="quick-categories" id="quick-cats"></div>
@@ -362,67 +363,76 @@ const CHARS = {
   }
 };
 
-/* 100フレーズ完全収録（各カテゴリ25個×4カテゴリ＝100個） */
 const QUICK_DATA = {
-  life: { title: '生活 (25)', phrases: [
-    {en: "Good morning!", jp: "朝の挨拶"}, {en: "I just woke up.", jp: "今起きたよ"},
-    {en: "It's raining today.", jp: "今日は雨が降ってる"}, {en: "I'm cleaning my room.", jp: "部屋の掃除をしてる"},
-    {en: "I need to go grocery shopping.", jp: "お買い物に行かなきゃ"}, {en: "I'm going to take a bath.", jp: "お風呂に入ってくるね"},
-    {en: "What are your plans for tonight?", jp: "今夜の予定は？"}, {en: "I'm so sleepy now.", jp: "すごく眠いよ"},
-    {en: "I'm staying home today.", jp: "今日はおうちで過ごすよ"}, {en: "Good night, sweet dreams!", jp: "おやすみ、良い夢を"},
-    {en: "I'm watching TV right now.", jp: "テレビを見てるよ"}, {en: "I bought new clothes today!", jp: "新しい服を買ったよ！"},
-    {en: "It's so cold outside.", jp: "外はとても寒いね"}, {en: "It's a nice sunny day today.", jp: "今日はいい天気だね"},
-    {en: "I'm listening to music.", jp: "音楽を聞いているよ"}, {en: "I'm going to sleep early tonight.", jp: "今夜は早く寝るね"},
-    {en: "I washed my clothes.", jp: "洗濯をしたよ"}, {en: "My room is clean now!", jp: "部屋がきれいになった！"},
-    {en: "I'm waiting for a delivery.", jp: "荷物を待っているよ"}, {en: "What a peaceful day!", jp: "なんて平和な日だろう！"},
-    {en: "I'm reading a good book.", jp: "良い本を読んでいるよ"}, {en: "I love spending time with you.", jp: "あなたと過ごす時間が好き"},
-    {en: "I'm relaxing at home.", jp: "おうちでリラックス中"}, {en: "Time goes by so fast.", jp: "時間が経つのが早いね"},
-    {en: "I am ready to go!", jp: "お出かけの準備できたよ！"}
+  life: { title: '🏠 生活・日常', phrases: [
+    {en: "Good morning!", jp: "おはよう！"}, {en: "Good night, sweet dreams!", jp: "おやすみ、良い夢を"},
+    {en: "I just woke up.", jp: "今起きたところ"}, {en: "It's raining today.", jp: "今日は雨が降ってる"},
+    {en: "I'm cleaning my room.", jp: "部屋の掃除をしてるよ"}, {en: "I need to take a bath.", jp: "お風呂に入ってくるね"},
+    {en: "I'm staying home today.", jp: "今日はおうちで過ごすよ"}, {en: "I'm so sleepy now.", jp: "すごく眠くなってきた"},
+    {en: "What are your plans for today?", jp: "今日の予定は？"}, {en: "I had a peaceful day.", jp: "穏やかな一日だったよ"}
   ]},
-  work: { title: '仕事・学業 (25)', phrases: [
-    {en: "I have a lot of work today.", jp: "今日は仕事が山積み"}, {en: "Finally finished my work!", jp: "やっと仕事が終わった！"},
-    {en: "I'm taking a coffee break.", jp: "コーヒー休憩中"}, {en: "I have a meeting now.", jp: "今から会議だよ"},
-    {en: "I worked overtime today.", jp: "今日は残業だったよ"}, {en: "Wish me luck on my presentation!", jp: "発表応援してね！"},
+  work: { title: '💼 仕事・ビジネス', phrases: [
+    {en: "I worked overtime today.", jp: "今日は残業だったよ"}, {en: "Finally finished my work!", jp: "定時で終わったよ！"},
+    {en: "I'm taking a coffee break.", jp: "コーヒー休憩中"}, {en: "Wish me luck on my meeting!", jp: "会議応援してね！"},
+    {en: "I have a lot of work today.", jp: "今日は仕事が山積み"}, {en: "My boss praised me today!", jp: "今日上司に褒められた！"},
     {en: "I'm so busy this week.", jp: "今週はすごく忙しい"}, {en: "Tomorrow is my day off!", jp: "明日はお休み！"},
-    {en: "My boss praised me today!", jp: "今日上司に褒められた！"}, {en: "I did my best at work!", jp: "お仕事頑張ったよ！"},
-    {en: "I'm checking my emails.", jp: "メールを確認しているよ"}, {en: "I'm on my way to work.", jp: "会社に向かっているよ"},
-    {en: "I commute by train every day.", jp: "毎日電車で通っているよ"}, {en: "Work was exhausting today.", jp: "今日の仕事は疲れた〜"},
-    {en: "I have a new project starting.", jp: "新しいプロジェクトが始まるよ"}, {en: "My colleagues are very kind.", jp: "同僚がみんな親切だよ"},
-    {en: "I need to focus now.", jp: "集中しなきゃ！"}, {en: "I finished my report!", jp: "レポートが終わったよ！"},
-    {en: "I love my job!", jp: "今の仕事が好きだよ！"}, {en: "Let's work hard together!", jp: "一緒にお仕事がんばろう！"},
-    {en: "I have an exam coming up.", jp: "もうすぐテストがあるの"}, {en: "I studied hard today.", jp: "今日はしっかり勉強したよ"},
-    {en: "I'm taking a short break.", jp: "少しだけ休憩するね"}, {en: "I solved a difficult problem!", jp: "難問が解けたよ！"},
-    {en: "Hard work pays off!", jp: "努力は報われるね！"}
+    {en: "I did my best today!", jp: "今日もベストを尽くした！"}, {en: "Let's work hard together!", jp: "一緒にお仕事頑張ろう！"}
   ]},
-  food: { title: '食事・カフェ (25)', phrases: [
-    {en: "I'm eating lunch now.", jp: "今ランチ食べてるよ"}, {en: "What's your favorite food?", jp: "好きな食べ物は何？"},
-    {en: "I'm so hungry!", jp: "すごくお腹すいた！"}, {en: "This dessert is delicious!", jp: "このスイーツ美味しい！"},
-    {en: "Did you eat dinner yet?", jp: "もう晩ご飯食べた？"}, {en: "I cooked pasta today.", jp: "今日パスタ作ったよ"},
-    {en: "Let's go to a cafe together!", jp: "一緒にカフェ行こう！"}, {en: "I ate too much today...", jp: "今日食べすぎちゃった..."},
-    {en: "Do you like spicy food?", jp: "辛いもの好き？"}, {en: "I love drinking coffee.", jp: "コーヒーが大好きなの"},
-    {en: "I want to eat pizza tonight!", jp: "今夜はピザが食べたい！"}, {en: "I made breakfast myself.", jp: "自分で朝食を作ったよ"},
-    {en: "Do you prefer tea or coffee?", jp: "紅茶派？それともコーヒー派？"}, {en: "I bought some fresh fruits.", jp: "新鮮なフルーツを買ってきたよ"},
-    {en: "This soup is nice and warm.", jp: "このスープ温かくて美味しい"}, {en: "I love eating chocolate when tired.", jp: "疲れた時はチョコに限るね"},
-    {en: "I tried a new recipe today!", jp: "今日新しいレシピに挑戦したよ！"}, {en: "What should I cook for dinner?", jp: "晩ご飯何作ろうかな？"},
-    {en: "I'm drinking green tea.", jp: "緑茶を飲んでいるよ"}, {en: "Food tastes better with you!", jp: "あなたと食べるともっと美味しい！"},
-    {en: "I want something sweet.", jp: "甘いものが食べたい気分"}, {en: "Cheers to our great time!", jp: "素敵な時間に乾杯！"},
-    {en: "I'm full now!", jp: "お腹いっぱいになった！"}, {en: "Let's try that new restaurant!", jp: "あっちの新しいお店行ってみよう！"},
-    {en: "Cooking is so fun!", jp: "料理するのって楽しい！"}
+  school: { title: '🏫 学校・勉強', phrases: [
+    {en: "I have a test tomorrow.", jp: "明日テストがあるの"}, {en: "I'm doing my homework now.", jp: "今宿題をやってるよ"},
+    {en: "My class was interesting today.", jp: "今日の授業は楽しかった"}, {en: "I practiced in my club today.", jp: "部活の練習だったよ"},
+    {en: "I'm studying English now!", jp: "今英語の勉強中！"}, {en: "English is challenging but fun.", jp: "英語は難しくて楽しい"},
+    {en: "I learned a new word!", jp: "新しい単語を覚えたよ！"}, {en: "I studied for an hour.", jp: "1時間集中して勉強した"},
+    {en: "Can you help me with this?", jp: "これ教えてくれる？"}, {en: "Hard work pays off!", jp: "努力は報われるよね！"}
   ]},
-  feeling: { title: '感情・推し活 (25)', phrases: [
-    {en: "I missed you so much!", jp: "すごく会いたかったよ！"}, {en: "I love talking with you!", jp: "あなたと話すのが大好き"},
+  food: { title: '🍰 食事・カフェ', phrases: [
+    {en: "I'm eating lunch now.", jp: "今ランチ食べてるよ"}, {en: "Let's go to a cafe together!", jp: "一緒にカフェ行こう！"},
+    {en: "What's your favorite food?", jp: "好きな食べ物は何？"}, {en: "I'm so hungry!", jp: "すごくお腹すいた！"},
+    {en: "This dessert is delicious!", jp: "このスイーツ美味しい！"}, {en: "Did you eat dinner yet?", jp: "もう晩ご飯食べた？"},
+    {en: "I cooked pasta today.", jp: "今日パスタ作ったよ"}, {en: "I ate too much today...", jp: "今日食べすぎちゃった..."},
+    {en: "Do you like sweet food?", jp: "甘いものは好き？"}, {en: "I love drinking coffee.", jp: "コーヒーが大好きなの"}
+  ]},
+  travel: { title: '✈️ 旅行・お出かけ', phrases: [
+    {en: "I went for a walk today.", jp: "今日お散歩に行ったよ"}, {en: "It's my day off today!", jp: "今日は休日なんだ！"},
+    {en: "Where do you want to visit?", jp: "どこに行きたい？"}, {en: "I want to go on a trip!", jp: "旅行に行きたいな！"},
+    {en: "The view here is beautiful!", jp: "ここの景色すごくきれい！"}, {en: "I got lost a little bit.", jp: "ちょっと道に迷っちゃった"},
+    {en: "I bought souvenirs for you!", jp: "お土産買ってきたよ！"}, {en: "Let's travel together someday!", jp: "いつか一緒に旅行しようね！"},
+    {en: "I arrived at my destination!", jp: "目的地に到着したよ！"}, {en: "Traveling makes me so happy.", jp: "お出かけって楽しいね"}
+  ]},
+  hobby: { title: '🎬 趣味・エンタメ', phrases: [
+    {en: "I watched a great movie!", jp: "良い映画を観たよ！"}, {en: "I'm listening to music.", jp: "音楽を聴いているよ"},
+    {en: "I love playing video games.", jp: "ゲームをするのが好き"}, {en: "I love watching anime!", jp: "アニメを見るのが大好き！"},
+    {en: "I'm reading a book right now.", jp: "今本を読んでいるよ"}, {en: "I was thinking about you!", jp: "あなたのこと考えてた(推し活)"},
+    {en: "You look so cool today!", jp: "今日も最高にかっこいい！"}, {en: "I will support you always!", jp: "ずっと応援してるからね！"},
+    {en: "You are my favorite!", jp: "あなたが私の1番の推し！"}, {en: "What are your hobbies?", jp: "趣味は何ですか？"}
+  ]},
+  sports: { title: '⚽ スポーツ・運動', phrases: [
+    {en: "I went to the gym today.", jp: "今日ジムに行ってきたよ"}, {en: "I went for a jogging.", jp: "ジョギングしてきたよ"},
+    {en: "I watched a exciting match!", jp: "熱い試合を観戦したよ！"}, {en: "I did some stretching today.", jp: "今日ストレッチをしたよ"},
+    {en: "Exercise makes me feel fresh!", jp: "運動するとスッキリする！"}, {en: "My muscles feel a bit sore.", jp: "ちょっと筋肉痛だな"},
+    {en: "Do you like playing sports?", jp: "スポーツは好き？"}, {en: "I'll try my best in sports!", jp: "運動もがんばるぞ！"},
+    {en: "I walked a lot today.", jp: "今日はたくさん歩いたよ"}, {en: "Let's exercise together!", jp: "一緒に体を動かそう！"}
+  ]},
+  feeling: { title: '💖 感情・ラブ', phrases: [
+    {en: "I missed you so much!", jp: "すごく会いたかったよ！"}, {en: "I love you so much!", jp: "大大好きだよ！"},
     {en: "Praise me please!", jp: "褒めてほしいな！"}, {en: "You always make me happy.", jp: "いつも幸せにしてくれるね"},
-    {en: "I was thinking about you all day.", jp: "1日中あなたのこと考えてた"}, {en: "I'm so lucky to have you.", jp: "あなたに会えて幸運だよ"},
-    {en: "Your smile is the best!", jp: "あなたの笑顔が1番！"}, {en: "I want to stay with you forever.", jp: "ずっと一緒にいたいな"},
-    {en: "You mean everything to me.", jp: "私の全てだよ"}, {en: "I love you so much!", jp: "大大好きだよ！"},
-    {en: "I feel a bit sad today.", jp: "今日はちょっと悲しい気分"}, {en: "You always cheer me up!", jp: "いつも私を元気づけてくれるね！"},
-    {en: "I'm so proud of you!", jp: "あなたのことを誇りに思うよ！"}, {en: "My heart is beating so fast!", jp: "心臓がドキドキしてる！"},
-    {en: "You are my sunshine.", jp: "あなたは私の太陽だよ"}, {en: "I can't stop thinking about you.", jp: "あなたのことが頭から離れない"},
-    {en: "Thank you for always being there.", jp: "いつもそばにいてくれてありがとう"}, {en: "You make me laugh so much!", jp: "いつもたくさん笑わせてくれるね！"},
-    {en: "I feel so safe with you.", jp: "あなたといるとすごく安心する"}, {en: "You are the best gift in my life!", jp: "あなたは人生最高のプレゼント！"},
-    {en: "I got a bit jealous!", jp: "ちょっと嫉妬しちゃった！"}, {en: "You look so handsome today!", jp: "今日も最高にかっこいいよ！"},
-    {en: "I will support you always!", jp: "ずっとずっと応援してるからね！"}, {en: "You are my dream come true.", jp: "あなたは私の夢そのものだよ"},
-    {en: "I'm happiest when I'm with you.", jp: "あなたと一緒にいる時が一番幸せ！"}
+    {en: "I love talking with you!", jp: "あなたと話すのが大好き"}, {en: "My heart is beating fast!", jp: "胸がドキドキしてる！"},
+    {en: "You are so special to me.", jp: "あなたは特別な存在だよ"}, {en: "I'm happiest with you.", jp: "一緒にいる時が一番幸せ"},
+    {en: "You always cheer me up!", jp: "いつも元気づけてくれるね！"}, {en: "Thank you for being here.", jp: "そばにいてくれてありがとう"}
+  ]},
+  trouble: { title: '🥺 お悩み・甘え', phrases: [
+    {en: "I feel a bit tired today.", jp: "今日はちょっと疲れたな"}, {en: "Please comfort me...", jp: "優しく慰めてほしいの..."},
+    {en: "Can I vent to you a bit?", jp: "少し愚痴を聞いてくれる？"}, {en: "I had a rough day today.", jp: "今日は大変な一日だった"},
+    {en: "I feel a little lonely.", jp: "ちょっと寂しい気分なの"}, {en: "Hold my hand please.", jp: "手を握ってほしいな"},
+    {en: "I need your warm hug.", jp: "あなたの温かい抱擁が必要"}, {en: "I'm feeling down today.", jp: "今日ちょっと落ち込んでるんだ"},
+    {en: "Give me some encouragement!", jp: "励ましパワーを頂戴！"}, {en: "I feel safe when I'm with you.", jp: "あなたといると安心する"}
+  ]},
+  angry: { title: '😤 ぷんぷん・おこ', phrases: [
+    {en: "You're late today!", jp: "今日遅刻だよ！"}, {en: "Why are you slow to reply?", jp: "なんで返信遅いの？"},
+    {en: "Did you forget our day?", jp: "私たちの記念日忘れてた？"}, {en: "I'm a little angry now!", jp: "ちょっとおこってるんだから！"},
+    {en: "Don't ignore me please!", jp: "無視しないでよ！"}, {en: "You should apologize!", jp: "ちゃんとあやまってもらうからね！"},
+    {en: "I got a bit jealous!", jp: "ちょっと嫉妬しちゃった！"}, {en: "Don't look at other girls!", jp: "他の子見ちゃダメ！"},
+    {en: "I won't forgive you easily!", jp: "簡単には許してあげない！"}, {en: "Make it up to me next time!", jp: "今度絶対お詫びしてね！"}
   ]}
 };
 
@@ -494,10 +504,10 @@ function setExpression(expr) {
 
 function detectExpression(text, category = '') {
   const lower = text.toLowerCase();
-  if (category === 'angry' || lower.includes('angry') || lower.includes('late') || lower.includes('jealous')) return 'angry';
-  if (category === 'support' || lower.includes('sad') || lower.includes('tired') || lower.includes('lonely')) return 'sad';
-  if (category === 'feeling' || lower.includes('love') || lower.includes('miss') || lower.includes('sweetheart')) return 'blush';
-  if (lower.includes('happy') || lower.includes('fun') || lower.includes('great') || lower.includes('smile')) return 'happy';
+  if (category === 'angry' || lower.includes('angry') || lower.includes('late') || lower.includes('jealous') || lower.includes('forget')) return 'angry';
+  if (category === 'trouble' || lower.includes('sad') || lower.includes('tired') || lower.includes('lonely') || lower.includes('down')) return 'sad';
+  if (category === 'feeling' || category === 'hobby' || lower.includes('love') || lower.includes('miss') || lower.includes('sweetheart')) return 'blush';
+  if (lower.includes('happy') || lower.includes('fun') || lower.includes('great') || lower.includes('smile') || lower.includes('delicious')) return 'happy';
   return 'default';
 }
 
@@ -556,68 +566,28 @@ function setStep(s) {
   document.getElementById(`step-${s}`).classList.add('active');
   const label = document.getElementById('assist-step-label');
   if (label) label.innerText = `Step ${s}`;
-  updateCallAssistList(lastAIText);
 }
 function loadStepSetting() {
   const savedStep = localStorage.getItem('oshitalk_saved_step');
   if (savedStep) { setStep(parseInt(savedStep)); } else { setStep(2); }
 }
 
-function updateCallAssistList(aiText = '') {
+/* ★ AI APIから受信した動的ヒントをUIに表示する関数 */
+function updateCallAssistList(hints = []) {
   const assistContainer = document.getElementById('call-assist-list');
   if (!assistContainer) return;
   assistContainer.innerHTML = '';
 
-  let samples = [];
-  const textLower = aiText.toLowerCase();
-
-  if (textLower.includes('morning') || textLower.includes('woke up')) {
-    samples = [
-      { en: "Good morning! Did you sleep well?", jp: "おはよう！よく眠れた？" },
-      { en: "I'm still a bit sleepy...", jp: "まだちょっと眠いよ..." },
-      { en: "Have a wonderful day today!", jp: "今日も良い一日を過ごしてね！" }
+  // 万一ヒントが取得できなかった場合のフォールバック
+  if (!hints || hints.length === 0) {
+    hints = [
+      { en: "That's so cool!", jp: "それすごくかっこいい！" },
+      { en: "I agree with you.", jp: "私も同感だよ。" },
+      { en: "Tell me more about it!", jp: "もっと詳しく教えて！" }
     ];
-  } else if (textLower.includes('food') || textLower.includes('eat') || textLower.includes('lunch') || textLower.includes('dinner')) {
-    samples = [
-      { en: "I ate delicious pasta today!", jp: "今日美味しいパスタを食べたよ！" },
-      { en: "What is your favorite food?", jp: "一番好きな食べ物はなに？" },
-      { en: "Let's go eat together next time!", jp: "今度一緒に食べに行こうよ！" }
-    ];
-  } else if (textLower.includes('love') || textLower.includes('miss') || textLower.includes('sweetheart') || textLower.includes('thinking about you')) {
-    samples = [
-      { en: "I love you so much too!", jp: "私もあなたのこと大大好き！" },
-      { en: "You always make my heart race.", jp: "いつも胸がドキドキするよ。" },
-      { en: "Stop making me blush!", jp: "照れさせないでよ！" }
-    ];
-  } else if (textLower.includes('tired') || textLower.includes('work') || textLower.includes('busy')) {
-    samples = [
-      { en: "You worked so hard today! Great job!", jp: "今日も一日がんばったね！えらい！" },
-      { en: "Please get a good rest tonight.", jp: "今夜はゆっくり休んでね。" },
-      { en: "I'm always here to support you.", jp: "いつでも味方だからね。" }
-    ];
-  } else {
-    if (currentStep === 1) {
-      samples = [
-        { en: "That's so cool!", jp: "それすごくかっこいい！" },
-        { en: "I agree with you.", jp: "私も同感だよ。" },
-        { en: "Tell me more about it!", jp: "もっと詳しく教えて！" }
-      ];
-    } else if (currentStep === 2) {
-      samples = [
-        { en: "I really love talking with you like this.", jp: "こうしてあなたとお話しするの本当に好き。" },
-        { en: "That sounds like a wonderful idea!", jp: "それすごく素敵なアイディアだね！" },
-        { en: "What should we do next time?", jp: "次は何しようか？" }
-      ];
-    } else {
-      samples = [
-        { en: "Hearing your voice always brightens up my whole day.", jp: "あなたの声を聞くと1日中元気になるよ。" },
-        { en: "I'd love to know more about what you like to do.", jp: "あなたの好きなことについてもっと教えてほしいな。" },
-        { en: "Whenever I'm with you, time just flies by so fast.", jp: "あなたと一緒にいると時間がすぐ過ぎちゃうね。" }
-      ];
-    }
   }
 
-  samples.forEach(s => {
+  hints.forEach(s => {
     const div = document.createElement('div');
     div.className = 'call-assist-item';
     div.innerHTML = `<strong>${s.en}</strong> <span style="font-size:0.75rem; color:#cbd5e1;">(${s.jp})</span>`;
@@ -635,7 +605,6 @@ function toggleCallMode() {
   if (isCallMode) {
     cardBox.classList.add('call-mode');
     btn.innerText = "通常表示に戻す";
-    updateCallAssistList(lastAIText);
   } else {
     cardBox.classList.remove('call-mode');
     btn.innerText = "通話モード切替";
@@ -646,7 +615,6 @@ function openModal(imgSrc, name, enText, jpText) {
   document.getElementById('modal-img').src = imgSrc;
   document.getElementById('modal-name').innerText = name;
   document.getElementById('oshi-modal').classList.add('active');
-  updateCallAssistList(enText);
 }
 function closeModal() {
   document.getElementById('oshi-modal').classList.remove('active');
@@ -739,6 +707,12 @@ function renderChatHistory() {
   if (!history || history.length == 0) {
     const char = CHARS[currentChar];
     addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話をスタートしよう！`, false, false, false);
+    // 初期ヒントのセット
+    updateCallAssistList([
+      { en: "Good morning! How are you?", jp: "おはよう！元気？" },
+      { en: "I missed you so much!", jp: "すごく会いたかったよ！" },
+      { en: "What are you doing today?", jp: "今日は何するの？" }
+    ]);
   } else {
     history.forEach(item => {
       addBubble(item.sender, item.text, item.subText, item.tipText, false, false, false);
@@ -757,7 +731,6 @@ function addBubble(sender, text, subText = '', tipText = '', showPopup = true, s
   if (sender === 'ai') {
     lastAIText = text;
     lastAIJpText = subText;
-    updateCallAssistList(text);
   }
   
   row.innerHTML = `
@@ -893,17 +866,27 @@ function sendQuick(text, jpText = '', catKey = '') {
   setTimeout(async () => { await getAIReply(text); }, 400);
 }
 
+/* ★ APIとの通信＆動的ヒント反映 */
 async function getAIReply(userText) {
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ character: currentChar, message: userText, step: currentStep })
+      body: JSON.stringify({ 
+        character: currentChar, 
+        message: userText, 
+        step: currentStep,
+        history: chatHistories[currentChar] || []
+      })
     });
     const data = await response.json();
     if (data.reply) {
       const aiExpr = detectExpression(data.reply);
       setExpression(aiExpr);
+      
+      // ★ バックエンドから受け取ったリアルタイム生成ヒントをセット
+      updateCallAssistList(data.hints);
+
       addBubble('ai', data.reply, data.translation || '会話を楽しんでね！', data.tip || '', true, true, true);
     }
   } catch (e) {
