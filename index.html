@@ -66,7 +66,7 @@ body {
 .char-card img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.25); }
 .char-card .name { font-weight: 700; font-size: 0.95rem; margin-top: 2px; }
 
-/* ① 感情別アニメーション定義 */
+/* 感情別アニメーション */
 .anim-happy { animation: bounce 1.2s infinite alternate ease-in-out; }
 .anim-blush { animation: heartPulse 1.5s infinite ease-in-out; }
 .anim-angry { animation: shake 0.5s infinite; }
@@ -96,7 +96,6 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 .msg-row.ai .bubble { background: rgba(255, 255, 255, 0.12); border-top-left-radius: 2px; }
 .msg-row.user .bubble { background: var(--accent-color); color: #0f172a; font-weight: 600; border-top-right-radius: 2px; }
 
-/* ③ 訳文のスタイル強化 */
 .jp-sub { font-size: 0.82rem; color: #cbd5e1; margin-top: 2px; display: block; }
 .msg-row.user .jp-sub { color: #94a3b8; text-align: right; }
 
@@ -145,7 +144,6 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 .wave-bar:nth-child(3) { animation-delay: 0.4s; }
 @keyframes wave { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1.1); } }
 
-/* ③ 通話モード内の会話テキストエリア（自分と相手の両方＋日本語訳を表示） */
 .call-dialog-container {
   display: none; width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255,255,255,0.1);
   border-radius: 16px; padding: 10px; box-sizing: border-box; max-height: 150px; overflow-y: auto; text-align: left; margin-bottom: 6px;
@@ -156,7 +154,6 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 .call-msg.user { background: var(--accent-color); color: #0f172a; font-weight: 600; align-self: flex-end; border-top-right-radius: 2px; }
 .call-msg-sub { font-size: 0.76rem; opacity: 0.8; display: block; margin-top: 2px; }
 
-/* ④ 動的返答ヒント */
 .call-assist-box {
   display: none; width: 100%; max-width: 440px; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(16, 185, 129, 0.4);
   border-radius: 16px; padding: 8px 12px; margin: 4px 0; text-align: left; box-sizing: border-box;
@@ -239,7 +236,7 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
         <button class="step-btn" id="step-3" onclick="setStep(3)">Step 3 (長文)</button>
       </div>
     </div>
-    <!-- ② 修正: 自分のアイコン設定 -->
+    <!-- ユーザープロフィール設定（アイコン変更＆誕生日） -->
     <div class="control-row">
       <span>My Icon URL:</span>
       <input type="text" class="user-icon-input" id="user-icon-url" placeholder="画像URLを入力..." onchange="saveUserIcon(this.value)">
@@ -280,7 +277,6 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 <div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
   <div class="modal-card" id="modal-card-box" onclick="event.stopPropagation()">
     <div class="call-header" id="call-header">📞 音声通話中...</div>
-    <!-- ① アニメーション付与用の画像 -->
     <img id="modal-img" src="leo.jpg" alt="Oshi" class="anim-happy">
     
     <div class="wave-animation">
@@ -289,10 +285,8 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
 
     <div class="modal-name" id="modal-name">Leo</div>
     
-    <!-- ③ 修正: 通話モード用ダイアログ履歴（英語＋日本語訳） -->
     <div class="call-dialog-container" id="call-dialog-container"></div>
 
-    <!-- ④ 修正: 会話に連動した動的ヒント -->
     <div class="call-assist-box">
       <div class="call-assist-title">
         <span>💡 返答ヒント (タップして入力)</span>
@@ -301,7 +295,6 @@ select, input[type="date"], input[type="text"].user-icon-input { background: #1e
       <div id="call-assist-list"></div>
     </div>
 
-    <!-- 通話モードコントロール -->
     <div class="call-control-container">
       <div class="call-mode-toggle">
         <label><input type="radio" name="callSendMode" value="auto" checked onchange="changeCallSendMode('auto')"> ① 4秒後に自動送信</label>
@@ -368,34 +361,55 @@ const CHARS = {
   }
 };
 
+/* 100パターンのクイックフレーズ完全収録 */
 const QUICK_DATA = {
   life: { title: '生活', phrases: [
     {en: "Good morning!", jp: "朝の挨拶"}, {en: "I just woke up.", jp: "今起きたよ"},
     {en: "It's raining today.", jp: "今日は雨が降ってる"}, {en: "I'm cleaning my room.", jp: "部屋の掃除をしてる"},
     {en: "I need to go grocery shopping.", jp: "お買い物に行かなきゃ"}, {en: "I'm going to take a bath.", jp: "お風呂に入ってくるね"},
     {en: "What are your plans for tonight?", jp: "今夜の予定は？"}, {en: "I'm so sleepy now.", jp: "すごく眠いよ"},
-    {en: "I'm staying home today.", jp: "今日はおうちで過ごすよ"}, {en: "Good night, sweet dreams!", jp: "おやすみ、良い夢を"}
+    {en: "I'm staying home today.", jp: "今日はおうちで過ごすよ"}, {en: "Good night, sweet dreams!", jp: "おやすみ、良い夢を"},
+    {en: "I'm watching TV right now.", jp: "テレビを見てるよ"}, {en: "I bought new clothes today!", jp: "新しい服を買ったよ！"},
+    {en: "It's so cold outside.", jp: "外はとても寒いね"}, {en: "It's a nice sunny day today.", jp: "今日はいい天気だね"},
+    {en: "I'm listening to music.", jp: "音楽を聞いているよ"}, {en: "I'm going to sleep early tonight.", jp: "今夜は早く寝るね"},
+    {en: "I washed my clothes.", jp: "洗濯をしたよ"}, {en: "My room is clean now!", jp: "部屋がきれいになった！"},
+    {en: "I'm waiting for a delivery.", jp: "荷物を待っているよ"}, {en: "What a peaceful day!", jp: "なんて平和な日だろう！"}
   ]},
   work: { title: '仕事', phrases: [
     {en: "I have a lot of work today.", jp: "今日は仕事が山積み"}, {en: "Finally finished my work!", jp: "やっと仕事が終わった！"},
     {en: "I'm taking a coffee break.", jp: "コーヒー休憩中"}, {en: "I have a meeting now.", jp: "今から会議だよ"},
     {en: "I worked overtime today.", jp: "今日は残業だったよ"}, {en: "Wish me luck on my presentation!", jp: "発表応援してね！"},
     {en: "I'm so busy this week.", jp: "今週はすごく忙しい"}, {en: "Tomorrow is my day off!", jp: "明日はお休み！"},
-    {en: "My boss praised me today!", jp: "今日上司に褒められた！"}, {en: "I did my best at work!", jp: "お仕事頑張ったよ！"}
+    {en: "My boss praised me today!", jp: "今日上司に褒められた！"}, {en: "I did my best at work!", jp: "お仕事頑張ったよ！"},
+    {en: "I'm checking my emails.", jp: "メールを確認しているよ"}, {en: "I'm on my way to work.", jp: "会社に向かっているよ"},
+    {en: "I commute by train every day.", jp: "毎日電車で通っているよ"}, {en: "Work was exhausting today.", jp: "今日の仕事は疲れた〜"},
+    {en: "I have a new project starting.", jp: "新しいプロジェクトが始まるよ"}, {en: "My colleagues are very kind.", jp: "同僚がみんな親切だよ"},
+    {en: "I need to focus now.", jp: "集中しなきゃ！"}, {en: "I finished my report!", jp: "レポートが終わったよ！"},
+    {en: "I love my job!", jp: "今の仕事が好きだよ！"}, {en: "Let's work hard together!", jp: "一緒にお仕事がんばろう！"}
   ]},
   food: { title: '食事', phrases: [
     {en: "I'm eating lunch now.", jp: "今ランチ食べてるよ"}, {en: "What's your favorite food?", jp: "好きな食べ物は何？"},
     {en: "I'm so hungry!", jp: "すごくお腹すいた！"}, {en: "This dessert is delicious!", jp: "このスイーツ美味しい！"},
     {en: "Did you eat dinner yet?", jp: "もう晩ご飯食べた？"}, {en: "I cooked pasta today.", jp: "今日パスタ作ったよ"},
     {en: "Let's go to a cafe together!", jp: "一緒にカフェ行こう！"}, {en: "I ate too much today...", jp: "今日食べすぎちゃった..."},
-    {en: "Do you like spicy food?", jp: "辛いもの好き？"}, {en: "I love drinking coffee.", jp: "コーヒーが大好きなの"}
+    {en: "Do you like spicy food?", jp: "辛いもの好き？"}, {en: "I love drinking coffee.", jp: "コーヒーが大好きなの"},
+    {en: "I want to eat pizza tonight!", jp: "今夜はピザが食べたい！"}, {en: "I made breakfast myself.", jp: "自分で朝食を作ったよ"},
+    {en: "Do you prefer tea or coffee?", jp: "紅茶派？それともコーヒー派？"}, {en: "I bought some fresh fruits.", jp: "新鮮なフルーツを買ってきたよ"},
+    {en: "This soup is nice and warm.", jp: "このスープ温かくて美味しい"}, {en: "I love eating chocolate when tired.", jp: "疲れた時はチョコに限るね"},
+    {en: "I tried a new recipe today!", jp: "今日新しいレシピに挑戦したよ！"}, {en: "What should I cook for dinner?", jp: "晩ご飯何作ろうかな？"},
+    {en: "I'm drinking green tea.", jp: "緑茶を飲んでいるよ"}, {en: "Food tastes better with you!", jp: "あなたと食べるともっと美味しい！"}
   ]},
   feeling: { title: '感情', phrases: [
     {en: "I missed you so much!", jp: "すごく会いたかったよ！"}, {en: "I love talking with you!", jp: "あなたと話すのが大好き"},
     {en: "Praise me please!", jp: "褒めてほしいな！"}, {en: "You always make me happy.", jp: "いつも幸せにしてくれるね"},
     {en: "I was thinking about you all day.", jp: "1日中あなたのこと考えてた"}, {en: "I'm so lucky to have you.", jp: "あなたに会えて幸運だよ"},
     {en: "Your smile is the best!", jp: "あなたの笑顔が1番！"}, {en: "I want to stay with you forever.", jp: "ずっと一緒にいたいな"},
-    {en: "You mean everything to me.", jp: "私の全てだよ"}, {en: "I love you so much!", jp: "大大好きだよ！"}
+    {en: "You mean everything to me.", jp: "私の全てだよ"}, {en: "I love you so much!", jp: "大大好きだよ！"},
+    {en: "I feel a bit sad today.", jp: "今日はちょっと悲しい気分"}, {en: "You always cheer me up!", jp: "いつも私を元気づけてくれるね！"},
+    {en: "I'm so proud of you!", jp: "あなたのことを誇りに思うよ！"}, {en: "My heart is beating so fast!", jp: "心臓がドキドキしてる！"},
+    {en: "You are my sunshine.", jp: "あなたは私の太陽だよ"}, {en: "I can't stop thinking about you.", jp: "あなたのことが頭から離れない"},
+    {en: "Thank you for always being there.", jp: "いつもそばにいてくれてありがとう"}, {en: "You make me laugh so much!", jp: "いつもたくさん笑わせてくれるね！"},
+    {en: "I feel so safe with you.", jp: "あなたといるとすごく安心する"}, {en: "You are the best gift in my life!", jp: "あなたは人生最高のプレゼント！"}
   ]}
 };
 
@@ -428,7 +442,6 @@ window.onload = () => {
   checkBirthday();
 };
 
-/* ② ユーザーアイコンの設定と読み込み */
 function saveUserIcon(val) {
   if (val.trim()) {
     userIcon = val.trim();
@@ -444,7 +457,6 @@ function loadUserIcon() {
   }
 }
 
-/* ① アニメーション付きで表情を切替 */
 function setExpression(expr) {
   currentExpression = expr || 'default';
   const char = CHARS[currentChar];
@@ -456,7 +468,6 @@ function setExpression(expr) {
   const modalImg = document.getElementById('modal-img');
   if (modalImg) {
     modalImg.src = imgSrc;
-    // ① アニメーションクラスを一度解除して付け直す
     modalImg.className = '';
     setTimeout(() => {
       if (currentExpression === 'happy') modalImg.className = 'anim-happy';
@@ -539,7 +550,6 @@ function loadStepSetting() {
   if (savedStep) { setStep(parseInt(savedStep)); } else { setStep(2); }
 }
 
-/* ④ 修正: 最新の会話にぴったり連動した動的返答ヒントの生成 */
 function updateCallAssistList(aiText = '') {
   const assistContainer = document.getElementById('call-assist-list');
   if (!assistContainer) return;
@@ -548,7 +558,6 @@ function updateCallAssistList(aiText = '') {
   let samples = [];
   const textLower = aiText.toLowerCase();
 
-  // 会話の文脈（文言）を精密判定
   if (textLower.includes('morning') || textLower.includes('woke up')) {
     samples = [
       { en: "Good morning! Did you sleep well?", jp: "おはよう！よく眠れた？" },
@@ -717,14 +726,12 @@ function renderChatHistory() {
   }
 }
 
-/* ③ 修正: 日本語訳がしっかり画面に表示される吹き出し生成 */
 function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true, autoSpeak = true) {
   const chatArea = document.getElementById('chat-area');
   const row = document.createElement('div');
   row.className = `msg-row ${sender}`;
   const char = CHARS[currentChar];
   
-  // ② 自分のアイコンURLを適用
   const avatarUrl = sender === 'ai' ? (char.expressions[currentExpression] || char.expressions.default) : userIcon;
   
   if (sender === 'ai') {
@@ -745,7 +752,6 @@ function addBubble(sender, text, subText = '', tipText = '', showPopup = true, s
   chatArea.appendChild(row);
   chatArea.scrollTop = chatArea.scrollHeight;
 
-  // ③ 通話モード内のダイアログにも英語＋日本語訳をセットで追加
   const callContainer = document.getElementById('call-dialog-container');
   if (callContainer) {
     const callMsg = document.createElement('div');
@@ -852,7 +858,6 @@ async function sendMessage() {
 
   const expr = detectExpression(text);
   setExpression(expr);
-  // ③ 自分の発言にも簡易的に日本語訳テキストを表示
   addBubble('user', text, 'あなたが送信したメッセージ', '', false, true, false);
   setTranscribeText('');
   addLoveExp(15);
