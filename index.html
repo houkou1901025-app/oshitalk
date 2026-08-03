@@ -51,7 +51,7 @@ body {
 
 .header h1 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.35rem; /* フォント拡大 */
   font-weight: 700;
   background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
   -webkit-background-clip: text;
@@ -64,9 +64,9 @@ body {
   background: linear-gradient(135deg, #f59e0b, #ec4899);
   color: #fff;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 14px;
-  font-size: 0.7rem;
+  font-size: 0.85rem; /* フォント拡大 */
   font-weight: bold;
   cursor: pointer;
 }
@@ -75,9 +75,9 @@ body {
   background: #2ed573;
   color: #fff;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 14px;
-  font-size: 0.7rem;
+  font-size: 0.85rem; /* フォント拡大 */
   font-weight: bold;
   cursor: pointer;
 }
@@ -90,7 +90,7 @@ body {
   background: rgba(15, 23, 42, 0.6);
   border: 2px solid transparent;
   border-radius: 12px;
-  padding: 4px;
+  padding: 6px;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -102,26 +102,26 @@ body {
 }
 
 .char-card img {
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.2s ease;
 }
 
-.char-card .name { font-weight: 700; font-size: 0.75rem; }
+.char-card .name { font-weight: 700; font-size: 0.88rem; /* フォント拡大 */ }
 
 /* 設定パネル */
 .control-panel {
   background: rgba(15, 23, 42, 0.5);
   border-radius: 10px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   margin-bottom: 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 0.7rem;
+  gap: 6px;
+  font-size: 0.82rem; /* フォント拡大 */
 }
 
 .control-row { display: flex; justify-content: space-between; align-items: center; }
@@ -131,10 +131,10 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.65rem;
+  font-size: 0.78rem; /* フォント拡大 */
 }
 
 .step-btn.active {
@@ -148,13 +148,13 @@ select, input[type="date"] {
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  padding: 1px 4px;
-  font-size: 0.68rem;
+  padding: 2px 6px;
+  font-size: 0.78rem; /* フォント拡大 */
 }
 
 /* チャットエリア */
 .chat-area {
-  height: 180px;
+  height: 200px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -168,8 +168,8 @@ select, input[type="date"] {
 .msg-row.user { flex-direction: row-reverse; }
 
 .msg-row img {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -180,10 +180,10 @@ select, input[type="date"] {
 .bubble-container { max-width: 82%; display: flex; flex-direction: column; gap: 2px; }
 
 .bubble {
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: 12px;
-  font-size: 0.8rem;
-  line-height: 1.35;
+  font-size: 0.95rem; /* フォント拡大 */
+  line-height: 1.4;
 }
 
 .msg-row.ai .bubble {
@@ -198,16 +198,16 @@ select, input[type="date"] {
   border-top-right-radius: 2px;
 }
 
-.jp-sub { font-size: 0.68rem; color: #cbd5e1; margin-top: 1px; }
+.jp-sub { font-size: 0.8rem; color: #cbd5e1; margin-top: 2px; } /* フォント拡大 */
 
 .english-tip {
-  font-size: 0.68rem;
+  font-size: 0.78rem; /* フォント拡大 */
   background: rgba(0, 0, 0, 0.4);
   border-left: 3px solid var(--accent-color);
-  padding: 4px 6px;
+  padding: 4px 8px;
   border-radius: 0 4px 4px 0;
   color: #e2e8f0;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .replay-btn {
@@ -216,10 +216,10 @@ select, input[type="date"] {
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
   border-radius: 10px;
-  padding: 1px 6px;
-  font-size: 0.65rem;
+  padding: 2px 8px;
+  font-size: 0.75rem; /* フォント拡大 */
   cursor: pointer;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 /* クイック発言 10×10 */
@@ -232,8 +232,8 @@ select, input[type="date"] {
 }
 
 .quick-toggle-header {
-  padding: 5px 8px;
-  font-size: 0.7rem;
+  padding: 6px 10px;
+  font-size: 0.82rem; /* フォント拡大 */
   font-weight: bold;
   background: rgba(255, 255, 255, 0.05);
   display: flex;
@@ -247,7 +247,7 @@ select, input[type="date"] {
   display: flex;
   gap: 4px;
   overflow-x: auto;
-  padding: 4px;
+  padding: 6px;
   scrollbar-width: none;
   background: rgba(0,0,0,0.2);
 }
@@ -255,9 +255,9 @@ select, input[type="date"] {
 .quick-categories::-webkit-scrollbar { display: none; }
 
 .cat-tab {
-  padding: 2px 6px;
+  padding: 3px 8px;
   border-radius: 8px;
-  font-size: 0.65rem;
+  font-size: 0.78rem; /* フォント拡大 */
   white-space: nowrap;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.08);
@@ -286,9 +286,9 @@ select, input[type="date"] {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--text-main);
-  padding: 4px 8px;
+  padding: 5px 10px;
   border-radius: 12px;
-  font-size: 0.68rem;
+  font-size: 0.8rem; /* フォント拡大 */
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
@@ -302,9 +302,9 @@ select, input[type="date"] {
   background: rgba(15, 23, 42, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 14px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   color: #fff;
-  font-size: 0.78rem;
+  font-size: 0.9rem; /* フォント拡大 */
   outline: none;
 }
 
@@ -313,17 +313,17 @@ select, input[type="date"] {
   border: none;
   color: #0f172a;
   font-weight: bold;
-  padding: 0 10px;
+  padding: 0 12px;
   border-radius: 14px;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.88rem; /* フォント拡大 */
 }
 
 .btn-mic {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  width: 34px;
+  width: 40px;
 }
 
 /* モーダル Popup */
@@ -346,37 +346,37 @@ select, input[type="date"] {
 
 .modal-card {
   width: 85%;
-  max-width: 320px;
+  max-width: 340px;
   background: rgba(30, 41, 59, 0.95);
   border: 2px solid var(--accent-color);
   border-radius: 18px;
-  padding: 16px;
+  padding: 18px;
   text-align: center;
 }
 
 .modal-card img {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--accent-color);
   margin-bottom: 8px;
 }
 
-.modal-name { font-size: 1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
-.modal-text-en { font-size: 0.88rem; font-weight: 600; line-height: 1.35; margin-bottom: 4px; }
-.modal-text-jp { font-size: 0.75rem; color: #cbd5e1; margin-bottom: 12px; }
+.modal-name { font-size: 1.15rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
+.modal-text-en { font-size: 0.98rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
+.modal-text-jp { font-size: 0.85rem; color: #cbd5e1; margin-bottom: 12px; }
 .modal-btns { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
 
 .modal-btn {
   background: var(--accent-color);
   color: #0f172a;
   border: none;
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: 16px;
   font-weight: bold;
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 
 .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
@@ -391,7 +391,7 @@ select, input[type="date"] {
   z-index: 1000;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 12px 14px;
   box-sizing: border-box;
   color: white;
   overflow-y: auto;
@@ -399,43 +399,45 @@ select, input[type="date"] {
 
 .call-modal.active { display: flex; }
 .call-header { text-align: center; margin-top: 2px; }
-.call-timer { font-size: 11px; color: #38bdf8; font-weight: bold; }
+.call-timer { font-size: 0.85rem; color: #38bdf8; font-weight: bold; }
 
-.call-avatar-wrap { text-align: center; margin: 6px 0; }
+.call-avatar-wrap { text-align: center; margin: 10px 0; }
+
+/* ★要件①：通話モードのアイコンを大幅拡大（直径180px ≒ 直径3cm超） */
 .call-avatar {
-  width: 110px;
-  height: 110px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  border: 3px solid var(--accent-color);
+  border: 4px solid var(--accent-color);
   object-fit: cover;
   animation: oshiPulse 3s infinite ease-in-out;
   transition: all 0.3s ease;
 }
 
 @keyframes oshiPulse {
-  0% { transform: scale(1); box-shadow: 0 0 12px var(--accent-color); }
-  50% { transform: scale(1.04); box-shadow: 0 0 25px var(--accent-color); }
-  100% { transform: scale(1); box-shadow: 0 0 12px var(--accent-color); }
+  0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
+  50% { transform: scale(1.05); box-shadow: 0 0 35px var(--accent-color); }
+  100% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
 }
 
-/* ★ 表情切替時のポップアニメーション効果 */
+/* ★要件③：ポップ＆バウンス風の表情アニメーション効果 */
 .pop-animation {
-  animation: popIn 0.4s ease-in-out;
+  animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes popIn {
-  0% { transform: scale(0.9) translateY(6px); opacity: 0.7; }
-  50% { transform: scale(1.08) translateY(-4px); }
+  0% { transform: scale(0.8) translateY(10px); opacity: 0.6; }
+  60% { transform: scale(1.12) translateY(-6px); opacity: 1; }
   100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
 .call-chat-history {
-  min-height: 120px;
-  max-height: 180px;
+  min-height: 110px;
+  max-height: 160px;
   overflow-y: auto;
   background: rgba(15, 23, 42, 0.65);
   border-radius: 10px;
-  padding: 6px;
+  padding: 8px;
   margin: 4px 0;
   display: flex;
   flex-direction: column;
@@ -446,19 +448,19 @@ select, input[type="date"] {
   background: rgba(15, 23, 42, 0.85);
   border: 1px solid var(--accent-color);
   border-radius: 8px;
-  padding: 4px 6px;
+  padding: 6px 8px;
   margin-bottom: 6px;
 }
 
-.call-hint-title { font-size: 0.65rem; font-weight: bold; color: var(--accent-color); margin-bottom: 2px; }
-.call-hint-list { display: flex; flex-direction: column; gap: 2px; }
+.call-hint-title { font-size: 0.78rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
+.call-hint-list { display: flex; flex-direction: column; gap: 4px; }
 
 .call-hint-item {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  padding: 3px 6px;
-  font-size: 0.68rem;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.82rem; /* フォント拡大 */
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -466,7 +468,7 @@ select, input[type="date"] {
 }
 
 .call-hint-en { font-weight: 600; color: #fff; }
-.call-hint-jp { font-size: 0.62rem; color: #cbd5e1; }
+.call-hint-jp { font-size: 0.75rem; color: #cbd5e1; }
 
 .call-quick-container {
   margin-bottom: 6px;
@@ -481,21 +483,21 @@ select, input[type="date"] {
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid var(--accent-color);
   border-radius: 10px;
-  padding: 6px 8px;
+  padding: 8px 10px;
   color: #fff;
-  font-size: 0.75rem;
+  font-size: 0.88rem; /* フォント拡大 */
   outline: none;
 }
 
-.call-controls { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.call-controls { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
 .call-btn-row { display: flex; gap: 4px; }
 
 .call-btn {
   flex: 1;
-  padding: 7px 2px;
+  padding: 9px 4px;
   border: none;
-  border-radius: 6px;
-  font-size: 10px;
+  border-radius: 8px;
+  font-size: 0.78rem; /* フォント拡大 */
   font-weight: bold;
   cursor: pointer;
   text-align: center;
@@ -597,7 +599,7 @@ select, input[type="date"] {
 <div class="modal-overlay" id="prem-modal" onclick="closePremModal()">
   <div class="modal-card" onclick="event.stopPropagation()">
     <div class="modal-name" style="color: #f59e0b;">Oshitalk Premium</div>
-    <p style="font-size: 0.78rem; line-height: 1.4; color: #cbd5e1; margin: 10px 0;">
+    <p style="font-size: 0.88rem; line-height: 1.4; color: #cbd5e1; margin: 10px 0;">
       プレミアムプランに加入すると、推しとの通話時間が無制限になり、AIからの超詳細レッスン動画・フルボイス機能が解放されます!
     </p>
     <div class="modal-btns">
@@ -610,12 +612,12 @@ select, input[type="date"] {
 <!-- 通話モード Modal -->
 <div class="call-modal" id="callModal">
   <div class="call-header">
-    <h2 id="callCharName" style="margin: 0; font-size: 1rem;">Leo</h2>
+    <h2 id="callCharName" style="margin: 0; font-size: 1.2rem;">Leo</h2>
     <div class="call-timer" id="callTimer">通話中... 00:00</div>
   </div>
 
   <div class="call-avatar-wrap">
-    <img src="leo.jpg" id="callAvatarImg" class="call-avatar" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop'" alt="Call Avatar">
+    <img src="leo.jpg" id="callAvatarImg" class="call-avatar" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop'" alt="Call Avatar">
   </div>
 
   <div class="call-chat-history" id="callChatHistory"></div>
@@ -655,9 +657,9 @@ select, input[type="date"] {
 
 <script>
 const DEFAULT_AVATARS = {
-  leo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop',
-  noah: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
-  liam: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop'
+  leo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop',
+  noah: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop',
+  liam: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop'
 };
 
 const CHARS = {
@@ -844,12 +846,14 @@ function selectChar(key) {
   updateAvatarDisplay(getCharAvatarUrl(currentChar, currentEmotion));
 }
 
+/* ★表情変更とポップアニメーションの連動 */
 function updateAvatarDisplay(newSrc) {
   const callAvatar = document.getElementById('callAvatarImg');
   if (callAvatar) {
+    callAvatar.classList.remove('pop-animation');
+    void callAvatar.offsetWidth; // リフローを発生させてアニメーションを再トリガー
     callAvatar.classList.add('pop-animation');
     callAvatar.src = newSrc;
-    setTimeout(() => callAvatar.classList.remove('pop-animation'), 400);
   }
 }
 
@@ -1055,6 +1059,7 @@ async function getAIReply(userText) {
       addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true, data.emotion || 'smile');
     }
   } catch (e) {
+    /* デモ用レスポンス（感情パラメータ付き） */
     addBubble('ai', 
       "I'm so glad to hear your voice! Talking with you always brightens my day.", 
       "君の声が聞けてすごく嬉しいよ!君とお話しするといつも僕の一日がぱっと明るくなるんだ。", 
