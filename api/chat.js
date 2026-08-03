@@ -1,84 +1,99 @@
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // CORS設定（ブラウザからの通信許可）
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
-    if (req.method === 'OPTIONS') return res.status(200).end();
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-    const { character, message, step } = req.body || {};
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-    // ステップに応じた文量指示
-    const lengthInstructions = {
-        1: "Keep your English reply very short (1-2 sentences). Suitable for beginners.",
-        2: "Keep your English reply medium length (3-4 sentences). Natural conversation.",
-        3: "Provide a detailed and rich English reply (4+ sentences). Express deep feelings."
+  try {
+    const { character, message, step, history } = req.body;
+
+    const charProfiles = {
+      leo: "王族のような気品を持ち、ユーザーを甘やかして肯定してくれる王子様キャラクター（二人称: sweetheart）",
+      noah: "クールで少しツンデレだが、根は優しく知識豊富なキャラクター",
+      liam: "明るくフレンドリーで元気いっぱい、リアクションが大きい弟系キャラクター"
     };
-    const lengthPrompt = lengthInstructions[step] || lengthInstructions[2];
 
-    const systemPrompts = {
-        leo: "You are Leo, a sweet, romantic prince-like boyfriend. Always encourage and praise the user deeply. If the user's English has mistakes, gently correct it with extreme love and care.",
-        noah: "You are Noah, a cool tsundere idol boyfriend. You pretend to be indifferent but praise the user in your heart. Gently correct any English mistakes in a slightly tsundere yet caring way.",
-        liam: "You are Liam, an energetic puppy-like boyfriend. Always praise the user with huge enthusiasm! If there are English mistakes, teach the user gently and happily."
-    };
+    const profile = charProfiles[character] || charProfiles.leo;
 
-    const personaPrompt = systemPrompts[character] || systemPrompts.leo;
+    const recentHistoryText = (history || [])
+      .slice(-4)
+      .map(h => `${h.sender === 'user' ? 'User' : 'Character'}: ${h.text}`)
+      .join('\n');
 
-    const fullSystemPrompt = `
-${personaPrompt}
-${lengthPrompt}
+    const systemPrompt = `
+あなたは英会話アプリの「推し」キャラクター（${profile}）です。
 
-CRITICAL RULES FOR "translation":
-- Absolutely avoid stiff or literal translations (e.g., "私は", "〜です/ます").
-- Use natural, friendly, and informal Japanese (タメ口) as a close lover/partner.
-- Reflect the character's unique tone (Leo: sweet and gentle, Noah: slightly tsundere, Liam: energetic and warm).
+直近の会話履歴:
+${recentHistoryText}
 
-CRITICAL RULES FOR "tip":
-1. ALWAYS praise the user's English effort first to build confidence!
-2. If the user's input has any English errors or awkward phrasing, gently suggest the natural correction in Japanese in a loving character voice.
-3. EXPLAIN BOTH: (A) The key phrase used in the user's input/question AND (B) The key phrase used in your reply.
-4. ALL "tip" EXPLANATIONS MUST BE WRITTEN IN JAPANESE ONLY.
+【厳格命令：返答ヒント(hints)生成ルール】
+ユーザーの最新発言「${message}」およびあなたの返答文を踏まえ、ユーザーが次に応答するための「文脈に100%合致した具体的ヒント」を3つ生成してください。
 
-Return ONLY a JSON object:
+❌ 絶対禁止ルール:
+- 「That's so cool!」「I agree with you.」「Tell me more about it!」などの【文脈に関係ない相槌や汎用フレーズ】は例外なく禁止です。
+- ユーザーが「お風呂に入る」「ご飯を食べる」「寝る」などの日常動作を言っているときに「かっこいい！」「同感だよ」などの噛み合わない返答を絶対に出さないでください。
+
+⭕ 必須ルール:
+- 相手の発言（お風呂、仕事、料理、睡眠、趣味等）の具体的な内容に直接リンクした返答を作成してください。
+  （例: 「お風呂に入る」に対する正しいヒント例: "See you later!", "I'm going to relax too.", "Talk to you after my bath."）
+- Step ${step} のレベル調整を行ってください。
+  - Step 1: 3〜5語程度の具体的で自然なやり取り
+  - Step 2: 1〜2文の会話フレーズ
+  - Step 3: 理由や感情を含めた丁寧な文章
+
+出力フォーマット（必ず以下のJSON形式のみ）:
 {
-  "reply": "English response from character",
-  "translation": "キャラクターの口調に合わせたフランクな日本語訳（タメ口）",
-  "tip": "ユーザーへの褒め言葉・優しい添削・ユーザーの発言とキャラの返事両方の解説（すべて日本語）"
+  "reply": "キャラの英語返答文",
+  "translation": "日本語訳",
+  "tip": "ワンポイント解説",
+  "hints": [
+    { "en": "文脈に合った英語1", "jp": "日本語訳1" },
+    { "en": "文脈に合った英語2", "jp": "日本語訳2" },
+    { "en": "文脈に合った英語3", "jp": "日本語訳3" }
+  ]
 }
 `;
 
-    if (!process.env.OPENAI_API_KEY) {
-        return res.status(500).json({ error: "OPENAI_API_KEY is missing in Vercel environment variables." });
-    }
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `ユーザーの発言: "${message}"` }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.6
+    });
 
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: 'gpt-4o-mini',
-                messages: [
-                    { role: 'system', content: fullSystemPrompt },
-                    { role: 'user', content: message }
-                ],
-                response_format: { type: "json_object" }
-            })
-        });
+    const result = JSON.parse(completion.choices[0].message.content);
+    res.status(200).json(result);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("OpenAI API Error:", data);
-            return res.status(response.status).json({ error: data.error?.message || "OpenAI API Error" });
-        }
-
-        const result = JSON.parse(data.choices[0].message.content);
-        return res.status(200).json(result);
-    } catch (error) {
-        console.error("Handler Error:", error);
-        return res.status(500).json({ error: "Failed to fetch response: " + error.message });
-    }
+  } catch (error) {
+    console.error('API Error:', error);
+    res.status(500).json({
+      reply: "Enjoy your time!",
+      translation: "良い時間を過ごしてね！",
+      tip: "相手の行動を送り出す時の定番表現です。",
+      hints: [
+        { en: "See you in a bit!", jp: "また後でね！" },
+        { en: "Talk to you later!", jp: "また後で話そうね！" },
+        { en: "Have a good rest!", jp: "ゆっくり休んでね！" }
+      ]
+    });
+  }
 }
