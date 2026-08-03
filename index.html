@@ -74,7 +74,7 @@
         select, input[type="date"] { background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 1px 4px; font-size: 0.68rem; }
 
         /* チャットエリア */
-        .chat-area { height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; padding-right: 2px; scroll-behavior: smooth; }
+        .chat-area { height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; padding-right: 2px; scroll-behavior: smooth; }
         .msg-row { display: flex; gap: 6px; align-items: flex-start; }
         .msg-row.user { flex-direction: row-reverse; }
         .msg-row img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; cursor: pointer; }
@@ -92,7 +92,7 @@
 
         /* クイック発言 10×10 */
         .quick-toggle-container { margin-bottom: 8px; background: rgba(15, 23, 42, 0.6); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
-        .quick-toggle-header { padding: 6px 10px; font-size: 0.72rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--accent-color); }
+        .quick-toggle-header { padding: 5px 8px; font-size: 0.7rem; font-weight: bold; background: rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--accent-color); }
         .quick-categories { display: flex; gap: 4px; overflow-x: auto; padding: 4px; scrollbar-width: none; background: rgba(0,0,0,0.2); }
         .quick-categories::-webkit-scrollbar { display: none; }
         .cat-tab { padding: 2px 6px; border-radius: 8px; font-size: 0.65rem; white-space: nowrap; cursor: pointer; background: rgba(255, 255, 255, 0.08); color: var(--text-main); }
@@ -117,7 +117,7 @@
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-card { width: 85%; max-width: 320px; background: rgba(30, 41, 59, 0.95); border: 2px solid var(--accent-color); border-radius: 18px; padding: 16px; text-align: center; }
-        .modal-card img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 8px; }
+        .modal-card img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 8px; }
         .modal-name { font-size: 1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 4px; }
         .modal-text-en { font-size: 0.88rem; font-weight: 600; line-height: 1.35; margin-bottom: 4px; }
         .modal-text-jp { font-size: 0.75rem; color: #cbd5e1; margin-bottom: 12px; }
@@ -126,69 +126,73 @@
         .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
 
         /* =======================================
-           📞 通話モード（②超大型アイコン＆脈動アニメーション）
+           📞 通話モード（全画面スクロール＆レスポンシブ修正）
         ======================================= */
         .call-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: linear-gradient(180deg, #0f172a 0%, #0369a1 100%);
             z-index: 1000; flex-direction: column; justify-content: space-between;
-            padding: 8px 12px; box-sizing: border-box; color: white; overflow: hidden;
+            padding: 10px 12px; box-sizing: border-box; color: white;
+            overflow-y: auto; /* 縦スクロール対応で全ボタンを表示確保 */
         }
         .call-modal.active { display: flex; }
 
         .call-header { text-align: center; margin-top: 2px; }
         .call-timer { font-size: 11px; color: #38bdf8; font-weight: bold; }
 
-        /* ② 超大型アイコン（160px）＋オーラ呼吸脈動アニメーション */
-        .call-avatar-wrap { text-align: center; margin: 2px 0; }
+        /* アイコン画像サイズ固定＆脈動アニメーション */
+        .call-avatar-wrap { text-align: center; margin: 6px 0; }
         .call-avatar {
-            width: 160px; height: 160px;
-            border-radius: 50%; border: 4px solid var(--accent-color);
+            width: 110px; height: 110px;
+            border-radius: 50%; border: 3px solid var(--accent-color);
             object-fit: cover;
             animation: oshiPulse 3s infinite ease-in-out;
             transition: all 0.3s ease;
         }
 
         @keyframes oshiPulse {
-            0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
-            50% { transform: scale(1.05); box-shadow: 0 0 35px var(--accent-color); }
-            100% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
+            0% { transform: scale(1); box-shadow: 0 0 12px var(--accent-color); }
+            50% { transform: scale(1.04); box-shadow: 0 0 25px var(--accent-color); }
+            100% { transform: scale(1); box-shadow: 0 0 12px var(--accent-color); }
         }
 
         /* 通話中の履歴表示 */
         .call-chat-history {
-            flex: 1; max-height: 18vh; overflow-y: auto;
+            min-height: 120px; max-height: 180px; overflow-y: auto;
             background: rgba(15, 23, 42, 0.65); border-radius: 10px;
-            padding: 6px; margin: 2px 0; display: flex; flex-direction: column; gap: 6px;
+            padding: 6px; margin: 4px 0; display: flex; flex-direction: column; gap: 6px;
         }
 
         /* 💡 返事Hint */
         .call-hint-box {
             background: rgba(15, 23, 42, 0.85); border: 1px solid var(--accent-color);
-            border-radius: 8px; padding: 4px 6px; margin-bottom: 2px;
+            border-radius: 8px; padding: 4px 6px; margin-bottom: 6px;
         }
         .call-hint-title { font-size: 0.65rem; font-weight: bold; color: var(--accent-color); margin-bottom: 2px; }
         .call-hint-list { display: flex; flex-direction: column; gap: 2px; }
         .call-hint-item {
             background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 4px; padding: 2px 6px; font-size: 0.68rem; cursor: pointer;
+            border-radius: 4px; padding: 3px 6px; font-size: 0.68rem; cursor: pointer;
             display: flex; justify-content: space-between; align-items: center;
         }
         .call-hint-en { font-weight: 600; color: #fff; }
         .call-hint-jp { font-size: 0.62rem; color: #cbd5e1; }
 
+        /* 通話画面内の 10x10 クイックパネル */
+        .call-quick-container { margin-bottom: 6px; background: rgba(15, 23, 42, 0.7); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+
         /* テキスト入力 */
-        .call-input-container { display: flex; gap: 4px; margin-bottom: 2px; }
+        .call-input-container { display: flex; gap: 4px; margin-bottom: 6px; }
         .call-input-container input {
             flex: 1; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--accent-color);
-            border-radius: 10px; padding: 5px 8px; color: #fff; font-size: 0.75rem; outline: none;
+            border-radius: 10px; padding: 6px 8px; color: #fff; font-size: 0.75rem; outline: none;
         }
 
         /* 操作ボタン */
-        .call-controls { display: flex; flex-direction: column; gap: 3px; margin-bottom: 4px; }
-        .call-btn-row { display: flex; gap: 3px; }
+        .call-controls { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+        .call-btn-row { display: flex; gap: 4px; }
         .call-btn {
-            flex: 1; padding: 6px 1px; border: none; border-radius: 6px;
+            flex: 1; padding: 7px 2px; border: none; border-radius: 6px;
             font-size: 10px; font-weight: bold; cursor: pointer; text-align: center;
         }
 
@@ -216,13 +220,13 @@
 
     <div class="char-selector">
         <div class="char-card active" onclick="selectChar('leo')" id="card-leo">
-            <img id="avatar-leo" src="leo.jpg" alt="Leo"><div class="name">Leo</div>
+            <img id="avatar-leo" src="leo.jpg" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop'" alt="Leo"><div class="name">Leo</div>
         </div>
         <div class="char-card" onclick="selectChar('noah')" id="card-noah">
-            <img id="avatar-noah" src="noah.jpg" alt="Noah"><div class="name">Noah</div>
+            <img id="avatar-noah" src="noah.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'" alt="Noah"><div class="name">Noah</div>
         </div>
         <div class="char-card" onclick="selectChar('liam')" id="card-liam">
-            <img id="avatar-liam" src="liam.jpg" alt="Liam"><div class="name">Liam</div>
+            <img id="avatar-liam" src="liam.jpg" onerror="this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop'" alt="Liam"><div class="name">Liam</div>
         </div>
     </div>
 
@@ -251,12 +255,12 @@
 
     <!-- 10×10 クイック発言トピック -->
     <div class="quick-toggle-container">
-        <div class="quick-toggle-header" onclick="toggleQuickPanel()">
+        <div class="quick-toggle-header" onclick="toggleQuickPanel('normal')">
             <span>💬 10×10 トピック別フレーズ</span>
-            <span id="toggle-icon">▲</span>
+            <span id="toggle-icon-normal">▲</span>
         </div>
-        <div class="quick-categories" id="quick-cats"></div>
-        <div class="quick-phrase-list open" id="quick-phrase-list"></div>
+        <div class="quick-categories" id="quick-cats-normal"></div>
+        <div class="quick-phrase-list open" id="quick-phrase-list-normal"></div>
     </div>
 
     <div class="input-area">
@@ -271,7 +275,7 @@
 <!-- Popup モーダル -->
 <div class="modal-overlay" id="oshi-modal" onclick="closeModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
-        <img id="modal-img" src="leo.jpg" alt="Oshi">
+        <img id="modal-img" src="leo.jpg" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop'" alt="Oshi">
         <div class="modal-name" id="modal-name">Leo</div>
         <div class="modal-text-en" id="modal-text-en"></div>
         <div class="modal-text-jp" id="modal-text-jp"></div>
@@ -303,17 +307,27 @@
         <div class="call-timer" id="callTimer">📞 通話中... 00:00</div>
     </div>
     
-    <!-- ② 160px超大型アイコン & 脈動オーラ -->
+    <!-- アイコン画像（エラー時フォールバック付き） -->
     <div class="call-avatar-wrap">
-        <img src="leo.jpg" id="callAvatarImg" class="call-avatar" alt="Call Avatar">
+        <img src="leo.jpg" id="callAvatarImg" class="call-avatar" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop'" alt="Call Avatar">
     </div>
 
     <!-- 通話履歴 -->
     <div class="call-chat-history" id="callChatHistory"></div>
 
-    <!-- 返事Hint -->
+    <!-- ② 通話モード内：10×10 トピックフレーズ -->
+    <div class="quick-toggle-container call-quick-container">
+        <div class="quick-toggle-header" onclick="toggleQuickPanel('call')">
+            <span>💬 10×10 トピックフレーズから選ぶ</span>
+            <span id="toggle-icon-call">▼</span>
+        </div>
+        <div class="quick-categories" id="quick-cats-call" style="display: none;"></div>
+        <div class="quick-phrase-list" id="quick-phrase-list-call"></div>
+    </div>
+
+    <!-- 💡 返事Hint -->
     <div class="call-hint-box">
-        <div class="call-hint-title">💡 返事Hint（タップで送信）</div>
+        <div class="call-hint-title">💡 返事Hint（タップで即送信）</div>
         <div class="call-hint-list" id="callHintList"></div>
     </div>
 
@@ -322,7 +336,7 @@
         <input type="text" id="call-user-input" placeholder="音声入力またはテキスト編集..." onkeypress="handleKey(event, 'call')">
     </div>
 
-    <!-- ③ 4秒自動送信機能付きの操作ボタン -->
+    <!-- 操作ボタン -->
     <div class="call-controls">
         <div class="call-btn-row">
             <button class="call-btn btn-voice-a" id="btn-mic-a" onclick="toggleSpeech('call_auto')">🎤 A (4秒自動)</button>
@@ -339,49 +353,37 @@
 </div>
 
 <script>
-    // ② 5パターンの表情差分画像マッピング
+    // 5パターンの表情差分画像マッピング（フォールバック用URL付）
+    const DEFAULT_AVATARS = {
+        leo: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=200&h=200&fit=crop',
+        noah: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
+        liam: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop'
+    };
+
     const CHARS = {
         leo: { 
             name: 'Leo', 
-            avatars: {
-                normal: 'leo.jpg',
-                smile: 'leo_smile.jpg',
-                shy: 'leo_shy.jpg',
-                wink: 'leo_wink.jpg',
-                serious: 'leo_serious.jpg'
-            },
+            avatars: { normal: 'leo.jpg', smile: 'leo_smile.jpg', shy: 'leo_shy.jpg', wink: 'leo_wink.jpg', serious: 'leo_serious.jpg' },
             color: '#f59e0b', pitch: 0.75, rate: 0.95, 
-            greet: 'Good morning, sweetheart. Your absence is felt deeply in my heart. I long for the day we can be together again.', 
-            greetJp: 'おはよう、スウィートハート。君がいないと本当に寂しいよ。また一緒に過ごせる日を心待ちにしているね。',
-            greetTip: '「absence」＝「不在・会えない時間」、「long for」＝「〜を心待ちにする・切望する」という意味だよ！'
+            greet: 'Good morning, sweetheart. I missed you so much today.', 
+            greetJp: 'おはよう、スウィートハート。今日は君に会えなくて寂しかったよ。',
+            greetTip: '「miss you」は「恋しい・会えなくて寂しい」というニュアンスで使われる定番フレーズだよ！'
         },
         noah: { 
             name: 'Noah', 
-            avatars: {
-                normal: 'noah.jpg',
-                smile: 'noah_smile.jpg',
-                shy: 'noah_shy.jpg',
-                wink: 'noah_wink.jpg',
-                serious: 'noah_serious.jpg'
-            },
+            avatars: { normal: 'noah.jpg', smile: 'noah_smile.jpg', shy: 'noah_shy.jpg', wink: 'noah_wink.jpg', serious: 'noah_serious.jpg' },
             color: '#8b5cf6', pitch: 0.6, rate: 0.9, 
-            greet: 'You\'re finally here. I was waiting to hear your voice.', 
-            greetJp: 'やっと来たね。君の声が聞きたくて待ってたんだ。',
-            greetTip: '「I was waiting to...」＝「〜するのを待っていたんだ」という親密な表現だよ！'
+            greet: 'What did you find? Show me!', 
+            greetJp: '何を見つけたの？見せて！',
+            greetTip: '「Show me」は「〜を見せて」と相手に促す日常的で親しい英語表現だよ！'
         },
         liam: { 
             name: 'Liam', 
-            avatars: {
-                normal: 'liam.jpg',
-                smile: 'liam_smile.jpg',
-                shy: 'liam_shy.jpg',
-                wink: 'liam_wink.jpg',
-                serious: 'liam_serious.jpg'
-            },
+            avatars: { normal: 'liam.jpg', smile: 'liam_smile.jpg', shy: 'liam_shy.jpg', wink: 'liam_wink.jpg', serious: 'liam_serious.jpg' },
             color: '#10b981', pitch: 0.85, rate: 1.0, 
             greet: 'Hey! I\'m so happy to talk with you today!', 
             greetJp: 'やっほー！今日もお話しできてめっちゃ嬉しい！',
-            greetTip: '「so happy to talk」＝「話せてすごく嬉しい」というフレンドリーな挨拶だよ！'
+            greetTip: '「so happy to + 動詞」で「〜できてすごく嬉しい」という気持ちを簡単に表せるよ！'
         }
     };
 
@@ -402,7 +404,8 @@
     let currentEmotion = 'normal';
     let currentStep = 2;
     let currentCat = 'life';
-    let isQuickOpen = true;
+    let isQuickOpenNormal = true;
+    let isQuickOpenCall = false;
     let chatHistories = { leo: [], noah: [], liam: [] };
     let isRecording = false;
     let recognition = null;
@@ -420,13 +423,14 @@
         loadHistories();
         selectChar(currentChar);
         setupSpeechRecognition();
-        initQuickPanel();
+        initQuickPanel('normal');
+        initQuickPanel('call');
     };
 
     function getCharAvatarUrl(charKey, emotion = 'normal') {
         const char = CHARS[charKey];
-        if (!char) return 'leo.jpg';
-        return char.avatars[emotion] || char.avatars['normal'];
+        if (!char) return DEFAULT_AVATARS.leo;
+        return char.avatars[emotion] || char.avatars['normal'] || DEFAULT_AVATARS[charKey];
     }
 
     function loadSettings() {
@@ -452,9 +456,7 @@
         updateCallHints(lastAIText);
     }
 
-    function saveBirthdaySetting(val) {
-        localStorage.setItem('oshitalk_birthday', val);
-    }
+    function saveBirthdaySetting(val) { localStorage.setItem('oshitalk_birthday', val); }
 
     function triggerImageUpload(target) {
         uploadTarget = target;
@@ -480,29 +482,33 @@
         reader.readAsDataURL(file);
     }
 
-    function initQuickPanel() {
-        const catContainer = document.getElementById('quick-cats');
+    /* トピックパネルの初期化 */
+    function initQuickPanel(target = 'normal') {
+        const catContainer = document.getElementById(`quick-cats-${target}`);
+        if (!catContainer) return;
         catContainer.innerHTML = '';
         Object.keys(QUICK_DATA).forEach(key => {
             const cat = QUICK_DATA[key];
             const btn = document.createElement('div');
             btn.className = `cat-tab ${key === currentCat ? 'active' : ''}`;
             btn.innerText = cat.title;
-            btn.onclick = (e) => selectCategory(key, e);
+            btn.onclick = (e) => selectCategory(key, e, target);
             catContainer.appendChild(btn);
         });
-        renderPhrases();
+        renderPhrases(target);
     }
 
-    function selectCategory(key, event) {
+    function selectCategory(key, event, target) {
         currentCat = key;
-        document.querySelectorAll('.cat-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll(`#quick-cats-${target} .cat-tab`).forEach(tab => tab.classList.remove('active'));
         if (event && event.target) event.target.classList.add('active');
-        renderPhrases();
+        renderPhrases('normal');
+        renderPhrases('call');
     }
 
-    function renderPhrases() {
-        const list = document.getElementById('quick-phrase-list');
+    function renderPhrases(target = 'normal') {
+        const list = document.getElementById(`quick-phrase-list-${target}`);
+        if (!list) return;
         list.innerHTML = '';
         QUICK_DATA[currentCat].phrases.forEach(p => {
             const btn = document.createElement('button');
@@ -513,14 +519,18 @@
         });
     }
 
-    function toggleQuickPanel() {
-        isQuickOpen = !isQuickOpen;
-        const list = document.getElementById('quick-phrase-list');
-        const cats = document.getElementById('quick-cats');
-        const icon = document.getElementById('toggle-icon');
-        list.classList.toggle('open', isQuickOpen);
-        cats.style.display = isQuickOpen ? 'flex' : 'none';
-        icon.innerText = isQuickOpen ? '▲' : '▼';
+    function toggleQuickPanel(target = 'normal') {
+        if (target === 'normal') {
+            isQuickOpenNormal = !isQuickOpenNormal;
+            document.getElementById('quick-phrase-list-normal').classList.toggle('open', isQuickOpenNormal);
+            document.getElementById('quick-cats-normal').style.display = isQuickOpenNormal ? 'flex' : 'none';
+            document.getElementById('toggle-icon-normal').innerText = isQuickOpenNormal ? '▲' : '▼';
+        } else {
+            isQuickOpenCall = !isQuickOpenCall;
+            document.getElementById('quick-phrase-list-call').classList.toggle('open', isQuickOpenCall);
+            document.getElementById('quick-cats-call').style.display = isQuickOpenCall ? 'flex' : 'none';
+            document.getElementById('toggle-icon-call').innerText = isQuickOpenCall ? '▲' : '▼';
+        }
     }
 
     function selectChar(key) {
@@ -557,6 +567,7 @@
         const row = document.createElement('div');
         row.className = `msg-row ${sender}`;
         const char = CHARS[currentChar];
+        const fallbackUrl = DEFAULT_AVATARS[currentChar] || DEFAULT_AVATARS.leo;
         const avatarUrl = sender === 'ai' ? getCharAvatarUrl(currentChar, emotion) : userAvatarUrl;
 
         const isAI = sender === 'ai';
@@ -567,7 +578,7 @@
         }
 
         row.innerHTML = `
-            <img src="${avatarUrl}" onclick="openModal('${avatarUrl}', '${char.name}', '${text}', '${subText}')">
+            <img src="${avatarUrl}" onerror="this.src='${fallbackUrl}'" onclick="openModal('${avatarUrl}', '${char.name}', '${text}', '${subText}')">
             <div class="bubble-container">
                 <div class="bubble">${text}</div>
                 ${subText ? `<span class="jp-sub">${subText}</span>` : ''}
@@ -619,8 +630,8 @@
             ];
         } else if (msg.includes('miss') || msg.includes('love') || msg.includes('absence') || msg.includes('together')) {
             hints = [
-                { en: "I missed you so much too!", jp: "私（僕）もすごく会いたかった！" },
-                { en: "You always make me smile.", jp: "あなたはいつも私を笑顔にしてくれるね。" },
+                { en: "I missed you so much too!", jp: "私もすごく会いたかった！" },
+                { en: "You always make me smile.", jp: "いつも私を笑顔にしてくれるね。" },
                 { en: "Thank you, that's so sweet!", jp: "ありがとう、すごく嬉しいな！" }
             ];
         } else {
@@ -641,7 +652,7 @@
         });
     }
 
-    /* ③ 無音4秒後の確実な自動送信ロジック */
+    /* 音声認識設定 */
     function setupSpeechRecognition() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) return;
@@ -671,10 +682,8 @@
             const targetInputId = (currentSpeechMode === 'normal_auto') ? 'user-input' : 'call-user-input';
             document.getElementById(targetInputId).value = transcript;
 
-            // 発話を検知するたびに既存タイマーをクリアしてリセット
             clearTimeout(silenceTimer);
 
-            // 🎤 音声A (4秒自動送信) の場合のみ4秒カウント始動
             if (currentSpeechMode === 'call_auto' || currentSpeechMode === 'normal_auto') {
                 silenceTimer = setTimeout(() => {
                     const textVal = document.getElementById(targetInputId).value.trim();
@@ -682,7 +691,7 @@
                         stopSpeech();
                         sendMessage(currentSpeechMode === 'normal_auto' ? 'normal' : 'call');
                     }
-                }, 4000); // 無音が4秒続いてから送信
+                }, 4000);
             }
         };
 
@@ -733,9 +742,7 @@
         setTimeout(async () => { await getAIReply(text); }, 300);
     }
 
-    function clearCallInput() {
-        document.getElementById('call-user-input').value = '';
-    }
+    function clearCallInput() { document.getElementById('call-user-input').value = ''; }
 
     async function getAIReply(userText) {
         try {
@@ -756,11 +763,11 @@
                 addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true, data.emotion || 'smile');
             }
         } catch (e) {
-            // ① Lesson内容を英単語・単語解説に完全修復
+            // Lessonアドバイス（英文法・語彙レッスン）に固定
             addBubble('ai', 
                 "I'm so glad to hear your voice! Talking with you always brightens my day.", 
                 "君の声が聞けてすごく嬉しいよ！君とお話しするといつも僕の一日がぱっと明るくなるんだ。", 
-                "「brighten one's day」＝「（人の）一日を明るく・幸せな気分にする」という定番の褒めフレーズだよ！", 
+                "「brighten one's day」は「（人の）一日をパッと明るく幸せにする」という、感謝や愛着を伝える素敵な表現だよ！", 
                 true, true, true, 'smile'
             );
         }
