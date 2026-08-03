@@ -167,7 +167,7 @@
         .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
 
         /* =======================================
-           📞 通話モード（手順1：レイアウト最適化版）
+           📞 通話モード（返事Hint表示対応）
         ======================================= */
         .call-modal {
             display: none;
@@ -197,41 +197,82 @@
             font-weight: bold;
         }
 
-        /* 推しアバター（拡大表示） */
+        /* 推しアバター */
         .call-avatar-wrap {
             text-align: center;
-            margin: 6px 0;
+            margin: 4px 0;
         }
 
         .call-avatar {
-            width: 140px;
-            height: 140px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             border: 3px solid var(--accent-color);
-            box-shadow: 0 0 25px var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-color);
             object-fit: cover;
         }
 
-        /* 通話中の履歴表示（縦幅調整＆自動スクロール） */
+        /* 通話中の履歴表示 */
         .call-chat-history {
             flex: 1;
-            max-height: 25vh;
+            max-height: 20vh;
             overflow-y: auto;
             background: rgba(15, 23, 42, 0.6);
             border-radius: 12px;
             padding: 10px;
-            margin: 6px 0;
+            margin: 4px 0;
             display: flex;
             flex-direction: column;
             gap: 8px;
             scroll-behavior: smooth;
         }
 
+        /* 💡 返事Hint エリア（初心者向けサポート） */
+        .call-hint-box {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+        }
+        .call-hint-title {
+            font-size: 0.72rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .call-hint-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .call-hint-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .call-hint-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .call-hint-en { font-weight: 600; color: #fff; }
+        .call-hint-jp { font-size: 0.68rem; color: #cbd5e1; }
+
         .call-controls {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .call-btn-row {
@@ -330,7 +371,7 @@
     </div>
 </div>
 
-<!-- 📞 通話モード Modal (手順1適用版) -->
+<!-- 📞 通話モード Modal (返事Hint復活版) -->
 <div class="call-modal" id="callModal">
     <div class="call-header">
         <h2 id="callCharName" style="margin: 0; font-size: 1.2rem;">Leo</h2>
@@ -341,10 +382,18 @@
         <img src="leo.jpg" id="callAvatarImg" class="call-avatar" alt="Call Avatar">
     </div>
 
-    <!-- 通話モードのチャット履歴（自動最下部スクロール） -->
+    <!-- 通話モードのチャット履歴 -->
     <div class="call-chat-history" id="callChatHistory"></div>
 
-    <!-- 操作ボタン群（コンパクト配置） -->
+    <!-- 💡 返事Hint（初心者向け3文表示） -->
+    <div class="call-hint-box">
+        <div class="call-hint-title">💡 返事Hint（タップで送信）</div>
+        <div class="call-hint-list" id="callHintList">
+            <!-- JSで動的に3文を生成 -->
+        </div>
+    </div>
+
+    <!-- 操作ボタン群 -->
     <div class="call-controls">
         <div class="call-btn-row">
             <button class="call-btn btn-voice" onclick="toggleSpeech()">🎤 音声入力</button>
@@ -594,6 +643,7 @@
         currentStep = s;
         document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`step-${s}`).classList.add('active');
+        updateCallHints();
     }
 
     function selectChar(key) {
@@ -608,6 +658,7 @@
         // 通話画面のアイコン・名前更新
         document.getElementById('callCharName').innerText = char.name;
         document.getElementById('callAvatarImg').src = char.avatar;
+        updateCallHints();
     }
 
     function renderChatHistory() {
@@ -657,6 +708,7 @@
         if (isAI && autoSpeak) {
             speakText(text);
             if (showPopup) openModal(char.avatar, char.name, text, subText);
+            updateCallHints();
         }
     }
 
@@ -669,6 +721,42 @@
             callChatHistory.innerHTML = chatArea.innerHTML;
             callChatHistory.scrollTop = callChatHistory.scrollHeight;
         }
+    }
+
+    /* 💡 通話モード用：返答Hint（3文）の更新＆選択送信 */
+    function updateCallHints() {
+        const hintList = document.getElementById('callHintList');
+        if (!hintList) return;
+
+        // キャラクターや文脈に応じた3パターンの初心者向け返答Hintを用意
+        let hints = [
+            { en: "That sounds great!", jp: "それ良いね！" },
+            { en: "Tell me more about it.", jp: "もっと詳しく教えて" },
+            { en: "I'm so happy to talk with you.", jp: "話せてすごく嬉しいな" }
+        ];
+
+        if (currentStep === 1) {
+            hints = [
+                { en: "Yes, I agree!", jp: "うん、そうだね！" },
+                { en: "Really? That's cool!", jp: "本当？すごいね！" },
+                { en: "Thank you so much!", jp: "本当にありがとう！" }
+            ];
+        } else if (currentStep === 3) {
+            hints = [
+                { en: "I see, that makes sense to me.", jp: "なるほど、理解できたよ" },
+                { en: "What do you think we should do next?", jp: "次はどうすればいいと思う？" },
+                { en: "I totally feel the same way as you.", jp: "私も全く同じ気持ちだよ" }
+            ];
+        }
+
+        hintList.innerHTML = '';
+        hints.forEach(h => {
+            const item = document.createElement('div');
+            item.className = 'call-hint-item';
+            item.innerHTML = `<span class="call-hint-en">${h.en}</span><span class="call-hint-jp">${h.jp}</span>`;
+            item.onclick = () => sendQuick(h.en);
+            hintList.appendChild(item);
+        });
     }
 
     function setupSpeechRecognition() {
@@ -807,6 +895,7 @@
         document.getElementById('callCharName').innerText = char.name;
         document.getElementById('callAvatarImg').src = char.avatar;
         
+        updateCallHints();
         modal.classList.add('active');
         scrollToBottom();
 
