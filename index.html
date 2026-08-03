@@ -42,16 +42,10 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .btn-call-trigger {
-            background: #2ed573;
-            color: #fff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 18px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(46, 213, 115, 0.4);
-            transition: transform 0.2s;
+            background: #2ed573; color: #fff; border: none;
+            padding: 6px 12px; border-radius: 18px; font-size: 0.75rem;
+            font-weight: bold; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(46, 213, 115, 0.4); transition: transform 0.2s;
         }
         .btn-call-trigger:active { transform: scale(0.95); }
 
@@ -97,7 +91,7 @@
             color: #fff; border-radius: 12px; padding: 2px 8px; font-size: 0.68rem; cursor: pointer; margin-top: 2px; display: flex; align-items: center; gap: 4px;
         }
 
-        /* 🌟 トグル（アコーディオン）UI クイックフレーズ */
+        /* クイックフレーズ */
         .quick-toggle-container { margin-bottom: 10px; background: rgba(15, 23, 42, 0.6); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; }
         .quick-toggle-header {
             padding: 8px 12px; font-size: 0.75rem; font-weight: bold; background: rgba(255, 255, 255, 0.05);
@@ -131,7 +125,7 @@
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        /* 推しモーダル Popup */
+        /* モーダル Popup */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px);
@@ -145,19 +139,6 @@
             border: 2px solid var(--accent-color); border-radius: 20px; padding: 20px;
             text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: all 0.3s ease;
         }
-
-        @media (max-width: 480px) {
-            .modal-overlay.premium .modal-card {
-                width: 100vw; height: 100vh; max-width: 100vw; border-radius: 0; border: none;
-                display: flex; flex-direction: column; justify-content: center; align-items: center;
-                background: linear-gradient(180deg, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.98) 100%);
-                padding: 24px; box-sizing: border-box;
-            }
-            .modal-overlay.premium .modal-card img {
-                width: 200px; height: 200px; border-width: 4px; box-shadow: 0 0 25px var(--accent-color);
-            }
-        }
-
         .modal-card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); margin-bottom: 10px; }
         .modal-name { font-size: 1.1rem; font-weight: bold; color: var(--accent-color); margin-bottom: 6px; }
         .modal-text-en { font-size: 0.95rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
@@ -167,7 +148,7 @@
         .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
 
         /* =======================================
-           📞 通話モード（返事Hint表示対応）
+           📞 通話モード（改良版）
         ======================================= */
         .call-modal {
             display: none;
@@ -177,49 +158,33 @@
             z-index: 1000;
             flex-direction: column;
             justify-content: space-between;
-            padding: 16px;
+            padding: 12px 16px;
             box-sizing: border-box;
             color: white;
         }
+        .call-modal.active { display: flex; }
 
-        .call-modal.active {
-            display: flex;
-        }
+        .call-header { text-align: center; }
+        .call-timer { font-size: 12px; color: #38bdf8; font-weight: bold; }
 
-        .call-header {
-            text-align: center;
-            padding-top: 4px;
-        }
-
-        .call-timer {
-            font-size: 13px;
-            color: #38bdf8;
-            font-weight: bold;
-        }
-
-        /* 推しアバター */
-        .call-avatar-wrap {
-            text-align: center;
-            margin: 4px 0;
-        }
-
+        /* ②通話モードのアイコン（直径3cm = 約80px に変更） */
+        .call-avatar-wrap { text-align: center; margin: 2px 0; }
         .call-avatar {
-            width: 110px;
-            height: 110px;
+            width: 80px; height: 80px;
             border-radius: 50%;
             border: 3px solid var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
             object-fit: cover;
         }
 
         /* 通話中の履歴表示 */
         .call-chat-history {
             flex: 1;
-            max-height: 20vh;
+            max-height: 25vh;
             overflow-y: auto;
             background: rgba(15, 23, 42, 0.6);
             border-radius: 12px;
-            padding: 10px;
+            padding: 8px;
             margin: 4px 0;
             display: flex;
             flex-direction: column;
@@ -227,68 +192,52 @@
             scroll-behavior: smooth;
         }
 
-        /* 💡 返事Hint エリア（初心者向けサポート） */
+        /* 💡 返事Hint エリア */
         .call-hint-box {
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid var(--accent-color);
             border-radius: 12px;
-            padding: 8px 10px;
-            margin-bottom: 6px;
+            padding: 6px 10px;
+            margin-bottom: 4px;
         }
         .call-hint-title {
-            font-size: 0.72rem;
-            font-weight: bold;
-            color: var(--accent-color);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            font-size: 0.7rem; font-weight: bold; color: var(--accent-color);
+            margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;
         }
-        .call-hint-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+        .call-hint-list { display: flex; flex-direction: column; gap: 4px; }
         .call-hint-item {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-align: left;
-            transition: background 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: 8px; padding: 4px 8px;
+            font-size: 0.73rem; cursor: pointer; text-align: left;
+            transition: background 0.2s; display: flex; justify-content: space-between; align-items: center;
         }
-        .call-hint-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+        .call-hint-item:hover { background: rgba(255, 255, 255, 0.2); }
         .call-hint-en { font-weight: 600; color: #fff; }
-        .call-hint-jp { font-size: 0.68rem; color: #cbd5e1; }
+        .call-hint-jp { font-size: 0.65rem; color: #cbd5e1; }
 
-        .call-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 2px;
+        /* ⑤通話モード内の専用テキスト入力＆文字起こし欄 */
+        .call-input-container {
+            display: flex; gap: 6px; margin-bottom: 6px;
+        }
+        .call-input-container input {
+            flex: 1; background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--accent-color); border-radius: 16px;
+            padding: 8px 12px; color: #fff; font-size: 0.8rem; outline: none;
         }
 
-        .call-btn-row {
-            display: flex;
-            gap: 6px;
+        /* ④送信モード切替スイッチ */
+        .mode-toggle-btn {
+            font-size: 0.68rem; padding: 2px 6px; border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; cursor: pointer;
         }
 
+        .call-controls { display: flex; flex-direction: column; gap: 4px; }
+        .call-btn-row { display: flex; gap: 4px; }
         .call-btn {
-            flex: 1;
-            padding: 10px 4px;
-            border: none;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
+            flex: 1; padding: 8px 4px; border: none; border-radius: 10px;
+            font-size: 11px; font-weight: bold; cursor: pointer; text-align: center;
         }
 
         .btn-voice { background-color: #10b981; color: white; }
@@ -340,10 +289,9 @@
 
     <div class="chat-area" id="chat-area"></div>
 
-    <!-- 🌟 全10カテゴリ × 各10フレーズ -->
     <div class="quick-toggle-container">
         <div class="quick-toggle-header" onclick="toggleQuickPanel()">
-            <span>💬 トピック別クイック発言（100パターン）</span>
+            <span>💬 トピック別クイック発言</span>
             <span id="toggle-icon">▲</span>
         </div>
         <div class="quick-categories" id="quick-cats"></div>
@@ -351,13 +299,13 @@
     </div>
 
     <div class="input-area">
-        <button class="btn btn-mic" id="mic-btn" onclick="toggleSpeech()">🎤</button>
-        <input type="text" id="user-input" placeholder="英語でメッセージを入力..." onkeypress="handleKey(event)">
-        <button class="btn" onclick="sendMessage()">送信</button>
+        <button class="btn btn-mic" id="mic-btn" onclick="toggleSpeech('normal')">🎤</button>
+        <input type="text" id="user-input" placeholder="英語でメッセージを入力..." onkeypress="handleKey(event, 'normal')">
+        <button class="btn" onclick="sendMessage('normal')">送信</button>
     </div>
 </div>
 
-<!-- 推しモーダル Popup -->
+<!-- モーダル Popup -->
 <div class="modal-overlay premium" id="oshi-modal" onclick="closeModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
         <img id="modal-img" src="leo.jpg" alt="Oshi">
@@ -371,34 +319,42 @@
     </div>
 </div>
 
-<!-- 📞 通話モード Modal (返事Hint復活版) -->
+<!-- 📞 通話モード Modal (完全改良版) -->
 <div class="call-modal" id="callModal">
     <div class="call-header">
-        <h2 id="callCharName" style="margin: 0; font-size: 1.2rem;">Leo</h2>
+        <h2 id="callCharName" style="margin: 0; font-size: 1.1rem;">Leo</h2>
         <div class="call-timer" id="callTimer">📞 通話中... 00:00</div>
     </div>
     
+    <!-- ②直径3cm（80px）の推しアイコン -->
     <div class="call-avatar-wrap">
         <img src="leo.jpg" id="callAvatarImg" class="call-avatar" alt="Call Avatar">
     </div>
 
-    <!-- 通話モードのチャット履歴 -->
+    <!-- ③文脈の繋がる通話チャット履歴 -->
     <div class="call-chat-history" id="callChatHistory"></div>
 
-    <!-- 💡 返事Hint（初心者向け3文表示） -->
+    <!-- 💡⑥返事Hint (動的生成) -->
     <div class="call-hint-box">
-        <div class="call-hint-title">💡 返事Hint（タップで送信）</div>
-        <div class="call-hint-list" id="callHintList">
-            <!-- JSで動的に3文を生成 -->
+        <div class="call-hint-title">
+            <span>💡 返事Hint（タップで送信）</span>
+            <!-- ④送信モード切り替え -->
+            <button class="mode-toggle-btn" id="autoSendToggleBtn" onclick="toggleAutoSendMode()">モード: ⚡️ 4秒自動送信</button>
         </div>
+        <div class="call-hint-list" id="callHintList"></div>
+    </div>
+
+    <!-- ⑤通話モード内 専用テキスト入力・文字起こし欄 -->
+    <div class="call-input-container">
+        <input type="text" id="call-user-input" placeholder="音声認識テキスト/入力..." onkeypress="handleKey(event, 'call')">
     </div>
 
     <!-- 操作ボタン群 -->
     <div class="call-controls">
         <div class="call-btn-row">
-            <button class="call-btn btn-voice" onclick="toggleSpeech()">🎤 音声入力</button>
-            <button class="call-btn btn-clear" onclick="clearInput()">🗑 削除</button>
-            <button class="call-btn btn-call-send" onclick="sendMessage()">📩 送信</button>
+            <button class="call-btn btn-voice" id="call-mic-btn" onclick="toggleSpeech('call')">🎤 音声入力</button>
+            <button class="call-btn btn-clear" onclick="clearCallInput()">🗑 削除</button>
+            <button class="call-btn btn-call-send" onclick="sendMessage('call')">📩 送信</button>
         </div>
         <div class="call-btn-row">
             <button class="call-btn btn-repeat" onclick="replayCurrentModalVoice()">🔊 もう一度聞く</button>
@@ -446,81 +402,6 @@
                 { en: "I did my best at work!", jp: "🌟 お仕事頑張ったよ！" }
             ]
         },
-        school: {
-            title: '🏫 学校',
-            phrases: [
-                { en: "I have an exam tomorrow.", jp: "📝 明日テストがあるの" },
-                { en: "I'm studying English now.", jp: "📖 今英語の勉強中！" },
-                { en: "Class is finally over!", jp: "🔔 授業やっと終わった！" },
-                { en: "I'm going to club practice.", jp: "⚽ 今から部活に行ってくるね" },
-                { en: "I forgot to do my homework!", jp: "😱 宿題やるの忘れてた！" },
-                { en: "My school teacher was strict today.", jp: "👨‍🏫 今日の先生怖かった" },
-                { en: "I ate lunch with my friends.", jp: "🍱 友達とお昼食べたよ" },
-                { en: "I want to get a good grade.", jp: "💯 良い点数とりたいな" },
-                { en: "Can you teach me math?", jp: "📐 数学教えてくれる？" },
-                { en: "School was fun today!", jp: "🎒 今日も学校楽しかった！" }
-            ]
-        },
-        food: {
-            title: '🍰 食事',
-            phrases: [
-                { en: "I'm eating lunch now.", jp: "🍱 今ランチ食べてるよ" },
-                { en: "What's your favorite food?", jp: "🍕 好きな食べ物は何？" },
-                { en: "I'm so hungry!", jp: "😋 すごくお腹すいた！" },
-                { en: "This dessert is delicious!", jp: "🍰 このスイーツ美味しい！" },
-                { en: "Did you eat dinner yet?", jp: "🌙 もう晩ご飯食べた？" },
-                { en: "I cooked pasta today.", jp: "🍝 今日パスタ作ったよ" },
-                { en: "Let's go to a cafe together!", jp: "☕ 一緒にカフェ行こう！" },
-                { en: "I ate too much today...", jp: "🐷 今日食べすぎちゃった..." },
-                { en: "Do you like spicy food?", jp: "🌶️ 辛いもの好き？" },
-                { en: "I love drinking coffee.", jp: "☕ コーヒーが大好きなの" }
-            ]
-        },
-        travel: {
-            title: '✈️ 旅行',
-            phrases: [
-                { en: "I want to travel with you.", jp: "✈️ あなたと一緒に旅行したい" },
-                { en: "Where do you want to go?", jp: "🗺️ どこに行きたい？" },
-                { en: "The weather is great today!", jp: "☀️ 今日は絶好のお出かけ日和" },
-                { en: "I'm taking a walk in the park.", jp: "🌳 公園を散歩中だよ" },
-                { en: "I love ocean views.", jp: "🌊 海の景色が大好きなの" },
-                { en: "I bought some souvenirs for you!", jp: "🎁 お土産買ってきたよ！" },
-                { en: "Let's take a picture together!", jp: "📸 一緒に写真撮ろう！" },
-                { en: "I'm planning a trip for next month.", jp: "🗓️ 来月の旅行計画中" },
-                { en: "Hot springs are so relaxing.", jp: "♨️ 温泉ってすごく癒やされる" },
-                { en: "I had a wonderful time today!", jp: "✨ 今日は最高の一日だった！" }
-            ]
-        },
-        media: {
-            title: '🎬 趣味',
-            phrases: [
-                { en: "I'm watching a movie now.", jp: "🎬 今映画を見てるよ" },
-                { en: "Can you recommend a good song?", jp: "🎶 おすすめの曲教えて！" },
-                { en: "I love playing games.", jp: "🎮 ゲームするの大好き" },
-                { en: "I went to a live concert!", jp: "🎤 ライブに行ってきたよ！" },
-                { en: "I'm reading a manga right now.", jp: "📚 今マンガ読んでるの" },
-                { en: "Your voice sounds amazing.", jp: "💖 あなたの声、本当に素敵" },
-                { en: "I love taking photos.", jp: "📷 写真を撮るのが趣味なの" },
-                { en: "What kind of music do you like?", jp: "🎧 どんな音楽が好き？" },
-                { en: "I bought your new poster!", jp: "🖼️ 新しいポスター買っちゃった" },
-                { en: "I can't stop watching this anime!", jp: "✨ このアニメ止まらない！" }
-            ]
-        },
-        sports: {
-            title: '⚽ 運動',
-            phrases: [
-                { en: "I went to the gym today.", jp: "🏋️ 今日ジムに行ってきたよ" },
-                { en: "I'm going for a jog.", jp: "🏃 今からランニングしてくる" },
-                { en: "Did you watch the baseball game?", jp: "⚾ 野球の試合見た？" },
-                { en: "I love swimming in summer.", jp: "🏊 夏に泳ぐのが好き" },
-                { en: "I'm feeling refreshed after exercise!", jp: "✨ 運動してスッキリ！" },
-                { en: "Which team are you cheering for?", jp: "📣 どっちのチーム応援してる？" },
-                { en: "I played tennis today.", jp: "🎾 今日テニスしたよ" },
-                { en: "My muscles are sore today...", jp: "💪 今日は筋肉痛だよ..." },
-                { en: "Let me cheer for you!", jp: "🔥 全力で応援させて！" },
-                { en: "Sports make me feel energetic!", jp: "⚡ スポーツで元気出る！" }
-            ]
-        },
         feeling: {
             title: '💖 感情',
             phrases: [
@@ -535,36 +416,6 @@
                 { en: "You mean everything to me.", jp: "🌟 私の全てだよ" },
                 { en: "I love you so much!", jp: "❤️ 大大好きだよ！" }
             ]
-        },
-        support: {
-            title: '🥺 悩み',
-            phrases: [
-                { en: "Can you encourage me?", jp: "🥺 励ましてくれる？" },
-                { en: "I'm so tired today...", jp: "😫 今日すごく疲れた..." },
-                { en: "I made a mistake today.", jp: "😞 今日失敗しちゃった" },
-                { en: "I feel a bit lonely.", jp: "🌧️ ちょっと寂しいな" },
-                { en: "Nothing went right today.", jp: "😮‍💨 今日はうまくいかなかった" },
-                { en: "Can I lean on you?", jp: "🧸 甘えてもいいかな？" },
-                { en: "Give me a hug please!", jp: "🤗 ぎゅーってして！" },
-                { en: "I need your comforting words.", jp: "💬 優しい言葉をちょうだい" },
-                { en: "I feel better talking to you.", jp: "🌸 話せて気持ちが楽になった" },
-                { en: "Thank you for listening to me.", jp: "💌 話を聞いてくれてありがとう" }
-            ]
-        },
-        angry: {
-            title: '😤 ぷんぷん',
-            phrases: [
-                { en: "You are late! I'm waiting!", jp: "⏰ 遅刻だよ！待ってるんだから！" },
-                { en: "Why did you reply so late?", jp: "📱 なんで返事遅かったの？" },
-                { en: "Did you forget our anniversary?", jp: "📅 記念日忘れたの...？" },
-                { en: "I'm angry at you!", jp: "😤 もう、怒ったんだからね！" },
-                { en: "You don't care about me anymore!", jp: "🥺 もう私のことどうでもいいの？" },
-                { en: "Buy me an ice cream to apologize!", jp: "🍦 謝罪にアイス買って！" },
-                { en: "Don't look at other girls!", jp: "👁️ 他の女の子見ちゃダメ！" },
-                { en: "You promise? Don't break it!", jp: "🤙 約束だよ？破らないでね！" },
-                { en: "Hmph! I won't talk to you!", jp: "😠 ふんっ！もう話してあげない！" },
-                { en: "Just kidding, I can't stay mad at you.", jp: "🤭 冗談だよ、怒り続けられないや" }
-            ]
         }
     };
 
@@ -577,8 +428,12 @@
     let recognition = null;
     let silenceTimer = null;
     let lastAIText = '';
+    let activeInputSource = 'normal'; // 'normal' または 'call'
 
-    // 通話モード用変数
+    // ④自動送信モード（デフォルト：true = 4秒後自動送信）
+    let isAutoSendMode = true;
+
+    // 通話タイマー
     let callTimerInterval = null;
     let secondsElapsed = 0;
 
@@ -643,7 +498,7 @@
         currentStep = s;
         document.querySelectorAll('.step-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(`step-${s}`).classList.add('active');
-        updateCallHints();
+        updateCallHints(lastAIText);
     }
 
     function selectChar(key) {
@@ -655,10 +510,8 @@
         document.documentElement.style.setProperty('--accent-color', char.color);
         renderChatHistory();
 
-        // 通話画面のアイコン・名前更新
         document.getElementById('callCharName').innerText = char.name;
         document.getElementById('callAvatarImg').src = char.avatar;
-        updateCallHints();
     }
 
     function renderChatHistory() {
@@ -668,7 +521,9 @@
 
         if (!history || history.length === 0) {
             const char = CHARS[currentChar];
-            addBubble('ai', char.greet, char.greetJp, `「${char.name}」との会話をスタートしよう！`, false, false, false);
+            // ①英語学習に役立つTipに変更
+            const initialTip = "【Tip】「thinking about you」は「君のことを思っていたよ」という愛情を伝える定番表現だよ！";
+            addBubble('ai', char.greet, char.greetJp, initialTip, false, false, false);
         } else {
             history.forEach(item => {
                 addBubble(item.sender, item.text, item.subText, item.tipText, false, false, false);
@@ -705,14 +560,15 @@
             saveHistories();
         }
 
-        if (isAI && autoSpeak) {
-            speakText(text);
-            if (showPopup) openModal(char.avatar, char.name, text, subText);
-            updateCallHints();
+        if (isAI) {
+            if (autoSpeak) speakText(text);
+            if (showPopup && !document.getElementById('callModal').classList.contains('active')) {
+                openModal(char.avatar, char.name, text, subText);
+            }
+            updateCallHints(text);
         }
     }
 
-    // 自動最下部スクロール
     function scrollToBottom() {
         const chatArea = document.getElementById('chat-area');
         const callChatHistory = document.getElementById('callChatHistory');
@@ -723,29 +579,32 @@
         }
     }
 
-    /* 💡 通話モード用：返答Hint（3文）の更新＆選択送信 */
-    function updateCallHints() {
+    /* 💡⑥文脈に応じた返事Hint（3文）の動的生成 */
+    function updateCallHints(aiMsg = '') {
         const hintList = document.getElementById('callHintList');
         if (!hintList) return;
 
-        // キャラクターや文脈に応じた3パターンの初心者向け返答Hintを用意
-        let hints = [
-            { en: "That sounds great!", jp: "それ良いね！" },
-            { en: "Tell me more about it.", jp: "もっと詳しく教えて" },
-            { en: "I'm so happy to talk with you.", jp: "話せてすごく嬉しいな" }
-        ];
+        let hints = [];
+        const lowerMsg = aiMsg.toLowerCase();
 
-        if (currentStep === 1) {
+        // AIの言動に合わせた動的ヒント
+        if (lowerMsg.includes('how are you') || lowerMsg.includes('what') || lowerMsg.includes('?')) {
             hints = [
-                { en: "Yes, I agree!", jp: "うん、そうだね！" },
-                { en: "Really? That's cool!", jp: "本当？すごいね！" },
-                { en: "Thank you so much!", jp: "本当にありがとう！" }
+                { en: "I'm doing great, thank you!", jp: "すごく元気に過ごしてるよ！" },
+                { en: "I'm a bit busy today.", jp: "今日はちょっと忙しいんだ。" },
+                { en: "How about you?", jp: "あなたはどうですか？" }
             ];
-        } else if (currentStep === 3) {
+        } else if (lowerMsg.includes('love') || lowerMsg.includes('think') || lowerMsg.includes('sweet')) {
             hints = [
-                { en: "I see, that makes sense to me.", jp: "なるほど、理解できたよ" },
-                { en: "What do you think we should do next?", jp: "次はどうすればいいと思う？" },
-                { en: "I totally feel the same way as you.", jp: "私も全く同じ気持ちだよ" }
+                { en: "You always make my day!", jp: "あなたのおかげで幸せだよ！" },
+                { en: "I was missing you too.", jp: "私も会いたかったよ。" },
+                { en: "That is so sweet of you.", jp: "本当に優しいね。" }
+            ];
+        } else {
+            hints = [
+                { en: "That sounds wonderful!", jp: "それ、すごく素敵だね！" },
+                { en: "Tell me more about it.", jp: "もっと詳しく教えて！" },
+                { en: "I completely agree with you.", jp: "完全に同意するよ。" }
             ];
         }
 
@@ -759,6 +618,20 @@
         });
     }
 
+    /* ④送信モード（自動 vs 手動）切り替え */
+    function toggleAutoSendMode() {
+        isAutoSendMode = !isAutoSendMode;
+        const btn = document.getElementById('autoSendToggleBtn');
+        if (isAutoSendMode) {
+            btn.innerText = "モード: ⚡️ 4秒自動送信";
+            btn.style.background = "rgba(255, 255, 255, 0.15)";
+        } else {
+            btn.innerText = "モード: ✋ 手動送信";
+            btn.style.background = "#e11d48";
+        }
+    }
+
+    /* ⑤通常／通話モードの両方に対応した音声認識 */
     function setupSpeechRecognition() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) return;
@@ -770,7 +643,11 @@
 
         recognition.onstart = () => {
             isRecording = true;
-            document.getElementById('mic-btn').classList.add('recording');
+            if (activeInputSource === 'normal') {
+                document.getElementById('mic-btn').classList.add('recording');
+            } else {
+                document.getElementById('call-mic-btn').style.background = '#ef4444';
+            }
         };
 
         recognition.onresult = (event) => {
@@ -778,29 +655,38 @@
             for (let i = event.resultIndex; i < event.results.length; i++) {
                 transcript += event.results[i][0].transcript;
             }
-            document.getElementById('user-input').value = transcript;
+
+            // ⑤指定された入力欄（通話用または通常用）に文字起こしを反映
+            const targetInputId = activeInputSource === 'normal' ? 'user-input' : 'call-user-input';
+            document.getElementById(targetInputId).value = transcript;
 
             clearTimeout(silenceTimer);
-            silenceTimer = setTimeout(() => {
-                if (document.getElementById('user-input').value.trim()) {
-                    stopSpeech();
-                    sendMessage();
-                }
-            }, 4000);
+
+            // ④「4秒自動送信」モードの場合のみタイマー実行
+            if (isAutoSendMode) {
+                silenceTimer = setTimeout(() => {
+                    if (document.getElementById(targetInputId).value.trim()) {
+                        stopSpeech();
+                        sendMessage(activeInputSource);
+                    }
+                }, 4000);
+            }
         };
 
         recognition.onerror = () => stopSpeech();
         recognition.onend = () => { if (isRecording) stopSpeech(); };
     }
 
-    function toggleSpeech() {
+    function toggleSpeech(source = 'normal') {
         if (!recognition) {
             alert("お使いのブラウザは音声入力に対応していません。");
             return;
         }
+        activeInputSource = source;
         if (isRecording) stopSpeech();
         else {
-            document.getElementById('user-input').value = '';
+            const targetInputId = source === 'normal' ? 'user-input' : 'call-user-input';
+            document.getElementById(targetInputId).value = '';
             recognition.start();
         }
     }
@@ -809,41 +695,60 @@
         isRecording = false;
         clearTimeout(silenceTimer);
         document.getElementById('mic-btn').classList.remove('recording');
+        document.getElementById('call-mic-btn').style.background = '#10b981';
         if (recognition) recognition.stop();
     }
 
-    async function sendMessage() {
-        const input = document.getElementById('user-input');
+    /* ③会話文脈（History）を保持してAIに送信 */
+    async function sendMessage(source = 'normal') {
+        const inputId = source === 'normal' ? 'user-input' : 'call-user-input';
+        const input = document.getElementById(inputId);
         const text = input.value.trim();
         if (!text) return;
+
         addBubble('user', text, '', '', false, true, false);
         input.value = '';
+
         await getAIReply(text);
     }
 
     function sendQuick(text) {
         window.speechSynthesis.cancel();
         addBubble('user', text, '', '', false, true, false);
-        setTimeout(async () => { await getAIReply(text); }, 400);
+        setTimeout(async () => { await getAIReply(text); }, 300);
     }
 
-    function clearInput() {
-        document.getElementById('user-input').value = '';
+    function clearCallInput() {
+        document.getElementById('call-user-input').value = '';
     }
 
     async function getAIReply(userText) {
         try {
+            // 直近の会話履歴を取得（最新5件を送って文脈を維持）
+            const history = (chatHistories[currentChar] || []).slice(-5);
+
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ character: currentChar, message: userText, step: currentStep })
+                body: JSON.stringify({
+                    character: currentChar,
+                    message: userText,
+                    step: currentStep,
+                    history: history // ③文脈保持データを追加
+                })
             });
             const data = await response.json();
             if (data.reply) {
                 addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true);
             }
         } catch (e) {
-            addBubble('ai', "I loved hearing from you!", "言葉を聞けてすごく嬉しかったよ！", "【解説】「I loved hearing from you」で「連絡くれてすごく嬉しかった」って意味だよ！", true, true, true);
+            // ①フォールバック時も英会話学習に役立つTipを表示
+            addBubble('ai', 
+                "I loved hearing your voice! Tell me more about your day.", 
+                "あなたの声が聞けて嬉しかったよ！今日のことをもっと教えて？", 
+                "【Tip】「Tell me more about~」は「〜についてもっと詳しく教えて」という会話を広げる万能フレーズだよ！", 
+                true, true, true
+            );
         }
     }
 
@@ -886,7 +791,7 @@
     }
 
     function saveHistorySetting(val) { loadHistories(); renderChatHistory(); }
-    function handleKey(e) { if (e.key === 'Enter') sendMessage(); }
+    function handleKey(e, source) { if (e.key === 'Enter') sendMessage(source); }
 
     /* 通話モード制御機能 */
     function startCallMode() {
@@ -895,7 +800,7 @@
         document.getElementById('callCharName').innerText = char.name;
         document.getElementById('callAvatarImg').src = char.avatar;
         
-        updateCallHints();
+        updateCallHints(lastAIText);
         modal.classList.add('active');
         scrollToBottom();
 
