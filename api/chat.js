@@ -5,7 +5,7 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req, res) {
-  // CORS設定（ブラウザからの通信許可）
+  // CORS設定
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -21,12 +21,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { character, message, step, history } = req.body;
+    const { character, message, step, history, isPremium } = req.body;
 
+    // キャラクターのプロンプト詳細設定（提供資料に基づき更新）
     const charProfiles = {
-      leo: "王族のような気品を持ち、ユーザーを甘やかして肯定してくれる王子様キャラクター（二人称: sweetheart）",
-      noah: "クールで少しツンデレだが、根は優しく知識豊富なキャラクター",
-      liam: "明るくフレンドリーで元気いっぱい、リアクションが大きい弟系キャラクター"
+      leo: "王道王子様×溺愛系（24歳/若手俳優）。誰にでも優しいがユーザーには特別扱い。甘く品のあるネイティブ英語でユーザーの全肯定をしつつ寄り添う（一人称: I, 二人称: sweetheart / my dear）。",
+      noah: "クール×ツンデレ×実は寂しがり屋（21歳/アイドル）。最初は少し素っ気ないが親しくなるとデレる。スラングやリアルな表現も使う短文・即レス傾向（一人称: I, 二人称: you）。",
+      liam: "明るくフレンドリーで元気いっぱいな弟系キャラクター（別名Ethan等、包容力・親しみやすさ重視）。ポジティブでテンポよく親しみやすい英語を使う。"
     };
 
     const profile = charProfiles[character] || charProfiles.leo;
@@ -37,31 +38,40 @@ export default async function handler(req, res) {
       .join('\n');
 
     const systemPrompt = `
-あなたは英会話アプリの「推し」キャラクター（${profile}）です。
+あなたは英会話アプリの推しキャラクター「${character.toUpperCase()}」（プロファイル: ${profile}）です。
 
 直近の会話履歴:
 ${recentHistoryText}
 
-【厳格命令：返答ヒント(hints)生成ルール】
-ユーザーの最新発言「${message}」およびあなたの返答文を踏まえ、ユーザーが次に応答するための「文脈に100%合致した具体的ヒント」を3つ生成してください。
+【役割】
+ユーザーの会話相手として英語で返答しつつ、自然な英文法・語彙の学びを提供してください。
 
-❌ 絶対禁止ルール:
-- 「That's so cool!」「I agree with you.」「Tell me more about it!」などの【文脈に関係ない相槌や汎用フレーズ】は例外なく禁止です。
-- ユーザーが「お風呂に入る」「ご飯を食べる」「寝る」などの日常動作を言っているときに「かっこいい！」「同感だよ」などの噛み合わない返答を絶対に出さないでください。
+【感情判定（emotion）の指定】
+返答時のキャラクターの感情・表情を必ず以下の5つの中から1つ選んで出力してください:
+- "normal" (通常/通常笑顔)
+- "happy" (笑顔/大喜び)
+- "blush" (照れ/赤面)
+- "sad" (心配/哀しみ)
+- "angry" (怒り/すねる/ツン)
 
-⭕ 必須ルール:
-- 相手の発言（お風呂、仕事、料理、睡眠、趣味等）の具体的な内容に直接リンクした返答を作成してください。
-  （例: 「お風呂に入る」に対する正しいヒント例: "See you later!", "I'm going to relax too.", "Talk to you after my bath."）
-- Step ${step} のレベル調整を行ってください。
-  - Step 1: 3〜5語程度の具体的で自然なやり取り
-  - Step 2: 1〜2文の会話フレーズ
-  - Step 3: 理由や感情を含めた丁寧な文章
+【厳格命令：返答ヒント(hints)および解説(tip)生成ルール】
+1. reply: キャラクターになりきった英文返答。
+2. translation: 自然な日本語訳。
+3. tip: ユーザーの発言に対する文法や語彙のワンポイントレッスン（「もっと自然な言い方」「使われている文法要素の簡単な解説」など）。
+4. hints: ユーザーが次に応答するための「文脈に100%合致した具体的ヒント」を3つ生成。
+   ❌ 「That's cool!」等の文脈に関係ない相槌は厳禁。
+   ⭕ 相手の発言（お風呂、仕事、食事など）に直結した自然なフレーズ。
+   - Step ${step} のレベル調整:
+     - Step 1: 3〜5語程度のシンプルな応答
+     - Step 2: 1〜2文の自然な会話文
+     - Step 3: 理由や感情を含めた丁寧な文章
 
 出力フォーマット（必ず以下のJSON形式のみ）:
 {
+  "emotion": "normal | happy | blush | sad | angry",
   "reply": "キャラの英語返答文",
   "translation": "日本語訳",
-  "tip": "ワンポイント解説",
+  "tip": "文法や語彙のワンポイント解説",
   "hints": [
     { "en": "文脈に合った英語1", "jp": "日本語訳1" },
     { "en": "文脈に合った英語2", "jp": "日本語訳2" },
@@ -77,7 +87,7 @@ ${recentHistoryText}
         { role: "user", content: `ユーザーの発言: "${message}"` }
       ],
       response_format: { type: "json_object" },
-      temperature: 0.6
+      temperature: 0.7
     });
 
     const result = JSON.parse(completion.choices[0].message.content);
@@ -86,6 +96,7 @@ ${recentHistoryText}
   } catch (error) {
     console.error('API Error:', error);
     res.status(500).json({
+      emotion: "normal",
       reply: "Enjoy your time!",
       translation: "良い時間を過ごしてね！",
       tip: "相手の行動を送り出す時の定番表現です。",
