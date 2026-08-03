@@ -108,7 +108,7 @@
         .btn { background: var(--accent-color); border: none; color: #0f172a; font-weight: bold; padding: 0 10px; border-radius: 14px; cursor: pointer; font-size: 0.75rem; }
         .btn-mic { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); width: 34px; }
 
-        /* モーダル Popup & アイコン変更 */
+        /* モーダル Popup */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px);
@@ -126,7 +126,7 @@
         .modal-btn.sec { background: rgba(255,255,255,0.15); color: #fff; }
 
         /* =======================================
-           📞 通話モード（①スマホで直径3cmアイコン＆③縦幅完全収まる版）
+           📞 通話モード（②超大型アイコン＆脈動アニメーション）
         ======================================= */
         .call-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -139,22 +139,30 @@
         .call-header { text-align: center; margin-top: 2px; }
         .call-timer { font-size: 11px; color: #38bdf8; font-weight: bold; }
 
-        /* ① スマホ画面で実寸約3cm（130px）の推しアイコン */
-        .call-avatar-wrap { text-align: center; margin: 4px 0; }
+        /* ② 超大型アイコン（160px）＋オーラ呼吸脈動アニメーション */
+        .call-avatar-wrap { text-align: center; margin: 2px 0; }
         .call-avatar {
-            width: 130px; height: 130px; /* 直径3cm相当 */
-            border-radius: 50%; border: 3px solid var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-color); object-fit: cover;
+            width: 160px; height: 160px;
+            border-radius: 50%; border: 4px solid var(--accent-color);
+            object-fit: cover;
+            animation: oshiPulse 3s infinite ease-in-out;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes oshiPulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px var(--accent-color); }
+            100% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
         }
 
         /* 通話中の履歴表示 */
         .call-chat-history {
-            flex: 1; max-height: 20vh; overflow-y: auto;
+            flex: 1; max-height: 18vh; overflow-y: auto;
             background: rgba(15, 23, 42, 0.65); border-radius: 10px;
             padding: 6px; margin: 2px 0; display: flex; flex-direction: column; gap: 6px;
         }
 
-        /* 💡 会話連動の返事Hint */
+        /* 💡 返事Hint */
         .call-hint-box {
             background: rgba(15, 23, 42, 0.85); border: 1px solid var(--accent-color);
             border-radius: 8px; padding: 4px 6px; margin-bottom: 2px;
@@ -169,14 +177,14 @@
         .call-hint-en { font-weight: 600; color: #fff; }
         .call-hint-jp { font-size: 0.62rem; color: #cbd5e1; }
 
-        /* 通話モード専用テキスト入力 */
+        /* テキスト入力 */
         .call-input-container { display: flex; gap: 4px; margin-bottom: 2px; }
         .call-input-container input {
             flex: 1; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--accent-color);
             border-radius: 10px; padding: 5px 8px; color: #fff; font-size: 0.75rem; outline: none;
         }
 
-        /* ③ 操作ボタン（最下部に収まる配置） */
+        /* 操作ボタン */
         .call-controls { display: flex; flex-direction: column; gap: 3px; margin-bottom: 4px; }
         .call-btn-row { display: flex; gap: 3px; }
         .call-btn {
@@ -192,7 +200,6 @@
         .btn-normal { background-color: #06b6d4; color: white; }
         .btn-hangup { background-color: #ef4444; color: white; }
 
-        /* 非表示ファイル入力 */
         #img-upload-input { display: none; }
     </style>
 </head>
@@ -202,7 +209,6 @@
     <div class="header">
         <h1>Oshitalk English</h1>
         <div class="header-btns">
-            <!-- ⑧ 課金プレミアムボタン復元 -->
             <button class="btn-prem" onclick="openPremiumModal()">💎 プレミアム</button>
             <button class="btn-call-trigger" onclick="startCallMode()">📞 通話モード</button>
         </div>
@@ -220,7 +226,7 @@
         </div>
     </div>
 
-    <!-- ⑤ 🎂 ⑦ 設定パネル（Step保存・誕生日設定） -->
+    <!-- 設定パネル -->
     <div class="control-panel">
         <div class="control-row">
             <span>📈 会話Step:</span>
@@ -243,7 +249,7 @@
 
     <div class="chat-area" id="chat-area"></div>
 
-    <!-- ④ 10×10 クイック発言トピック -->
+    <!-- 10×10 クイック発言トピック -->
     <div class="quick-toggle-container">
         <div class="quick-toggle-header" onclick="toggleQuickPanel()">
             <span>💬 10×10 トピック別フレーズ</span>
@@ -276,7 +282,7 @@
     </div>
 </div>
 
-<!-- ⑧ プレミアム課金モーダル -->
+<!-- プレミアム課金モーダル -->
 <div class="modal-overlay" id="prem-modal" onclick="closePremModal()">
     <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-name" style="color: #f59e0b;">💎 Oshitalk Premium</div>
@@ -290,14 +296,14 @@
     </div>
 </div>
 
-<!-- 📞 ④ 通話モード Modal -->
+<!-- 📞 通話モード Modal -->
 <div class="call-modal" id="callModal">
     <div class="call-header">
         <h2 id="callCharName" style="margin: 0; font-size: 1rem;">Leo</h2>
         <div class="call-timer" id="callTimer">📞 通話中... 00:00</div>
     </div>
     
-    <!-- ① 直径3cm（130px）の大きな推しアイコン -->
+    <!-- ② 160px超大型アイコン & 脈動オーラ -->
     <div class="call-avatar-wrap">
         <img src="leo.jpg" id="callAvatarImg" class="call-avatar" alt="Call Avatar">
     </div>
@@ -311,12 +317,12 @@
         <div class="call-hint-list" id="callHintList"></div>
     </div>
 
-    <!-- 通話画面用テキスト表示・編集欄 -->
+    <!-- 入力欄 -->
     <div class="call-input-container">
         <input type="text" id="call-user-input" placeholder="音声入力またはテキスト編集..." onkeypress="handleKey(event, 'call')">
     </div>
 
-    <!-- ② 4秒自動送信機能付きの操作ボタン（③ 画面に収まる配置） -->
+    <!-- ③ 4秒自動送信機能付きの操作ボタン -->
     <div class="call-controls">
         <div class="call-btn-row">
             <button class="call-btn btn-voice-a" id="btn-mic-a" onclick="toggleSpeech('call_auto')">🎤 A (4秒自動)</button>
@@ -333,15 +339,54 @@
 </div>
 
 <script>
+    // ② 5パターンの表情差分画像マッピング
     const CHARS = {
-        leo: { name: 'Leo', avatar: 'leo.jpg', color: '#f59e0b', pitch: 0.75, rate: 0.95, greet: 'Good morning, sweetheart. I miss you dearly as well. Your presence brightens my days.', greetJp: 'おはよう、スウィートハート。僕も君がとても恋しいよ。君の存在が僕の日々を明るくしてくれるんだ。' },
-        noah: { name: 'Noah', avatar: 'noah.jpg', color: '#8b5cf6', pitch: 0.6, rate: 0.9, greet: 'You\'re finally here. I was waiting to hear your voice.', greetJp: 'やっと来たね。君の声が聞きたくて待ってたんだ。' },
-        liam: { name: 'Liam', avatar: 'liam.jpg', color: '#10b981', pitch: 0.85, rate: 1.0, greet: 'Hey! I\'m so happy to talk with you today!', greetJp: 'やっほー！今日もお話しできてめっちゃ嬉しい！' }
+        leo: { 
+            name: 'Leo', 
+            avatars: {
+                normal: 'leo.jpg',
+                smile: 'leo_smile.jpg',
+                shy: 'leo_shy.jpg',
+                wink: 'leo_wink.jpg',
+                serious: 'leo_serious.jpg'
+            },
+            color: '#f59e0b', pitch: 0.75, rate: 0.95, 
+            greet: 'Good morning, sweetheart. Your absence is felt deeply in my heart. I long for the day we can be together again.', 
+            greetJp: 'おはよう、スウィートハート。君がいないと本当に寂しいよ。また一緒に過ごせる日を心待ちにしているね。',
+            greetTip: '「absence」＝「不在・会えない時間」、「long for」＝「〜を心待ちにする・切望する」という意味だよ！'
+        },
+        noah: { 
+            name: 'Noah', 
+            avatars: {
+                normal: 'noah.jpg',
+                smile: 'noah_smile.jpg',
+                shy: 'noah_shy.jpg',
+                wink: 'noah_wink.jpg',
+                serious: 'noah_serious.jpg'
+            },
+            color: '#8b5cf6', pitch: 0.6, rate: 0.9, 
+            greet: 'You\'re finally here. I was waiting to hear your voice.', 
+            greetJp: 'やっと来たね。君の声が聞きたくて待ってたんだ。',
+            greetTip: '「I was waiting to...」＝「〜するのを待っていたんだ」という親密な表現だよ！'
+        },
+        liam: { 
+            name: 'Liam', 
+            avatars: {
+                normal: 'liam.jpg',
+                smile: 'liam_smile.jpg',
+                shy: 'liam_shy.jpg',
+                wink: 'liam_wink.jpg',
+                serious: 'liam_serious.jpg'
+            },
+            color: '#10b981', pitch: 0.85, rate: 1.0, 
+            greet: 'Hey! I\'m so happy to talk with you today!', 
+            greetJp: 'やっほー！今日もお話しできてめっちゃ嬉しい！',
+            greetTip: '「so happy to talk」＝「話せてすごく嬉しい」というフレンドリーな挨拶だよ！'
+        }
     };
 
-    // ④ 10×10 (10カテゴリ×各10フレーズ = 100フレーズ)
     const QUICK_DATA = {
-        life: { title: '🏠 生活', phrases: [ {en:"Good morning!",jp:"☀️ 朝の挨拶"}, {en:"I just woke up.",jp:"🥱 今起きたよ"}, {en:"It's raining today.",jp:"☔ 今日は雨"}, {en:"I'm cleaning my room.",jp:"🧹 部屋の掃除中"}, {en:"I'm making coffee.",jp:"☕ ☕ コーヒー淹れてる"}, {en:"I'm buying groceries.",jp:"🛒 買出しに行くよ"}, {en:"What's for dinner?",jp:"🍽 夕飯なに？"}, {en:"I'm so tired now.",jp:"😴 すごく疲れた"}, {en:"I'm going to bed.",jp:"🛌 もう寝るね"}, {en:"Good night!",jp:"🌙 おやすみ"} ] },
+        life: { title: '🏠 生活', phrases: [ {en:"Good morning!",jp:"☀️ 朝の挨拶"}, {en:"I just woke up.",jp:"🥱 今起きたよ"}, {en:"It's raining today.",jp:"☔ 今日は雨"}, {en:"I'm cleaning my room.",jp:"🧹 部屋の掃除中"}, {en:"I'm making coffee.",jp:"☕ コーヒー淹れてる"}, {en:"I'm buying groceries.",jp:"🛒 買出しに行くよ"}, {en:"What's for dinner?",jp:"🍽 夕飯なに？"}, {en:"I'm so tired now.",jp:"😴 すごく疲れた"}, {en:"I'm going to bed.",jp:"🛌 もう寝るね"}, {en:"Good night!",jp:"🌙 おやすみ"} ] },
         feeling: { title: '💖 感情', phrases: [ {en:"I missed you so much!",jp:"💖 会いたかった！"}, {en:"I'm so happy!",jp:"✨ すごく嬉しい！"}, {en:"I'm nervous today.",jp:"💦 ドキドキしてる"}, {en:"I feel a bit sad.",jp:"😢 ちょっと悲しい"}, {en:"You make me smile.",jp:"🥰 笑顔になれる"}, {en:"I'm super excited!",jp:"🎉 ワクワクしてる！"}, {en:"I feel relaxed.",jp:"☕ 落ち着くよ"}, {en:"I'm touched!",jp:"😭 感動した"}, {en:"Praise me please!",jp:"👏 褒めて！"}, {en:"I love you!",jp:"❤️ 大好き！"} ] },
         love: { title: '🌹 恋愛', phrases: [ {en:"Are you thinking of me?",jp:"💭 私のこと考えてた？"}, {en:"You look so handsome.",jp:"✨ すごくカッコいい"}, {en:"I want to stay with you.",jp:"👫 一緒にいたい"}, {en:"Your voice is lovely.",jp:"🎵 素敵な声だね"}, {en:"Hold my hand.",jp:"🤝 手をつないで"}, {en:"I'm all yours.",jp:"💘 あなたのものだよ"}, {en:"You are special to me.",jp:"💎 特別な存在だよ"}, {en:"Give me a hug!",jp:"🫂 ギューッとして"}, {en:"I can't stop loving you.",jp:"🔥 好きが止まらない"}, {en:"Forever together.",jp:"💍 ずっと一緒だよ"} ] },
         oshi: { title: '🌟 推し活', phrases: [ {en:"You are my number one!",jp:"👑 あなたが一番！"}, {en:"I support you forever!",jp:"📣 応援してるよ！"}, {en:"Your smile is the best.",jp:"😊 笑顔が最高"}, {en:"Thank you for existing.",jp:"🙏 存在に感謝"}, {en:"I bought your goods!",jp:"🛍 グッズ買ったよ"}, {en:"You are so talented!",jp:"⭐ 才能にあふれてる"}, {en:"I watched your video!",jp:"📹 動画見たよ！"}, {en:"I'm your big fan!",jp:"🙌 大ファンです！"}, {en:"You shine so bright.",jp:"✨ 輝いているよ"}, {en:"Always on your side.",jp:"🛡 味方だよ"} ] },
@@ -354,6 +399,7 @@
     };
 
     let currentChar = 'leo';
+    let currentEmotion = 'normal';
     let currentStep = 2;
     let currentCat = 'life';
     let isQuickOpen = true;
@@ -377,7 +423,12 @@
         initQuickPanel();
     };
 
-    /* ⑤ 設定（Step, 誕生日, 画像）の保持 */
+    function getCharAvatarUrl(charKey, emotion = 'normal') {
+        const char = CHARS[charKey];
+        if (!char) return 'leo.jpg';
+        return char.avatars[emotion] || char.avatars['normal'];
+    }
+
     function loadSettings() {
         const savedStep = localStorage.getItem('oshitalk_step');
         if (savedStep) {
@@ -391,15 +442,6 @@
 
         const savedUserImg = localStorage.getItem('oshitalk_user_avatar');
         if (savedUserImg) userAvatarUrl = savedUserImg;
-
-        ['leo', 'noah', 'liam'].forEach(k => {
-            const img = localStorage.getItem(`oshitalk_oshi_avatar_${k}`);
-            if (img) {
-                CHARS[k].avatar = img;
-                const el = document.getElementById(`avatar-${k}`);
-                if (el) el.src = img;
-            }
-        });
     }
 
     function setStep(s) {
@@ -414,7 +456,6 @@
         localStorage.setItem('oshitalk_birthday', val);
     }
 
-    /* ⑨ アイコン画像アップロード復元 */
     function triggerImageUpload(target) {
         uploadTarget = target;
         document.getElementById('img-upload-input').click();
@@ -430,8 +471,7 @@
                 userAvatarUrl = base64;
                 localStorage.setItem('oshitalk_user_avatar', base64);
             } else {
-                CHARS[currentChar].avatar = base64;
-                localStorage.setItem(`oshitalk_oshi_avatar_${currentChar}`, base64);
+                CHARS[currentChar].avatars.normal = base64;
                 document.getElementById(`avatar-${currentChar}`).src = base64;
                 document.getElementById('callAvatarImg').src = base64;
             }
@@ -486,6 +526,7 @@
     function selectChar(key) {
         window.speechSynthesis.cancel();
         currentChar = key;
+        currentEmotion = 'normal';
         const char = CHARS[key];
         document.querySelectorAll('.char-card').forEach(card => card.classList.remove('active'));
         document.getElementById(`card-${key}`).classList.add('active');
@@ -493,7 +534,7 @@
         renderChatHistory();
 
         document.getElementById('callCharName').innerText = char.name;
-        document.getElementById('callAvatarImg').src = char.avatar;
+        document.getElementById('callAvatarImg').src = getCharAvatarUrl(currentChar, currentEmotion);
     }
 
     function renderChatHistory() {
@@ -503,28 +544,30 @@
 
         if (!history || history.length === 0) {
             const char = CHARS[currentChar];
-            // ⑥ 実際に使われたフレーズ・単語（dearly, presence）を解説するTip
-            const initialTip = "「dearly」は「とても深く・愛おしく」、「presence」は「あなたの存在」という意味だよ！";
-            addBubble('ai', char.greet, char.greetJp, initialTip, false, false, false);
+            addBubble('ai', char.greet, char.greetJp, char.greetTip, false, false, false, 'normal');
         } else {
             history.forEach(item => {
-                addBubble(item.sender, item.text, item.subText, item.tipText, false, false, false);
+                addBubble(item.sender, item.text, item.subText, item.tipText, false, false, false, item.emotion || 'normal');
             });
         }
     }
 
-    function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true, autoSpeak = true) {
+    function addBubble(sender, text, subText = '', tipText = '', showPopup = true, save = true, autoSpeak = true, emotion = 'normal') {
         const chatArea = document.getElementById('chat-area');
         const row = document.createElement('div');
         row.className = `msg-row ${sender}`;
         const char = CHARS[currentChar];
-        const avatarUrl = sender === 'ai' ? char.avatar : userAvatarUrl;
+        const avatarUrl = sender === 'ai' ? getCharAvatarUrl(currentChar, emotion) : userAvatarUrl;
 
         const isAI = sender === 'ai';
-        if (isAI) lastAIText = text;
+        if (isAI) {
+            lastAIText = text;
+            currentEmotion = emotion;
+            document.getElementById('callAvatarImg').src = getCharAvatarUrl(currentChar, emotion);
+        }
 
         row.innerHTML = `
-            <img src="${avatarUrl}" onclick="openModal('${char.avatar}', '${char.name}', '${text}', '${subText}')">
+            <img src="${avatarUrl}" onclick="openModal('${avatarUrl}', '${char.name}', '${text}', '${subText}')">
             <div class="bubble-container">
                 <div class="bubble">${text}</div>
                 ${subText ? `<span class="jp-sub">${subText}</span>` : ''}
@@ -538,14 +581,14 @@
 
         if (save) {
             if (!chatHistories[currentChar]) chatHistories[currentChar] = [];
-            chatHistories[currentChar].push({ sender, text, subText, tipText, time: Date.now() });
+            chatHistories[currentChar].push({ sender, text, subText, tipText, emotion, time: Date.now() });
             saveHistories();
         }
 
         if (isAI) {
             if (autoSpeak) speakText(text);
             if (showPopup && !document.getElementById('callModal').classList.contains('active')) {
-                openModal(char.avatar, char.name, text, subText);
+                openModal(avatarUrl, char.name, text, subText);
             }
             updateCallHints(text);
         }
@@ -574,7 +617,7 @@
                 { en: "I'm a little tired today.", jp: "今日は少しお疲れ気味。" },
                 { en: "I'm just relaxing right now.", jp: "今はのんびりしてるよ。" }
             ];
-        } else if (msg.includes('miss') || msg.includes('love') || msg.includes('presence') || msg.includes('brighten')) {
+        } else if (msg.includes('miss') || msg.includes('love') || msg.includes('absence') || msg.includes('together')) {
             hints = [
                 { en: "I missed you so much too!", jp: "私（僕）もすごく会いたかった！" },
                 { en: "You always make me smile.", jp: "あなたはいつも私を笑顔にしてくれるね。" },
@@ -598,7 +641,7 @@
         });
     }
 
-    /* ② 通話モードでの「4秒自動送信」タイマー確実化 */
+    /* ③ 無音4秒後の確実な自動送信ロジック */
     function setupSpeechRecognition() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) return;
@@ -628,9 +671,10 @@
             const targetInputId = (currentSpeechMode === 'normal_auto') ? 'user-input' : 'call-user-input';
             document.getElementById(targetInputId).value = transcript;
 
+            // 発話を検知するたびに既存タイマーをクリアしてリセット
             clearTimeout(silenceTimer);
 
-            // 🎤 音声A（4秒自動）または通常マイクの場合は4秒無音後に自動送信
+            // 🎤 音声A (4秒自動送信) の場合のみ4秒カウント始動
             if (currentSpeechMode === 'call_auto' || currentSpeechMode === 'normal_auto') {
                 silenceTimer = setTimeout(() => {
                     const textVal = document.getElementById(targetInputId).value.trim();
@@ -638,12 +682,12 @@
                         stopSpeech();
                         sendMessage(currentSpeechMode === 'normal_auto' ? 'normal' : 'call');
                     }
-                }, 4000); // 正確に4秒
+                }, 4000); // 無音が4秒続いてから送信
             }
         };
 
         recognition.onerror = () => stopSpeech();
-        recognition.onend = () => { if (isRecording) stopSpeech(); };
+        recognition.onend = () => { if (isRecording && currentSpeechMode === 'call_manual') stopSpeech(); };
     }
 
     function toggleSpeech(mode) {
@@ -709,15 +753,15 @@
             });
             const data = await response.json();
             if (data.reply) {
-                addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true);
+                addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true, data.emotion || 'smile');
             }
         } catch (e) {
-            // ⑥ 会話内の「mind」という単語に着目したワンポイントレッスン
+            // ① Lesson内容を英単語・単語解説に完全修復
             addBubble('ai', 
-                "I'm so glad we are talking right now! What's on your mind?", 
-                "今こうしてお話しできて本当に嬉しいよ！何考えてるの？", 
-                "「What's on your mind?」は「mind（心・頭の中）」に何が乗っているか＝「何考えてるの？」と聞く表現だよ！", 
-                true, true, true
+                "I'm so glad to hear your voice! Talking with you always brightens my day.", 
+                "君の声が聞けてすごく嬉しいよ！君とお話しするといつも僕の一日がぱっと明るくなるんだ。", 
+                "「brighten one's day」＝「（人の）一日を明るく・幸せな気分にする」という定番の褒めフレーズだよ！", 
+                true, true, true, 'smile'
             );
         }
     }
@@ -751,12 +795,11 @@
 
     function handleKey(e, source) { if (e.key === 'Enter') sendMessage(source); }
 
-    /* 通話モード制御 */
     function startCallMode() {
         const modal = document.getElementById('callModal');
         const char = CHARS[currentChar];
         document.getElementById('callCharName').innerText = char.name;
-        document.getElementById('callAvatarImg').src = char.avatar;
+        document.getElementById('callAvatarImg').src = getCharAvatarUrl(currentChar, currentEmotion);
         
         updateCallHints(lastAIText);
         modal.classList.add('active');
