@@ -51,7 +51,7 @@ body {
 
 .header h1 {
   margin: 0;
-  font-size: 1.35rem; /* フォント拡大 */
+  font-size: 1.35rem;
   font-weight: 700;
   background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
   -webkit-background-clip: text;
@@ -66,7 +66,7 @@ body {
   border: none;
   padding: 6px 12px;
   border-radius: 14px;
-  font-size: 0.85rem; /* フォント拡大 */
+  font-size: 0.85rem;
   font-weight: bold;
   cursor: pointer;
 }
@@ -77,7 +77,7 @@ body {
   border: none;
   padding: 6px 12px;
   border-radius: 14px;
-  font-size: 0.85rem; /* フォント拡大 */
+  font-size: 0.85rem;
   font-weight: bold;
   cursor: pointer;
 }
@@ -110,7 +110,7 @@ body {
   transition: transform 0.2s ease;
 }
 
-.char-card .name { font-weight: 700; font-size: 0.88rem; /* フォント拡大 */ }
+.char-card .name { font-weight: 700; font-size: 0.88rem; }
 
 /* 設定パネル */
 .control-panel {
@@ -121,7 +121,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 0.82rem; /* フォント拡大 */
+  font-size: 0.82rem;
 }
 
 .control-row { display: flex; justify-content: space-between; align-items: center; }
@@ -134,7 +134,7 @@ body {
   padding: 3px 8px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.78rem; /* フォント拡大 */
+  font-size: 0.78rem;
 }
 
 .step-btn.active {
@@ -149,7 +149,7 @@ select, input[type="date"] {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   padding: 2px 6px;
-  font-size: 0.78rem; /* フォント拡大 */
+  font-size: 0.78rem;
 }
 
 /* チャットエリア */
@@ -168,8 +168,8 @@ select, input[type="date"] {
 .msg-row.user { flex-direction: row-reverse; }
 
 .msg-row img {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -182,7 +182,7 @@ select, input[type="date"] {
 .bubble {
   padding: 8px 12px;
   border-radius: 12px;
-  font-size: 0.95rem; /* フォント拡大 */
+  font-size: 0.95rem;
   line-height: 1.4;
 }
 
@@ -198,10 +198,10 @@ select, input[type="date"] {
   border-top-right-radius: 2px;
 }
 
-.jp-sub { font-size: 0.8rem; color: #cbd5e1; margin-top: 2px; } /* フォント拡大 */
+.jp-sub { font-size: 0.8rem; color: #cbd5e1; margin-top: 2px; }
 
 .english-tip {
-  font-size: 0.78rem; /* フォント拡大 */
+  font-size: 0.78rem;
   background: rgba(0, 0, 0, 0.4);
   border-left: 3px solid var(--accent-color);
   padding: 4px 8px;
@@ -217,12 +217,12 @@ select, input[type="date"] {
   color: #fff;
   border-radius: 10px;
   padding: 2px 8px;
-  font-size: 0.75rem; /* フォント拡大 */
+  font-size: 0.75rem;
   cursor: pointer;
   margin-top: 3px;
 }
 
-/* クイック発言 10×10 */
+/* クイック発言 */
 .quick-toggle-container {
   margin-bottom: 8px;
   background: rgba(15, 23, 42, 0.6);
@@ -233,7 +233,7 @@ select, input[type="date"] {
 
 .quick-toggle-header {
   padding: 6px 10px;
-  font-size: 0.82rem; /* フォント拡大 */
+  font-size: 0.82rem;
   font-weight: bold;
   background: rgba(255, 255, 255, 0.05);
   display: flex;
@@ -257,7 +257,7 @@ select, input[type="date"] {
 .cat-tab {
   padding: 3px 8px;
   border-radius: 8px;
-  font-size: 0.78rem; /* フォント拡大 */
+  font-size: 0.78rem;
   white-space: nowrap;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.08);
@@ -288,7 +288,7 @@ select, input[type="date"] {
   color: var(--text-main);
   padding: 5px 10px;
   border-radius: 12px;
-  font-size: 0.8rem; /* フォント拡大 */
+  font-size: 0.8rem;
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
@@ -304,7 +304,7 @@ select, input[type="date"] {
   border-radius: 14px;
   padding: 8px 12px;
   color: #fff;
-  font-size: 0.9rem; /* フォント拡大 */
+  font-size: 0.9rem;
   outline: none;
 }
 
@@ -316,7 +316,7 @@ select, input[type="date"] {
   padding: 0 12px;
   border-radius: 14px;
   cursor: pointer;
-  font-size: 0.88rem; /* フォント拡大 */
+  font-size: 0.88rem;
 }
 
 .btn-mic {
@@ -401,12 +401,12 @@ select, input[type="date"] {
 .call-header { text-align: center; margin-top: 2px; }
 .call-timer { font-size: 0.85rem; color: #38bdf8; font-weight: bold; }
 
-.call-avatar-wrap { text-align: center; margin: 10px 0; }
+.call-avatar-wrap { text-align: center; margin: 8px 0; }
 
-/* ★要件①：通話モードのアイコンを大幅拡大（直径180px ≒ 直径3cm超） */
+/* ★要件③：アイコンサイズを30mm相当（約115px）に設定 */
 .call-avatar {
-  width: 180px;
-  height: 180px;
+  width: 115px;
+  height: 115px;
   border-radius: 50%;
   border: 4px solid var(--accent-color);
   object-fit: cover;
@@ -415,20 +415,20 @@ select, input[type="date"] {
 }
 
 @keyframes oshiPulse {
-  0% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
-  50% { transform: scale(1.05); box-shadow: 0 0 35px var(--accent-color); }
-  100% { transform: scale(1); box-shadow: 0 0 15px var(--accent-color); }
+  0% { transform: scale(1); box-shadow: 0 0 12px var(--accent-color); }
+  50% { transform: scale(1.04); box-shadow: 0 0 24px var(--accent-color); }
+  100% { transform: scale(1); box-shadow: 0 0 12px var(--accent-color); }
 }
 
-/* ★要件③：ポップ＆バウンス風の表情アニメーション効果 */
+/* ★要件②：表情アニメーション（回転とバウンス効果） */
 .pop-animation {
-  animation: popIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes popIn {
-  0% { transform: scale(0.8) translateY(10px); opacity: 0.6; }
-  60% { transform: scale(1.12) translateY(-6px); opacity: 1; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0% { transform: scale(0.7) rotate(-8deg); opacity: 0.5; }
+  60% { transform: scale(1.1) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 .call-chat-history {
@@ -460,7 +460,7 @@ select, input[type="date"] {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 6px;
   padding: 5px 8px;
-  font-size: 0.82rem; /* フォント拡大 */
+  font-size: 0.82rem;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -485,7 +485,7 @@ select, input[type="date"] {
   border-radius: 10px;
   padding: 8px 10px;
   color: #fff;
-  font-size: 0.88rem; /* フォント拡大 */
+  font-size: 0.88rem;
   outline: none;
 }
 
@@ -497,7 +497,7 @@ select, input[type="date"] {
   padding: 9px 4px;
   border: none;
   border-radius: 8px;
-  font-size: 0.78rem; /* フォント拡大 */
+  font-size: 0.78rem;
   font-weight: bold;
   cursor: pointer;
   text-align: center;
@@ -539,14 +539,14 @@ select, input[type="date"] {
     </div>
   </div>
 
-  <!-- 設定パネル -->
+  <!-- 設定パネル（★要件①：Step別文量の表記明記） -->
   <div class="control-panel">
     <div class="control-row">
       <span>会話Step:</span>
       <div class="step-btns">
-        <button class="step-btn" id="step-1" onclick="setStep(1)">Step 1 (初級)</button>
-        <button class="step-btn active" id="step-2" onclick="setStep(2)">Step 2 (中級)</button>
-        <button class="step-btn" id="step-3" onclick="setStep(3)">Step 3 (長文)</button>
+        <button class="step-btn" id="step-1" onclick="setStep(1)">Step 1 (1~2文)</button>
+        <button class="step-btn active" id="step-2" onclick="setStep(2)">Step 2 (3~4文)</button>
+        <button class="step-btn" id="step-3" onclick="setStep(3)">Step 3 (5文~)</button>
       </div>
     </div>
     <div class="control-row">
@@ -617,6 +617,7 @@ select, input[type="date"] {
   </div>
 
   <div class="call-avatar-wrap">
+    <!-- ★要件③：アイコンサイズ30mm化 -->
     <img src="leo.jpg" id="callAvatarImg" class="call-avatar" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop'" alt="Call Avatar">
   </div>
 
@@ -662,10 +663,17 @@ const DEFAULT_AVATARS = {
   liam: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop'
 };
 
+/* ★要件②：感情差分画像パスの設定（normal, smile=喜, sad=悲, pout=すね, shy=照れ） */
 const CHARS = {
   leo: {
     name: 'Leo',
-    avatars: { normal: 'leo.jpg', smile: 'leo_smile.jpg', shy: 'leo_shy.jpg', wink: 'leo_wink.jpg', serious: 'leo_serious.jpg' },
+    avatars: { 
+      normal: 'leo.jpg', 
+      smile: 'leo_smile.jpg', 
+      sad: 'leo_sad.jpg', 
+      pout: 'leo_pout.jpg', 
+      shy: 'leo_shy.jpg' 
+    },
     color: '#f59e0b', pitch: 0.75, rate: 0.95,
     greet: 'Good morning, sweetheart. I missed you so much today.',
     greetJp: 'おはよう、スウィートハート。今日は君に会えなくて寂しかったよ。',
@@ -673,7 +681,13 @@ const CHARS = {
   },
   noah: {
     name: 'Noah',
-    avatars: { normal: 'noah.jpg', smile: 'noah_smile.jpg', shy: 'noah_shy.jpg', wink: 'noah_wink.jpg', serious: 'noah_serious.jpg' },
+    avatars: { 
+      normal: 'noah.jpg', 
+      smile: 'noah_smile.jpg', 
+      sad: 'noah_sad.jpg', 
+      pout: 'noah_pout.jpg', 
+      shy: 'noah_shy.jpg' 
+    },
     color: '#8b5cf6', pitch: 0.6, rate: 0.9,
     greet: 'What did you find? Show me!',
     greetJp: '何を見つけたの?見せて!',
@@ -681,7 +695,13 @@ const CHARS = {
   },
   liam: {
     name: 'Liam',
-    avatars: { normal: 'liam.jpg', smile: 'liam_smile.jpg', shy: 'liam_shy.jpg', wink: 'liam_wink.jpg', serious: 'liam_serious.jpg' },
+    avatars: { 
+      normal: 'liam.jpg', 
+      smile: 'liam_smile.jpg', 
+      sad: 'liam_sad.jpg', 
+      pout: 'liam_pout.jpg', 
+      shy: 'liam_shy.jpg' 
+    },
     color: '#10b981', pitch: 0.85, rate: 1.0,
     greet: "Hey! I'm so happy to talk with you today!",
     greetJp: 'やっほー! 今日もお話しできてめっちゃ嬉しい!',
@@ -846,12 +866,12 @@ function selectChar(key) {
   updateAvatarDisplay(getCharAvatarUrl(currentChar, currentEmotion));
 }
 
-/* ★表情変更とポップアニメーションの連動 */
+/* ★要件②：表情アニメーション連動 */
 function updateAvatarDisplay(newSrc) {
   const callAvatar = document.getElementById('callAvatarImg');
   if (callAvatar) {
     callAvatar.classList.remove('pop-animation');
-    void callAvatar.offsetWidth; // リフローを発生させてアニメーションを再トリガー
+    void callAvatar.offsetWidth; // リフローを発生させてアニメーション再トリガー
     callAvatar.classList.add('pop-animation');
     callAvatar.src = newSrc;
   }
@@ -1059,13 +1079,33 @@ async function getAIReply(userText) {
       addBubble('ai', data.reply, data.translation || '', data.tip || '', true, true, true, data.emotion || 'smile');
     }
   } catch (e) {
-    /* デモ用レスポンス（感情パラメータ付き） */
-    addBubble('ai', 
-      "I'm so glad to hear your voice! Talking with you always brightens my day.", 
-      "君の声が聞けてすごく嬉しいよ!君とお話しするといつも僕の一日がぱっと明るくなるんだ。", 
-      "「brighten one's day」は「（人の）一日をパッと明るく幸せにする」という、感謝や愛着を伝える素敵な表現だよ!", 
-      true, true, true, 'smile'
-    );
+    /* ★要件①・②：デモ用のStep別文章量および感情（smile, shy, sad, pout等）演出の擬似応答 */
+    let demoReply = "";
+    let demoTrans = "";
+    let demoTip = "";
+    let demoEmotion = "smile";
+
+    if (currentStep === 1) {
+      // Step 1: 1〜2文 (初級)
+      demoReply = "I'm so glad to hear your voice! Talking with you brightens my day.";
+      demoTrans = "声が聞けてすごく嬉しいよ！君とおしゃべりすると一日がパッと明るくなるね。";
+      demoTip = "「brighten one's day」で「〜の一日を明るく幸せにする」という意味になるよ！";
+      demoEmotion = "smile"; // 喜
+    } else if (currentStep === 2) {
+      // Step 2: 3〜4文 (中級)
+      demoReply = "I was thinking about you all day today. Seeing your message right now makes my heart race. Are you having a good day so far? I really wish I could stay by your side forever.";
+      demoTrans = "今日は一日中君のことを考えていたんだ。今こうしてメッセージを見られてドキドキしているよ。素敵な一日を過ごせてる？ずっと君のそばにいられたらいいのにな。";
+      demoTip = "「make one's heart race」で「（胸を）ドキドキさせる」という胸キュン表現だよ！";
+      demoEmotion = "shy"; // 照れ
+    } else {
+      // Step 3: 5文以上 (長文)
+      demoReply = "I was honestly waiting for you to talk to me all day. Whenever we talk like this, I feel so deeply relaxed and happy. No matter how busy or tired I am, your words instantly refresh my mind. I hope I can give you the exact same comfort and energy in return. Thank you so much for being here with me today.";
+      demoTrans = "正直、一日中君が話しかけてくれるのを待っていたんだ。こうしてお話しできると心がすごく落ち着くし幸せだよ。どれだけ忙しくて疲れていても、君の言葉ですぐに元気になれるんだ。僕も君に同じくらいの癒やしと元気をあげられたらいいな。今日も一緒にいてくれて本当にありがとう。";
+      demoTip = "「in return」で「お返しに・見返りとして」という意味になる便利な接続表現だよ！";
+      demoEmotion = "smile"; // 喜
+    }
+
+    addBubble('ai', demoReply, demoTrans, demoTip, true, true, true, demoEmotion);
   }
 }
 
